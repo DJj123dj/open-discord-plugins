@@ -1,0 +1,23 @@
+{
+    "name":"OT Jump To Top",
+    "id":"ot-jump-to-top",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"Add a simple command to jump to the top of the ticket.",
+        "longDescription":"Add a simple command to jump to the top of the ticket.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["jump","jump-to-top","utilities","ticket"]
+    }
+}

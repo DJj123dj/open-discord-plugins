@@ -27,10 +27,12 @@ All plugins are checked for malicious code, bugs & errors before being listed he
 
 ## 🧩 Plugins
 ### 📦 Official *(made by DJdj Development)*
-|Name                                                                 |Category                 |Description              |
-|---------------------------------------------------------------------|-------------------------|-------------------------|
-|[`example-plugin`](./open-ticket/example-plugin/)                    |Example                  |This is just an example plugin for people that want to create their own plugin. |
-|[`ot-rename-keep-prefix`](./open-ticket/ot-rename-keep-prefix/)      |Channel Management       |Simple plugin to keep the channel prefix when using the /rename command. |
+|Name                                                                 |Category                    |Description              |
+|---------------------------------------------------------------------|----------------------------|-------------------------|
+|[`example-plugin`](./open-ticket/example-plugin/)                    |Example                     |This is just an example plugin for people that want to create their own plugin. |
+|[`ot-rename-keep-prefix`](./open-ticket/ot-rename-keep-prefix/)      |Channel Management          |Simple plugin to keep the channel prefix when using the /rename command. |
+|[`ot-jump-to-top`](./open-ticket/ot-jump-to-top/)                    |Command                     |Add a simple command to jump to the top of the ticket. |
+|[`ot-no-slash-clear`](./open-ticket/ot-no-slash-clear/)              |Development & Compatibility |Disable the automatic removal of slash commands that aren't used by Open Ticket. |
 
 ### ✅ Verified *(made by community)*
 |Name                  |Description              |Description              |

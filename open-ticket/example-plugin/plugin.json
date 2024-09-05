@@ -4,7 +4,7 @@
     "version":"1.0.0",
     "startFile":"index.ts",
 
-    "enabled":false,
+    "enabled":true,
     "priority":0,
     "events":[],
 
