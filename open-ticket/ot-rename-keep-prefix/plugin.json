@@ -1,0 +1,23 @@
+{
+    "name":"OT Rename Keep Prefix",
+    "id":"ot-rename-keep-prefix",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"Simple plugin to keep the channel prefix on /rename.",
+        "longDescription":"Simple plugin to keep the channel prefix when using the /rename command.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["rename","channel","prefix"]
+    }
+}
