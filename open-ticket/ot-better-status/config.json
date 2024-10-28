@@ -1,0 +1,17 @@
+{
+    "stateSwitchDelaySeconds":10,
+    "states":[
+        {
+            "type":"listening OR watching OR playing OR custom",
+            "text":"Server Size: {user-count}",
+            "status":"online OR invisible OR idle OR dnd"
+        }
+    ],
+    "_VAR_INFO":"Check all available variables in the 'VARIABLES.txt' file!",
+    "variables":[
+        {
+            "name":"{user-count}",
+            "variable":"guild.members.all"
+        }
+    ]
+}

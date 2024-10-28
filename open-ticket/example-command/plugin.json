@@ -1,0 +1,23 @@
+{
+    "name":"OT Example Command",
+    "id":"example-command",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"A simple example plugin to create a custom command using the Open Ticket API.",
+        "longDescription":"A simple example plugin to create a custom command using the Open Ticket API.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["example","command","custom"]
+    }
+}

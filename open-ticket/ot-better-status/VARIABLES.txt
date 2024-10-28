@@ -1,0 +1,42 @@
+SERVER MEMBERS:
+guild.members.all           => Amount of members in the discord server.
+guild.members.online        => Amount of online members in the discord server. (DOESN'T WORK YET!)
+guild.members.offline       => Amount of offline members in the discord server. (DOESN'T WORK YET!)
+guild.admins.all            => Amount of admins in the discord server.
+guild.admins.online         => Amount of online admins in the discord server. (DOESN'T WORK YET!)
+guild.admins.offline        => Amount of offline admins in the discord server. (DOESN'T WORK YET!)
+guild.bots                  => Amount of bots in the discord server.
+
+SERVER EXTRA:
+guild.roles                 => Amount of roles in the discord server.
+guild.channels              => Amount of channels in the discord server.
+
+STATS:
+stats.tickets.created       => Amount of tickets created.
+stats.tickets.closed        => Amount of tickets closed.
+stats.tickets.deleted       => Amount of tickets deleted.
+stats.tickets.reopened      => Amount of tickets reopened.
+stats.tickets.autoclosed    => Amount of tickets autoclosed.
+stats.tickets.autodeleted   => Amount of tickets autodeleted.
+stats.tickets.claimed       => Amount of tickets claimed.
+stats.tickets.pinned        => Amount of tickets pinned.
+stats.tickets.moved         => Amount of tickets moved.
+stats.users.blacklisted     => Amount of users blacklisted.
+stats.transcripts.created   => Amount of transcripts created.
+
+TICKETS:
+tickets.open                => Amount of currently open tickets.
+tickets.closed              => Amount of currently closed tickets.
+tickets.claimed             => Amount of currently claimed tickets.
+tickets.pinned              => Amount of currently pinned tickets.
+
+SYSTEM:
+system.version              => Open Ticket version. (e.g. v4.0.0)
+system.uptime.minutes       => System uptime in minutes.
+system.uptime.hours         => System uptime in hours.
+system.uptime.days          => System uptime in days.
+system.plugins              => Amount of enabled plugins.
+system.tickets              => Amount of ticket channels.
+system.questions            => Amount of available questions.
+system.options              => Amount of available options.
+system.panels               => Amount of available panels.

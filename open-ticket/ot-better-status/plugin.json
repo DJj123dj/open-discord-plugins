@@ -1,0 +1,23 @@
+{
+    "name":"OT Better Status",
+    "id":"ot-better-status",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"An advanced status plugin to switch between bot statuses.",
+        "longDescription":"An advanced status plugin to switch between bot statuses. It also allows for the use of variables and more!",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["status","client","activity","auto-status"]
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "name":"OT Kill Switch",
+    "id":"ot-kill-switch",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"Temporarily disable the ticket system using a kill switch.",
+        "longDescription":"Temporarily disable the ticket system using a kill switch. When active, no-one is able to create a ticket.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["kill-switch","disable","moderation","protection"]
+    }
+}

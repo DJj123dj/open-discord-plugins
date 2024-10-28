@@ -1,0 +1,23 @@
+{
+    "name":"OT Config Reload",
+    "id":"ot-config-reload",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":["discord.js"],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"guillee.3",
+        "shortDescription":"Adds a config reload command.",
+        "longDescription":"This plugin adds a new command that allows reloading the Open Ticket config files without the need for a restart. Note that this command only reloads the Open Ticket configuration and does not affect the configuration of other plugins.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["config","reload","command"]
+    }
+}

@@ -42,6 +42,16 @@ openticket.events.get("onTextCommandLoad").listen((text) => {
     }))
 })
 
+//REGISTER HELP MENU
+openticket.events.get("onHelpMenuComponentLoad").listen((menu) => {
+    menu.get("openticket:extra").add(new api.ODHelpMenuCommandComponent("ot-jump-to-top:top",0,{
+        slashName:"top",
+        textName:"top",
+        slashDescription:"Jump to the top of the ticket.",
+        textDescription:"Jump to the top of the ticket."
+    }))
+})
+
 //REGISTER BUILDERS
 openticket.events.get("onButtonBuilderLoad").listen((buttons) => {
     buttons.add(new api.ODButton("ot-jump-to-top:top-button"))

@@ -30,14 +30,17 @@ All plugins are checked for malicious code, bugs & errors before being listed he
 |Name                                                                 |Category                    |Description              |
 |---------------------------------------------------------------------|----------------------------|-------------------------|
 |[`example-plugin`](./open-ticket/example-plugin/)                    |Example                     |This is just an example plugin for people that want to create their own plugin. |
-|[`ot-rename-keep-prefix`](./open-ticket/ot-rename-keep-prefix/)      |Channel Management          |Simple plugin to keep the channel prefix when using the /rename command. |
+|[`example-command`](./open-ticket/example-command/)                  |Example                     |Sample custom command using the Open Discord system. |
 |[`ot-jump-to-top`](./open-ticket/ot-jump-to-top/)                    |Command                     |Add a simple command to jump to the top of the ticket. |
-|[`ot-no-slash-clear`](./open-ticket/ot-no-slash-clear/)              |Development & Compatibility |Disable the automatic removal of slash commands that aren't used by Open Ticket. |
+|[`ot-kill-switch`](./open-ticket/ot-kill-switch/)                    |Command                     |Temporarily disable the ticket system using a kill switch. |
+|[`ot-rename-keep-prefix`](./open-ticket/ot-rename-keep-prefix/)      |Channel Management          |Simple plugin to keep the channel prefix when using the /rename command. |
+|[`ot-no-slash-clear`](./open-ticket/ot-no-slash-clear/)              |Development                 |Disable the automatic removal of slash commands that aren't used by Open Ticket. |
+|[`ot-better-status`](./open-ticket/ot-better-status/)                |Client Activity             |An advanced status plugin to rotate between states. It also allows for the use of variables. |
 
 ### ✅ Verified *(made by community)*
-|Name                  |Description              |Description              |
-|----------------------|-------------------------|-------------------------|
-|`nothing yet :)`      |Lorem Ipsum              |Lorem Ipsum              |
+|Name                                                                 |Author                      |Category                    |Description              |
+|---------------------------------------------------------------------|----------------------------|----------------------------|-------------------------|
+|[`ot-config-reload`](./open-ticket/ot-config-reload/)                |guillee.3                   |Config                      |This plugin adds a new command that allows reloading the Open Ticket config files without the need for a restart. |
 
 ## 🛠️ Contributors
 ### 🖥️ Team
@@ -58,11 +61,9 @@ A big thanks to all our sponsors! Without them, it wouldn't be possible to creat
 
 <table>
 <tr>
-<td><img src="https://github.com/DOSEV5.png" alt="Profile Picture" width="80px"></td>
 <td><img src="https://github.com/roppl3r.png" alt="Profile Picture" width="80px"></td>
 </tr>
 <tr>
-<th><a href="https://github.com/DOSEV5">DOSEV5</a></th>
 <th><a href="https://github.com/roppl3r">roppl3r</a></th>
 </tr>
 </table>
@@ -71,6 +72,7 @@ A big thanks to all our sponsors! Without them, it wouldn't be possible to creat
 <a href="https://github.com/sponsors/DJj123dj">
 <img src="https://github.com/SpyEye2.png" alt="SpyEye" width="40px">
 <img src="https://github.com/mods-hd.png" alt="Mods HD" width="40px">
+<img src="https://github.com/DOSEV5.png" alt="DOSEV5" width="40px">
 </a>
 
 ---
