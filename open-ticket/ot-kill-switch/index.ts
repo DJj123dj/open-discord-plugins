@@ -136,6 +136,13 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
 
     commands.add(new api.ODCommandResponder("ot-kill-switch:kill",generalConfig.data.prefix,"kill"))
     commands.get("ot-kill-switch:kill").workers.add([
+        new api.ODWorker("openticket:permissions",1,async (instance,params,source,cancel) => {
+            if (!openticket.permissions.hasPermissions("admin",await openticket.permissions.getPermissions(instance.user,instance.channel,instance.guild,{allowChannelRoleScope:false,allowChannelUserScope:false,allowGlobalRoleScope:true,allowGlobalUserScope:true}))){
+                //no permissions
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error-no-permissions").build(source,{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin"]}))
+                return cancel()
+            }
+        }),
         new api.ODWorker("ot-kill-switch:kill",0,async (instance,params,source,cancel) => {
             const {guild,channel,user,options} = instance
             if (!guild){
