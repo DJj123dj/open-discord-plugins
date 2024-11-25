@@ -1,0 +1,25 @@
+{
+    "webhookUrl":"https://discord.com/api/webhooks/... (your webhook URL)",
+    "questionsText":"Thank you for using our ticket system! We would love to hear your feedback!",
+    "completedText":"Your feedback has been received. Thank you for your answers!",
+    "canceledText":"You didn't respond in time for this question! Moving on to the next one.",
+    
+    "questions":[
+        {
+            "type":"rating",
+            "label":"Please rate your experience from 1-10."
+        },
+        {
+            "type":"text",
+            "label":"What did you like the most?"
+        },
+        {
+            "type":"text",
+            "label":"What would you like to be improved?"
+        },
+        {
+            "type":"rating",
+            "label":"How much will you recommend us to other people on a scale from 1-10."
+        }
+    ]
+}

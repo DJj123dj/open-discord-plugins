@@ -2,7 +2,6 @@ import { api, openticket, utilities } from "../../src/index";
 import * as discord from "discord.js";
 
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
-if (!utilities.isBeta) throw new api.ODPluginError("This plugin is made for the beta version of Open Ticket!")
 
 //DECLARATION
 declare module "../../src/core/api/api.js" {

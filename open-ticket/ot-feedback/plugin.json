@@ -1,0 +1,23 @@
+{
+    "name":"OT Feedback",
+    "id":"ot-feedback",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":["ot-feedback:onFeedback","ot-feedback:afterFeedback"],
+
+    "npmDependencies":["discord.js"],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"an_developer",
+        "shortDescription":"A plugin to gather feedback of your support service!",
+        "longDescription":"A plugin to gather feedback of your support service in the DM of the ticket creator and send it to a webhook!",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["feedback","webhook","dm","support","service"]
+    }
+}

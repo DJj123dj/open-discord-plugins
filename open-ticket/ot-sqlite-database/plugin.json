@@ -1,0 +1,23 @@
+{
+    "name":"OT SQLite Database",
+    "id":"ot-sqlite-database",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":["discord.js","sqlite3"],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"With this plugin, the database will be an SQLite file! It's a must-have for large servers!",
+        "longDescription":"Tired of having the database as JSON files? With this plugin, the database will be an SQLite file! It's a must-have for large servers!",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["database","sqlite","sql","large-servers"]
+    }
+}

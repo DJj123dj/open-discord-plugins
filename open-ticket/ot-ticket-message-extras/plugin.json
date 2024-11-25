@@ -1,0 +1,23 @@
+{
+    "name":"OT Ticket Message Extra's",
+    "id":"ot-ticket-message-extras",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":["discord.js"],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"A plugin which adds a few little features to the ticket message!",
+        "longDescription":"A plugin which adds a few little features to the ticket message that make it more customisable!",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["ticket-message","ticket","customisation","extras"]
+    }
+}

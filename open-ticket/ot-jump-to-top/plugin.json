@@ -14,8 +14,8 @@
 
     "details":{
         "author":"DJj123dj",
-        "shortDescription":"Add a simple command to jump to the top of the ticket.",
-        "longDescription":"Add a simple command to jump to the top of the ticket.",
+        "shortDescription":"Adds a simple command to jump to the top of the ticket.",
+        "longDescription":"Adds a simple command to jump to the top of the ticket.",
         "imageUrl":"",
         "projectUrl":"",
         "tags":["jump","jump-to-top","utilities","ticket"]
