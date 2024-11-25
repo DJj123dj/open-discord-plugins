@@ -27,15 +27,18 @@ All plugins are checked for malicious code, bugs & errors before being listed he
 
 ## 🧩 Plugins
 ### 📦 Official *(made by DJdj Development)*
-|Name                                                                 |Category                    |Description              |
-|---------------------------------------------------------------------|----------------------------|-------------------------|
-|[`example-plugin`](./open-ticket/example-plugin/)                    |Example                     |This is just an example plugin for people that want to create their own plugin. |
-|[`example-command`](./open-ticket/example-command/)                  |Example                     |Sample custom command using the Open Discord system. |
-|[`ot-jump-to-top`](./open-ticket/ot-jump-to-top/)                    |Command                     |Add a simple command to jump to the top of the ticket. |
-|[`ot-kill-switch`](./open-ticket/ot-kill-switch/)                    |Command                     |Temporarily disable the ticket system using a kill switch. |
-|[`ot-rename-keep-prefix`](./open-ticket/ot-rename-keep-prefix/)      |Channel Management          |Simple plugin to keep the channel prefix when using the /rename command. |
-|[`ot-no-slash-clear`](./open-ticket/ot-no-slash-clear/)              |Development                 |Disable the automatic removal of slash commands that aren't used by Open Ticket. |
-|[`ot-better-status`](./open-ticket/ot-better-status/)                |Client Activity             |An advanced status plugin to rotate between states. It also allows for the use of variables. |
+|Name                                                                  |Category                    |Description              |
+|----------------------------------------------------------------------|----------------------------|-------------------------|
+|[`example-plugin`](./open-ticket/example-plugin/)                     |Example                     |This is just an example plugin for people that want to create their own plugin. |
+|[`example-command`](./open-ticket/example-command/)                   |Example                     |Sample custom command using the Open Discord system. |
+|[`ot-jump-to-top`](./open-ticket/ot-jump-to-top/)                     |Command                     |Add a simple command to jump to the top of the ticket. |
+|[`ot-kill-switch`](./open-ticket/ot-kill-switch/)                     |Command                     |Temporarily disable the ticket system using a kill switch. |
+|[`ot-rename-keep-prefix`](./open-ticket/ot-rename-keep-prefix/)       |Channel Management          |Simple plugin to keep the channel prefix when using the /rename command. |
+|[`ot-no-slash-clear`](./open-ticket/ot-no-slash-clear/)               |Development                 |Disable the automatic removal of slash commands that aren't used by Open Ticket. |
+|[`ot-better-status`](./open-ticket/ot-better-status/)                 |Client Activity             |An advanced status plugin to rotate between states. It also allows for the use of variables. |
+|[`ot-feedback`](./open-ticket/ot-feedback/)                           |Feedback System             |A plugin to gather feedback of your support service. |
+|[`ot-sqlite-database`](./open-ticket/ot-sqlite-database/)             |Database                    |With this plugin, the database will be an SQLite file. It's a must-have for large servers! |
+|[`ot-ticket-message-extras`](./open-ticket/ot-ticket-message-extras/) |Customisation               |A plugin which adds a few little features to the ticket message. |
 
 ### ✅ Verified *(made by community)*
 |Name                                                                 |Author                      |Category                    |Description              |
