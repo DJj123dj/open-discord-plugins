@@ -36,7 +36,6 @@ All plugins are checked for malicious code, bugs & errors before being listed he
 |[`ot-rename-keep-prefix`](./open-ticket/ot-rename-keep-prefix/)       |Channel Management          |Simple plugin to keep the channel prefix when using the /rename command. |
 |[`ot-no-slash-clear`](./open-ticket/ot-no-slash-clear/)               |Development                 |Disable the automatic removal of slash commands that aren't used by Open Ticket. |
 |[`ot-better-status`](./open-ticket/ot-better-status/)                 |Client Activity             |An advanced status plugin to rotate between states. It also allows for the use of variables. |
-|[`ot-feedback`](./open-ticket/ot-feedback/)                           |Feedback System             |A plugin to gather feedback of your support service. |
 |[`ot-sqlite-database`](./open-ticket/ot-sqlite-database/)             |Database                    |With this plugin, the database will be an SQLite file. It's a must-have for large servers! |
 |[`ot-ticket-message-extras`](./open-ticket/ot-ticket-message-extras/) |Customisation               |A plugin which adds a few little features to the ticket message. |
 
@@ -44,6 +43,7 @@ All plugins are checked for malicious code, bugs & errors before being listed he
 |Name                                                                 |Author                      |Category                    |Description              |
 |---------------------------------------------------------------------|----------------------------|----------------------------|-------------------------|
 |[`ot-config-reload`](./open-ticket/ot-config-reload/)                |guillee.3                   |Config                      |This plugin adds a new command that allows reloading the Open Ticket config files without the need for a restart. |
+|[`ot-feedback`](./open-ticket/ot-feedback/)                          |an_developer                |Feedback System             |A plugin to gather feedback of your support service. |
 
 ## 🛠️ Contributors
 ### 🖥️ Team
