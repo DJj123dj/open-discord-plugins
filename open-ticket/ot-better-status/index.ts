@@ -180,17 +180,17 @@ async function processVariables(variables:{name:string,variable:OTBetterStatusAl
         else if (vari.variable == "guild.bots") content = (await mainServer.members.list()).filter((m) => m.user.bot).size.toString()
         else if (vari.variable == "guild.roles") content = mainServer.roles.cache.size.toString()
         else if (vari.variable == "guild.channels") content = mainServer.channels.cache.size.toString()
-        else if (vari.variable == "stats.tickets.created") content = openticket.stats.get("openticket:global").getStat("openticket:tickets-created")?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.closed") content = openticket.stats.get("openticket:global").getStat("openticket:tickets-closed")?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.deleted") content = openticket.stats.get("openticket:global").getStat("openticket:tickets-deleted")?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.reopened") content = openticket.stats.get("openticket:global").getStat("openticket:tickets-reopened")?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.autoclosed") content = openticket.stats.get("openticket:global").getStat("openticket:tickets-autoclosed")?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.autodeleted") content = openticket.stats.get("openticket:global").getStat("openticket:tickets-autodeleted")?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.claimed") content = openticket.stats.get("openticket:global").getStat("openticket:tickets-claimed")?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.pinned") content = openticket.stats.get("openticket:global").getStat("openticket:tickets-pinned")?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.moved") content = openticket.stats.get("openticket:global").getStat("openticket:tickets-moved")?.toString() ?? "0"
-        else if (vari.variable == "stats.users.blacklisted") content = openticket.stats.get("openticket:global").getStat("openticket:users-blacklisted")?.toString() ?? "0"
-        else if (vari.variable == "stats.transcripts.created") content = openticket.stats.get("openticket:global").getStat("openticket:transcripts-created")?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.created") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-created"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.closed") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-closed"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.deleted") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-deleted"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.reopened") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-reopened"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.autoclosed") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-autoclosed"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.autodeleted") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-autodeleted"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.claimed") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-claimed"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.pinned") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-pinned"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.moved") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-moved"))?.toString() ?? "0"
+        else if (vari.variable == "stats.users.blacklisted") content = (await openticket.stats.get("openticket:global").getStat("openticket:users-blacklisted"))?.toString() ?? "0"
+        else if (vari.variable == "stats.transcripts.created") content = (await openticket.stats.get("openticket:global").getStat("openticket:transcripts-created"))?.toString() ?? "0"
         else if (vari.variable == "tickets.open") content = openticket.tickets.getFiltered((ticket) => !ticket.get("openticket:closed").value).length.toString()
         else if (vari.variable == "tickets.closed") content = openticket.tickets.getFiltered((ticket) => ticket.get("openticket:closed").value).length.toString()
         else if (vari.variable == "tickets.claimed") content = openticket.tickets.getFiltered((ticket) => ticket.get("openticket:claimed").value).length.toString()
