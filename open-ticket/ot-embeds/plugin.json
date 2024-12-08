@@ -1,0 +1,23 @@
+{
+    "name":"OT Embeds",
+    "id":"ot-embeds",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":["ot-embeds:onEmbedLoad","ot-embeds:afterEmbedsLoaded"],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"Create custom embeds in the bot.",
+        "longDescription":"Create custom premade embeds in the config or use the command to create one from scratch.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["embeds","utility","messages","server-setup"]
+    }
+}

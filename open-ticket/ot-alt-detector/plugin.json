@@ -1,0 +1,23 @@
+{
+    "name":"OT Alt Detector",
+    "id":"ot-alt-detector",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":["ot-alt-detector:onAltDetect","ot-alt-detector:afterAltDetected"],
+
+    "npmDependencies":["discord-alt-detector"],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"Use the discord-alt-detector npm package in your ticket bot!",
+        "longDescription":"Use the discord-alt-detector npm package by DJdj Development in your ticket bot!",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["alt","detector","moderation","logs"]
+    }
+}

@@ -22,7 +22,6 @@ declare module "../../src/core/api/api.js" {
     }
 }
 
-
 //REGISTER CONFIG
 openticket.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTSQLiteDatabaseConfig("ot-sqlite-database:config","config.json","./plugins/ot-sqlite-database/"))

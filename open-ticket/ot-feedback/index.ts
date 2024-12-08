@@ -162,7 +162,7 @@ openticket.events.get("onReadyForUsage").listen(() => {
             const statusResult = await openticket.client.sendUserDm(creator,await openticket.builders.messages.getSafe("ot-feedback:response").build("other",{questions:statusQuestions}))
             if (!statusResult.message) throw new api.ODPluginError("Unable to send OT Feedback status message!")
             
-            openticket.log(creator.displayName+" is now able to fill-in the feedback!","info",[
+            openticket.log(creator.displayName+" is now able to fill-in the feedback!","plugin",[
                 {key:"user",value:creator.username},
                 {key:"userid",value:creator.id,hidden:true},
                 {key:"questions",value:config.data.questions.length.toString()}
@@ -197,7 +197,7 @@ openticket.events.get("onReadyForUsage").listen(() => {
                 }catch (err){
                     //send canceled
                     await openticket.client.sendUserDm(creator,await openticket.builders.messages.getSafe("ot-feedback:canceled").build("other",{question}))    
-                    openticket.log(creator.displayName+" didn't respond in time for the feedback!","info",[
+                    openticket.log(creator.displayName+" didn't respond in time for the feedback!","plugin",[
                         {key:"user",value:creator.username},
                         {key:"userid",value:creator.id,hidden:true},
                         {key:"question",value:question.label,hidden:true},

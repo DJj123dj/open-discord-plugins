@@ -1,0 +1,23 @@
+{
+    "name":"OT Hosting Status",
+    "id":"ot-hosting-status",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"A simple command to send hosting status updates to a channel.",
+        "longDescription":"A simple command to send hosting status updates to a channel.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["hosting","status","command"]
+    }
+}

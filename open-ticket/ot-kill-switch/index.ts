@@ -156,7 +156,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
             await instance.reply(await openticket.builders.messages.getSafe("ot-kill-switch:kill-message").build(source,{enabled:newValue,user}))
         }),
         new api.ODWorker("ot-kill-switch:logs",-1,(instance,params,source,cancel) => {
-            openticket.log(instance.user.displayName+" used the 'kill' command!","info",[
+            openticket.log(instance.user.displayName+" used the 'kill' command!","plugin",[
                 {key:"user",value:instance.user.username},
                 {key:"userid",value:instance.user.id,hidden:true},
                 {key:"channelid",value:instance.channel.id,hidden:true},

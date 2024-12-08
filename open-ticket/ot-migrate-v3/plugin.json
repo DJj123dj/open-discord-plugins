@@ -1,0 +1,23 @@
+{
+    "name":"OT Migrate v3",
+    "id":"ot-migrate-v3",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":1,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"Use this plugin to migrate tickets from Open Ticket v3 to v4.",
+        "longDescription":"Use this plugin to migrate tickets from Open Ticket v3 to v4.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["migrate","utility","database","v3","transfer"]
+    }
+}

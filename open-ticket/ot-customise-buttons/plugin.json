@@ -1,0 +1,23 @@
+{
+    "name":"OT Customise Buttons",
+    "id":"ot-customise-buttons",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"Customise almost all built-in buttons.",
+        "longDescription":"Customise almost all built-in buttons. This includes the claim, reopen, close & delete buttons!",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["customisation","buttons"]
+    }
+}

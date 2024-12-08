@@ -1,0 +1,50 @@
+[
+    {
+        "id":"example-embed-1",
+        "content":"This is the normal text that will appear above the embed (or leave empty)",
+        "title":"Example Embed 1",
+        "description":"This is an example embed!",
+        "customColor":"#f8ab00 (or leave empty for main bot color)",
+
+        "image":"https://www.example.com/image.png (or leave empty)",
+        "thumbnail":"https://www.example.com/image.png (or leave empty)",
+        "authorText":"Test Author (or leave empty)",
+        "authorImage":"https://www.example.com/image.png (or leave empty)",
+        "footerText":"Test Footer (or leave empty)",
+        "footerImage":"https://www.example.com/image.png (or leave empty)",
+
+        "timestamp":false,
+        "fields":[
+            {"name":"field name","value":"field value","inline":false}
+        ],
+        "ping":{
+            "@here":true,
+            "@everyone":false,
+            "custom":["discord role id"]
+        }
+    },
+    {
+        "id":"example-embed-2",
+        "content":"This is the normal text that will appear above the embed (or leave empty)",
+        "title":"Example Embed 2",
+        "description":"This is the second example embed!",
+        "customColor":"#f8ab00 (or leave empty for main bot color)",
+
+        "image":"https://www.example.com/image.png (or leave empty)",
+        "thumbnail":"https://www.example.com/image.png (or leave empty)",
+        "authorText":"Test Author (or leave empty)",
+        "authorImage":"https://www.example.com/image.png (or leave empty)",
+        "footerText":"Test Footer (or leave empty)",
+        "footerImage":"https://www.example.com/image.png (or leave empty)",
+
+        "timestamp":false,
+        "fields":[
+            {"name":"field name","value":"field value","inline":false}
+        ],
+        "ping":{
+            "@here":true,
+            "@everyone":false,
+            "custom":["discord role id"]
+        }
+    }
+]

@@ -1,7 +1,7 @@
 {
     "name":"OT Example Command",
     "id":"example-command",
-    "version":"1.0.0",
+    "version":"1.0.1",
     "startFile":"index.ts",
 
     "enabled":true,

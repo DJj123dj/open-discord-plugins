@@ -1,0 +1,23 @@
+{
+    "name":"OT Assign Role",
+    "id":"ot-assign-role",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":["ot-assign-role:onRoleAdded","ot-assign-role:onRoleRemoved"],
+
+    "npmDependencies":["discord.js"],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"rapid.fast",
+        "shortDescription":"Automatically assigns a role to ticket creators.",
+        "longDescription":"This plugin assigns a predefined role to a user upon creating a ticket. Great for permissions and user organization.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["role","management","utility"]
+    }
+}

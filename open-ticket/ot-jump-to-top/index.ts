@@ -106,7 +106,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
             await instance.reply(await openticket.builders.messages.getSafe("ot-jump-to-top:top-message").build(source,{url:msg.url}))
         }),
         new api.ODWorker("ot-jump-to-top:logs",-1,(instance,params,source,cancel) => {
-            openticket.log(instance.user.displayName+" used the 'top' command!","info",[
+            openticket.log(instance.user.displayName+" used the 'top' command!","plugin",[
                 {key:"user",value:instance.user.username},
                 {key:"userid",value:instance.user.id,hidden:true},
                 {key:"channelid",value:instance.channel.id,hidden:true},

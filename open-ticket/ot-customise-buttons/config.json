@@ -1,0 +1,68 @@
+{
+    "close":{
+        "enableCustomisation":false,
+        "customLabel":"Close Ticket",
+        "customColor":"gray (OR red OR green OR blue)",
+        "customEmoji":"🔒 (OR custom discord emoji OR leave empty)"
+    },
+    "reopen":{
+        "enableCustomisation":false,
+        "customLabel":"Reopen Ticket",
+        "customColor":"green (OR red or blue OR gray)",
+        "customEmoji":"🔓 (OR custom discord emoji OR leave empty)"
+    },
+    "delete":{
+        "enableCustomisation":false,
+        "customLabel":"Delete Ticket",
+        "customColor":"red (OR green OR blue OR gray)",
+        "customEmoji":"✖ (OR custom discord emoji OR leave empty)"
+    },
+    "claim":{
+        "enableCustomisation":false,
+        "customLabel":"Claim Ticket",
+        "customColor":"green (OR red or blue OR gray)",
+        "customEmoji":"👋 (OR custom discord emoji OR leave empty)"
+    },
+    "unclaim":{
+        "enableCustomisation":false,
+        "customLabel":"Unclaim Ticket",
+        "customColor":"green (OR red or blue OR gray)",
+        "customEmoji":"↩️ (OR custom discord emoji OR leave empty)"
+    },
+    "pin":{
+        "enableCustomisation":false,
+        "customLabel":"Pin Ticket",
+        "customColor":"gray (OR red OR green OR blue)",
+        "customEmoji":"📌 (OR custom discord emoji OR leave empty)"
+    },
+    "unpin":{
+        "enableCustomisation":false,
+        "customLabel":"Unpin Ticket",
+        "customColor":"gray (OR red OR green OR blue)",
+        "customEmoji":"📌 (OR custom discord emoji OR leave empty)"
+    },
+    "withReason":{
+        "enableCustomisation":false,
+        "customLabel":"With Reason",
+        "customColor":"blue (OR red OR green OR gray)",
+        "customEmoji":"✏️ (OR custom discord emoji OR leave empty)"
+    },
+    "withoutTranscript":{
+        "enableCustomisation":false,
+        "customLabel":"Without Transcript",
+        "customColor":"red (OR green OR blue OR gray)",
+        "customEmoji":"📄 (OR custom discord emoji OR leave empty)"
+    },
+    "verifybarSuccess":{
+        "enableCustomisation":false,
+        "customLabel":"",
+        "customColor":"gray (OR red OR green OR blue)",
+        "customEmoji":"✅"
+    },
+    "verifybarFailure":{
+        "enableCustomisation":false,
+        "customLabel":"",
+        "customColor":"gray (OR red OR green OR blue)",
+        "customEmoji":"❌"
+    }
+}
