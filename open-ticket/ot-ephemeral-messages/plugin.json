@@ -1,0 +1,23 @@
+{
+    "name":"OT Ephemeral Messages",
+    "id":"ot-ephemeral-messages",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"Customise for every messages if it needs to be ephemeral or not.",
+        "longDescription":"Customise which messages need to be ephemeral and which ones not. This includes claim, reopen, close & delete messages!",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["customisation","messages","ephemeral"]
+    }
+}

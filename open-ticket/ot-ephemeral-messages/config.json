@@ -1,0 +1,37 @@
+{
+    "ticketCreatedEphemeral":true,
+    "ticketClosedEphemeral":false,
+    "ticketReopenedEphemeral":false,
+    "ticketDeletedEphemeral":false,
+    "ticketClaimedEphemeral":false,
+    "ticketUnclaimedEphemeral":false,
+    "ticketPinnedEphemeral":false,
+    "ticketUnpinnedEphemeral":false,
+    "ticketMovedEphemeral":false,
+    "ticketRenamedEphemeral":false,
+    "ticketUserAddedEphemeral":false,
+    "ticketUserRemovedEphemeral":false,
+
+    "helpEphemeral":false,
+    "clearEphemeral":false,
+
+    "statsGlobalEphemeral":false,
+    "statsUserEphemeral":false,
+    "statsTicketEphemeral":false,
+
+    "blacklistViewEphemeral":false,
+    "blacklistGetEphemeral":false,
+    "blacklistAddEphemeral":false,
+    "blacklistRemoveEphemeral":false,
+
+    "autocloseEnabledEphemeral":false,
+    "autocloseDisabledEphemeral":false,
+    "autodeleteEnabledEphemeral":false,
+    "autodeleteDisabledEphemeral":false,
+
+    "pluginIntegrations":{
+        "OTConfigReload_reloadEphemeral":false,
+        "OTJumpToTop_topEphemeral":false,
+        "OTKillSwitch_killEphemeral":false
+    }
+}
