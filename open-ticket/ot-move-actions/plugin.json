@@ -1,0 +1,23 @@
+{
+    "name":"OT Move Actions",
+    "id":"ot-move-actions",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"Automatically unclaim/unpin a ticket when it's moved using /move.",
+        "longDescription":"Automatically unclaim/unpin a ticket when it's moved using /move.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["move","claiming","pinning","management","utility"]
+    }
+}
