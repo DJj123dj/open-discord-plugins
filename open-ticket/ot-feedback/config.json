@@ -2,24 +2,49 @@
     "webhookUrl":"https://discord.com/api/webhooks/... (your webhook URL)",
     "questionsText":"Thank you for using our ticket system! We would love to hear your feedback!",
     "completedText":"Your feedback has been received. Thank you for your answers!",
+    "ignoredText":"No answers have been provided. All questions have been asked.",
     "canceledText":"You didn't respond in time for this question! Moving on to the next one.",
+    
+    "customColor":"#f8ba00 (or leave empty for default)",
+    "footer":"Please answer the questions above! (or leave empty)",
+
+    "trigger":"close OR delete OR first-close-only",
+    "minutesPerQuestion":1,
+    "sendWebhookWhenEmpty":false,
     
     "questions":[
         {
             "type":"rating",
-            "label":"Please rate your experience from 1-10."
+            "label":"(EXAMPLE QUESTION) Please rate your experience from 1-10."
         },
         {
             "type":"text",
-            "label":"What did you like the most?"
+            "label":"(EXAMPLE QUESTION) What did you like the most?"
         },
         {
             "type":"text",
-            "label":"What would you like to be improved?"
+            "label":"(EXAMPLE QUESTION) What would you like to be improved?"
         },
         {
             "type":"rating",
-            "label":"How much will you recommend us to other people on a scale from 1-10."
+            "label":"(EXAMPLE QUESTION) How much will you recommend us to other people on a scale from 1-10."
+        },
+        {
+            "type":"image",
+            "label":"(EXAMPLE QUESTION) Image upload field (png/jpg/jpeg/gif/webp)",
+            "allowGifs":false
+        },
+        {
+            "type":"attachment",
+            "label":"(EXAMPLE QUESTION) File upload field",
+            "allowZipFiles":false,
+            "allowExecutables":false
+        },
+        {
+            "type":"choice",
+            "label":"(EXAMPLE QUESTION) Choose between the following options:",
+            "choiceOrdering":"numeric OR alphabetical",
+            "choices":["Example Choice 1","Example Choice 2","Example Choice 3","Example Choice 4"]
         }
     ]
 }
