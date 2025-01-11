@@ -8,7 +8,7 @@
     "priority":0,
     "events":["ot-assign-role:onRoleAdded","ot-assign-role:onRoleRemoved"],
 
-    "npmDependencies":["discord.js"],
+    "npmDependencies":[],
     "requiredPlugins":[],
     "incompatiblePlugins":[],
 

@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "../../src/index"
+import {api, openticket, utilities} from "#opendiscord"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
 //DISABLE DEFAULT CODE

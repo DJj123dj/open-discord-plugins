@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "../../src/index"
+import {api, openticket, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
@@ -13,7 +13,7 @@ export interface OTHostingStatusOptions {
     guild:discord.Guild
 }
 
-declare module "../../src/core/api/api.js" {
+declare module "#opendiscord-types" {
     export interface ODSlashCommandManagerIds_Default {
         "ot-hosting-status:hosting":api.ODSlashCommand
     }
@@ -117,7 +117,7 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
             const generalConfig = openticket.configs.get("openticket:general")
             instance.setTitle(utilities.emojiTitle("✅","Hosting Status Sent"))
             instance.setColor(generalConfig.data.mainColor)
-            instance.setDescription("The hosting status update has been sent to the channel succesfully!")
+            instance.setDescription("The hosting status update has been sent to the channel successfully!")
         })
     )
 })

@@ -8,7 +8,7 @@
     "priority":0,
     "events":["ot-feedback:onFeedback","ot-feedback:afterFeedback"],
 
-    "npmDependencies":["discord.js"],
+    "npmDependencies":[],
     "requiredPlugins":[],
     "incompatiblePlugins":[],
 

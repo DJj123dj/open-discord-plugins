@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "../../src/index"
+import {api, openticket, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
@@ -24,7 +24,7 @@ class OTCustomiseButtonsConfig extends api.ODJsonConfig {
         verifybarFailure:OTCustomiseButton
     }
 }
-declare module "../../src/core/api/api.js" {
+declare module "#opendiscord-types" {
     export interface ODConfigManagerIds_Default {
         "ot-customise-buttons:config":OTCustomiseButtonsConfig
     }

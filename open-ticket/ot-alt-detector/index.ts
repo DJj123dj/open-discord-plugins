@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "../../src/index"
+import {api, openticket, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 import {AltDetector, AltDetectorResult} from "discord-alt-detector"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
@@ -16,7 +16,7 @@ export class OTAltDetector extends api.ODManagerData {
         this.detector = detector
     }
 }
-declare module "../../src/core/api/api.js" {
+declare module "#opendiscord-types" {
     export interface ODMessageManagerIds_Default {
         "ot-alt-detector:log-message":{source:"other",params:{member:discord.GuildMember,result:AltDetectorResult},workers:"ot-alt-detector:log-message"},
     }

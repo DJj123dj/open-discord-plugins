@@ -1,10 +1,10 @@
-import {api, openticket, utilities} from "../../src/index"
+import {api, openticket, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 import crypto from "crypto"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
 //DECLARATION
-declare module "../../src/core/api/api.js" {
+declare module "#opendiscord-types" {
     export interface ODButtonManagerIds_Default {
         "ot-migrate-v3:migrate-button":{source:"other",params:{},workers:"ot-migrate-v3:migrate-button"},
     }
@@ -52,7 +52,7 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
             const generalConfig = openticket.configs.get("openticket:general")
             instance.setTitle(utilities.emojiTitle("🔀","Ticket Migrated Succesfully!"))
             instance.setColor(generalConfig.data.mainColor)
-            instance.setDescription("This ticket has been migrated to Open Ticket v4 succesfully!")
+            instance.setDescription("This ticket has been migrated to Open Ticket v4 successfully!")
             instance.setFooter("This ticket can now be used like any other ticket!")
             instance.addFields({name:"Misbehaviour:",value:"Please be aware that some commands or functions might not work as intended because the data in the database is only partially available."})
         })
@@ -330,7 +330,7 @@ openticket.events.get("onButtonResponderLoad").listen((buttons) => {
 
             await instance.update(await openticket.builders.messages.getSafe("ot-migrate-v3:success-message").build("other",{}))
 
-            openticket.log("Ticket migrated to v4 succesfully!","plugin",[
+            openticket.log("Ticket migrated to v4 successfully!","plugin",[
                 {key:"channel",value:"#"+channel.name},
                 {key:"channelid",value:channel.id,hidden:true},
             ])

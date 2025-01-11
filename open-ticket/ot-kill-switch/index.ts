@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "../../src/index"
+import {api, openticket, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
@@ -7,7 +7,7 @@ export class OTKillSwitchManager extends api.ODManagerData {
     enabled: boolean = false
 }
 
-declare module "../../src/core/api/api.js" {
+declare module "#opendiscord-types" {
     export interface ODSlashCommandManagerIds_Default {
         "ot-kill-switch:kill":api.ODSlashCommand
     }

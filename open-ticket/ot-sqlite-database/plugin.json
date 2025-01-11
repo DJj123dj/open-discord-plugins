@@ -1,14 +1,14 @@
 {
     "name":"OT SQLite Database",
     "id":"ot-sqlite-database",
-    "version":"1.0.0",
+    "version":"1.0.1",
     "startFile":"index.ts",
 
     "enabled":true,
     "priority":0,
     "events":[],
 
-    "npmDependencies":["discord.js","sqlite3"],
+    "npmDependencies":["sqlite3"],
     "requiredPlugins":[],
     "incompatiblePlugins":[],
 
