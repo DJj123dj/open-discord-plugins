@@ -1,0 +1,23 @@
+{
+    "name":"OT Reviews",
+    "id":"ot-reviews",
+    "version":"1.0.1",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":["ot-reviews:onReview","ot-reviews:afterReview"],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"Review system for Open Ticket! It is very customisable and has lots of features.",
+        "longDescription":"Review system for Open Ticket! It is very customisable and has lots of features.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["reviews","feedback","shop","rating"]
+    }
+}

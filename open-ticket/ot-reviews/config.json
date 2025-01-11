@@ -1,0 +1,23 @@
+{
+    "_INFO":"!!!More detailed info about the variables can be found in the README.md!!!",
+    
+    "channel":"discord channel id",
+    "reviewMode":"one-per-ticket OR unlimited-per-ticket OR unrestricted",
+    
+    "enableRating":true,
+    "enableImages":true,
+    "enableAuthor":true,
+    "allowBlacklisted":false,
+
+    "customisation":{
+        "title":"New Review",
+        "ratingTitle":"Rating:",
+        "reviewTitle":"Review:",
+
+        "customColor":"#f8ab00 (or leave empty)",
+        "url":"https://openticket.dj-dj.be (or leave empty)",
+        "thumbnail":"https://www.example.com/image.png (or leave empty)",
+        "footer":"Open Ticket v4.0.0 (or leave empty)",
+        "timestamp":false
+    }
+}
