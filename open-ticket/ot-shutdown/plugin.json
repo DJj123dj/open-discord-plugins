@@ -1,0 +1,23 @@
+{
+    "name":"OT Shutdown",
+    "id":"ot-shutdown",
+    "version":"1.0.1",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"A simple plugin to turn off the bot from a discord command (server & bot owner only).",
+        "longDescription":"A simple plugin to turn off the bot from a discord command (server & bot owner only).",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["shutdown","command","system","utility"]
+    }
+}
