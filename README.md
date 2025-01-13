@@ -22,8 +22,8 @@ All plugins are checked for malicious code, bugs & errors before being listed he
 - **🖥️ interactions** - The bot has full support for Buttons, Dropdowns, Slash Commands and Modals!
 - **🎛️ dependencies** - We try to use as little external dependencies as needed!
 
-> ### 📦 Resources
-> *Coming soon*
+> ### 📦 Quick Download
+> Use the `.zip` file provided in every plugin to download it quickly! **But remember to unzip the plugin before using it!**
 
 ## 🧩 Plugins
 > #### ⭐ Featured Plugins (Top 5 Most Used)
