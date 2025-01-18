@@ -1,0 +1,8 @@
+{
+    "scripts": {
+        "start": "node ./utility/generateZipFiles.js"
+    },
+    "dependencies": {
+        "archiver": "^7.0.1"
+    }
+}
