@@ -26,7 +26,9 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
     slash.add(new api.ODSlashCommand("ot-shutdown:shutdown",{
         name:"shutdown",
         description:"Turn off the bot by stopping the process! (server & bot owner only)",
-        type:discord.ApplicationCommandType.ChatInput
+        type:discord.ApplicationCommandType.ChatInput,
+        contexts:[discord.InteractionContextType.Guild],
+        integrationTypes:[discord.ApplicationIntegrationType.GuildInstall]
     }))
 })
 

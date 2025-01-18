@@ -1,7 +1,7 @@
 {
     "name":"OT Shutdown",
     "id":"ot-shutdown",
-    "version":"1.0.1",
+    "version":"1.0.2",
     "startFile":"index.ts",
 
     "enabled":true,

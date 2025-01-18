@@ -1,7 +1,7 @@
 {
     "name":"OT Hosting Status",
     "id":"ot-hosting-status",
-    "version":"1.0.0",
+    "version":"1.0.1",
     "startFile":"index.ts",
 
     "enabled":true,

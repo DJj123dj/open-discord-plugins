@@ -39,6 +39,8 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
         name:"hosting",
         description:"Send a hosting status update to a channel.",
         type:discord.ApplicationCommandType.ChatInput,
+        contexts:[discord.InteractionContextType.Guild],
+        integrationTypes:[discord.ApplicationIntegrationType.GuildInstall],
         options:[
             {
                 type:discord.ApplicationCommandOptionType.Channel,

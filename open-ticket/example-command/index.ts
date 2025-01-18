@@ -26,7 +26,9 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
     slash.add(new api.ODSlashCommand("example-command:ping",{
         name:"ping",
         description:"Pong!",
-        type:discord.ApplicationCommandType.ChatInput
+        type:discord.ApplicationCommandType.ChatInput,
+        contexts:[discord.InteractionContextType.Guild],
+        integrationTypes:[discord.ApplicationIntegrationType.GuildInstall]
     }))
 })
 

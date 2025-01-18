@@ -48,7 +48,8 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
         name: "reload",
         description: "Reload Open Ticket config files without restarting the bot.",
         type: discord.ApplicationCommandType.ChatInput,
-        dmPermission: false,
+        contexts:[discord.InteractionContextType.Guild],
+        integrationTypes:[discord.ApplicationIntegrationType.GuildInstall],
         options: [
             {
                 name: 'config',

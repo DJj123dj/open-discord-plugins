@@ -142,6 +142,8 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
         name:"embed",
         description:"Send a custom embed or choose a pre-configured message.",
         type:act.ChatInput,
+        contexts:[discord.InteractionContextType.Guild],
+        integrationTypes:[discord.ApplicationIntegrationType.GuildInstall],
         options:[
             {
                 type:acot.Subcommand,

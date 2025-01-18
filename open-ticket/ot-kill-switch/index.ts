@@ -41,6 +41,8 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
         name:"kill",
         description:"Temporarily disable the ability to create tickets",
         type:discord.ApplicationCommandType.ChatInput,
+        contexts:[discord.InteractionContextType.Guild],
+        integrationTypes:[discord.ApplicationIntegrationType.GuildInstall],
         options:[
             {
                 type:discord.ApplicationCommandOptionType.Boolean,

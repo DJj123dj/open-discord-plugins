@@ -132,7 +132,9 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
         name:"review",
         description:"Write a review!",
         type:discord.ApplicationCommandType.ChatInput,
-        options:options
+        options:options,
+        contexts:[discord.InteractionContextType.Guild],
+        integrationTypes:[discord.ApplicationIntegrationType.GuildInstall]
     }))
 })
 

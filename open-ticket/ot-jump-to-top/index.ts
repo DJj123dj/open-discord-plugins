@@ -26,7 +26,9 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
     slash.add(new api.ODSlashCommand("ot-jump-to-top:top",{
         name:"top",
         description:"Jump to the top of the ticket.",
-        type:discord.ApplicationCommandType.ChatInput
+        type:discord.ApplicationCommandType.ChatInput,
+        contexts:[discord.InteractionContextType.Guild],
+        integrationTypes:[discord.ApplicationIntegrationType.GuildInstall]
     }))
 })
 
