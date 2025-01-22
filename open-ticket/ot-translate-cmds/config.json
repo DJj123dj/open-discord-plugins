@@ -1,0 +1,1335 @@
+[
+    {
+        "name": "add",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "add",
+            "en-GB": "add",
+            "es-ES": "añadir",
+            "es-419": "agregar",
+            "fr": "ajouter"
+        },
+        "descriptionTranslations": {
+            "en-US": "Add a user to a ticket.",
+            "en-GB": "Add a user to a ticket.",
+            "es-ES": "Añade un usuario a un tiquet.",
+            "es-419": "Agrega un usuario a un tiquet.",
+            "fr": "Ajouter un utilisateur à un ticket."
+        },
+        "options": [
+            {
+                "name": "user",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "user",
+                    "en-GB": "user",
+                    "es-ES": "usuario",
+                    "es-419": "usuario",
+                    "fr": "utilisateur"
+                },
+                "descriptionTranslations": {
+                    "en-US": "The user to add.",
+                    "en-GB": "user",
+                    "es-ES": "El usuario a añadir.",
+                    "es-419": "El usuario a añadir.",
+                    "fr": "L'utilisateur à ajouter."
+                }
+            },
+            {
+                "name": "reason",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "reason",
+                    "en-GB": "reason",
+                    "es-ES": "razón",
+                    "es-419": "razón",
+                    "fr": "raison"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Specify an optional reason that will be visible in logs.",
+                    "en-GB": "Specify an optional reason that will be visible in logs.",
+                    "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                    "es-419": "Especifica una razón opcional que será visible en los registros.",
+                    "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                }
+            }
+        ]
+    },
+    {
+        "name": "autoclose",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "autoclose",
+            "en-GB": "autoclose",
+            "es-ES": "autocerrar",
+            "es-419": "autocerrar",
+            "fr": "fermeture-automatique"
+        },
+        "descriptionTranslations": {
+            "en-US": "Manage the ticket autoclosing...",
+            "en-GB": "Manage the ticket autoclosing...",
+            "es-ES": "Gestiona el autocerrado de los tickets...",
+            "es-419": "Gestiona el autocerrado de los tickets...",
+            "fr": "Gérer la fermeture automatique des tickets..."
+        },
+        "options": [
+            {
+                "name": "disable",
+                "type": "subcommand",
+                "nameTranslations": {
+                    "en-US": "disable",
+                    "en-GB": "disable",
+                    "es-ES": "desactivar",
+                    "es-419": "desactivar",
+                    "fr": "désactiver"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Disable autoclose in this ticket.",
+                    "en-GB": "Disable autoclose in this ticket.",
+                    "es-ES": "Desactiva el cerrado automático en este tiquet.",
+                    "es-419": "Desactiva el cerrado automático en este tiquet.",
+                    "fr": "Désactivez la fermeture automatique dans ce ticket."
+                },
+                "options": [
+                    {
+                        "name": "reason",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "reason",
+                            "en-GB": "reason",
+                            "es-ES": "razón",
+                            "es-419": "razón",
+                            "fr": "raison"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "Specify an optional reason that will be visible in logs.",
+                            "en-GB": "Specify an optional reason that will be visible in logs.",
+                            "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                            "es-419": "Especifica una razón opcional que será visible en los registros.",
+                            "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "enable",
+                "type": "subcommand",
+                "nameTranslations": {
+                    "en-US": "enable",
+                    "en-GB": "enable",
+                    "es-ES": "activar",
+                    "es-419": "activar",
+                    "fr": "activer"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Enable autoclose in this ticket.",
+                    "en-GB": "Enable autoclose in this ticket.",
+                    "es-ES": "Activa el cerrado automático para este tiquet.",
+                    "es-419": "Activa el cerrado automático para este tiquet.",
+                    "fr": "Activer la fermeture automatique dans ce ticket."
+                },
+                "options": [
+                    {
+                        "name": "time",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "time",
+                            "en-GB": "time",
+                            "es-ES": "tiempo",
+                            "es-419": "tiempo",
+                            "fr": "temps"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "The amount of hours this ticket needs to be inactive to close it.",
+                            "en-GB": "The amount of hours this ticket needs to be inactive to close it.",
+                            "es-ES": "La cantidad de horas que este tiquet necesita estar inactivo para cerrarse.",
+                            "es-419": "La cantidad de horas que este tiquet necesita estar inactivo para cerrarse.",
+                            "fr": "Le nombre d'heures pendant lesquelles ce ticket doit être inactif pour se fermer."
+                        }
+                    },
+                    {
+                        "name": "reason",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "reason",
+                            "en-GB": "reason",
+                            "es-ES": "razón",
+                            "es-419": "razón",
+                            "fr": "raison"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "Specify an optional reason that will be visible in logs.",
+                            "en-GB": "Specify an optional reason that will be visible in logs.",
+                            "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                            "es-419": "Especifica una razón opcional que será visible en los registros.",
+                            "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "autodelete",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "autodelete",
+            "en-GB": "autodelete",
+            "es-ES": "autoborrar",
+            "es-419": "autoborrar",
+            "fr": "auto-suppression"
+        },
+        "descriptionTranslations": {
+            "en-US": "Manage the ticket autodeleting...",
+            "en-GB": "Manage the ticket autodeleting...",
+            "es-ES": "Gestiona el autoborrado de los tickets...",
+            "es-419": "Gestiona el autoborrado de los tickets...",
+            "fr": "Gérer la suppression automatique des tickets..."
+        },
+        "options": [
+            {
+                "name": "disable",
+                "type": "subcommand",
+                "nameTranslations": {
+                    "en-US": "disable",
+                    "en-GB": "disable",
+                    "es-ES": "desactivar",
+                    "es-419": "desactivar",
+                    "fr": "désactiver"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Disable autodelete in this ticket.",
+                    "en-GB": "Disable autodelete in this ticket.",
+                    "es-ES": "Desactiva el borrado automático para este tiquet.",
+                    "es-419": "Desactiva el borrado automático para este tiquet.",
+                    "fr": "Désactivez la suppression automatique dans ce ticket."
+                },
+                "options": [
+                    {
+                        "name": "reason",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "reason",
+                            "en-GB": "reason",
+                            "es-ES": "razón",
+                            "es-419": "razón",
+                            "fr": "raison"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "Specify an optional reason that will be visible in logs.",
+                            "en-GB": "Specify an optional reason that will be visible in logs.",
+                            "es-ES": "La razón para desactivar el autoborrado en este tiquet.",
+                            "es-419": "La razón para desactivar el autoborrado en este tiquet.",
+                            "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "enable",
+                "type": "subcommand",
+                "nameTranslations": {
+                    "en-US": "enable",
+                    "en-GB": "enable",
+                    "es-ES": "activar",
+                    "es-419": "activar",
+                    "fr": "activer"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Enable autodelete in this ticket.",
+                    "en-GB": "Enable autodelete in this ticket.",
+                    "es-ES": "Activa el borrado automático para este tiquet.",
+                    "es-419": "Activa el borrado automático para este tiquet.",
+                    "fr": "Activer la suppression automatique dans ce ticket."
+                },
+                "options": [
+                    {
+                        "name": "time",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "time",
+                            "en-GB": "time",
+                            "es-ES": "tiempo",
+                            "es-419": "tiempo",
+                            "fr": "temps"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "The amount of days this ticket needs to be inactive to delete it.",
+                            "en-GB": "The amount of days this ticket needs to be inactive to delete it.",
+                            "es-ES": "El tiempo a esperar antes de borrar el ticket.",
+                            "es-419": "El tiempo a esperar antes de borrar el ticket.",
+                            "fr": "Le nombre de jours pendant lesquels ce ticket doit être inactif pour être supprimé."
+                        }
+                    },
+                    {
+                        "name": "reason",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "reason",
+                            "en-GB": "reason",
+                            "es-ES": "razón",
+                            "es-419": "razón",
+                            "fr": "raison"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "Specify an optional reason that will be visible in logs.",
+                            "en-GB": "Specify an optional reason that will be visible in logs.",
+                            "es-ES": "La razón para autoborrar este tiquet.",
+                            "es-419": "La razón para autoborrar este tiquet.",
+                            "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                        }
+                    }
+                ]
+            }
+        ]
+
+    },
+    {
+        "name": "blacklist",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "blacklist",
+            "en-GB": "blacklist",
+            "es-ES": "lista-negra",
+            "es-419": "lista-negra",
+            "fr": "liste-noire"
+        },
+        "descriptionTranslations": {
+            "en-US": "Manage the ticket blacklist...",
+            "en-GB": "Manage the ticket blacklist...",
+            "es-ES": "Gestiona la lista negra de los tickets...",
+            "es-419": "Gestiona la lista negra de los tickets...",
+            "fr": "Gérer la liste noire des tickets..."
+        },
+        "options": [
+            {
+                "name": "add",
+                "type": "subcommand",
+                "nameTranslations": {
+                    "en-US": "add",
+                    "en-GB": "add",
+                    "es-ES": "añadir",
+                    "es-419": "agregar",
+                    "fr": "ajouter"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Add a user to the blacklist.",
+                    "en-GB": "Add a user to the blacklist.",
+                    "es-ES": "Añade un usuario a la lista negra.",
+                    "es-419": "Agrega un usuario a la lista negra.",
+                    "fr": "Ajouter un utilisateur à la liste noire."
+                },
+                "options": [
+                    {
+                        "name": "user",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "user",
+                            "en-GB": "user",
+                            "es-ES": "usuario",
+                            "es-419": "usuario",
+                            "fr": "utilisateur"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "The user to add.",
+                            "en-GB": "user",
+                            "es-ES": "El usuario a añadir.",
+                            "es-419": "El usuario a añadir.",
+                            "fr": "L'utilisateur à ajouter."
+                        }
+                    },
+                    {
+                        "name": "reason",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "reason",
+                            "en-GB": "reason",
+                            "es-ES": "razón",
+                            "es-419": "razón",
+                            "fr": "raison"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "Specify an optional reason that will be visible in logs.",
+                            "en-GB": "Specify an optional reason that will be visible in logs.",
+                            "es-ES": "La razón para añadir el usuario a la lista negra.",
+                            "es-419": "La razón para añadir el usuario a la lista negra.",
+                            "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "get",
+                "type": "subcommand",
+                "nameTranslations": {
+                    "en-US": "get",
+                    "en-GB": "get",
+                    "es-ES": "obtener",
+                    "es-419": "obtener",
+                    "fr": "obtenir"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Get the details from a blacklisted user.",
+                    "en-GB": "Get the details from a blacklisted user.",
+                    "es-ES": "Obtiene los detalles de un usuario de la lista negra.",
+                    "es-419": "Obtiene los detalles de un usuario de la lista negra.",
+                    "fr": "Obtenez les détails d'un utilisateur de la liste noire."
+                },
+                "options": [
+                    {
+                        "name": "user",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "user",
+                            "en-GB": "user",
+                            "es-ES": "usuario",
+                            "es-419": "usuario",
+                            "fr": "utilisateur"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "The user to get details from.",
+                            "en-GB": "The user to get details from.",
+                            "es-ES": "El usuario para obtener detalles de la lista negra.",
+                            "es-419": "El usuario para obtener detalles de la lista negra.",
+                            "fr": "L'utilisateur pour obtenir des détails de la liste noire."
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "remove",
+                "type": "subcommand",
+                "nameTranslations": {
+                    "en-US": "remove",
+                    "en-GB": "remove",
+                    "es-ES": "eliminar",
+                    "es-419": "eliminar",
+                    "fr": "supprimer"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Remove a user from the blacklist.",
+                    "en-GB": "Remove a user from the blacklist.",
+                    "es-ES": "Elimina un usuario de la lista negra.",
+                    "es-419": "Elimina un usuario de la lista negra.",
+                    "fr": "Supprimer un utilisateur de la liste noire."
+                },
+                "options": [
+                    {
+                        "name": "user",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "user",
+                            "en-GB": "user",
+                            "es-ES": "usuario",
+                            "es-419": "usuario",
+                            "fr": "utilisateur"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "The user to remove.",
+                            "en-GB": "The user to remove.",
+                            "es-ES": "El usuario a eliminar.",
+                            "es-419": "El usuario a eliminar.",
+                            "fr": "L'utilisateur à supprimer."
+                        }
+                    },
+                    {
+                        "name": "reason",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "reason",
+                            "en-GB": "reason",
+                            "es-ES": "razón",
+                            "es-419": "razón",
+                            "fr": "raison"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "Specify an optional reason that will be visible in logs.",
+                            "en-GB": "Specify an optional reason that will be visible in logs.",
+                            "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                            "es-419": "Especifica una razón opcional que será visible en los registros.",
+                            "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "view",
+                "type": "subcommand",
+                "nameTranslations": {
+                    "en-US": "view",
+                    "en-GB": "view",
+                    "es-ES": "ver",
+                    "es-419": "ver",
+                    "fr": "voir"
+                },
+                "descriptionTranslations": {
+                    "en-US": "View a list of the current blacklist.",
+                    "en-GB": "View a list of the current blacklist.",
+                    "es-ES": "Muestra una lista de la lista negra actual.",
+                    "es-419": "Muestra una lista de la lista negra actual.",
+                    "fr": "Affiche une liste des tickets actuellement en liste noire."
+                }
+            }
+        ]
+    },
+    {
+        "name": "claim",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "claim",
+            "en-GB": "claim",
+            "es-ES": "reclamar",
+            "es-419": "reclamar",
+            "fr": "réclamer"
+        },
+        "descriptionTranslations": {
+            "en-US": "Claim a ticket.",
+            "en-GB": "Claim a ticket.",
+            "es-ES": "Reclama un tiquet.",
+            "es-419": "Reclama un tiquet.",
+            "fr": "Réclamer un ticket."
+        },
+        "options": [
+            {
+                "name": "user",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "user",
+                    "en-GB": "user",
+                    "es-ES": "usuario",
+                    "es-419": "usuario",
+                    "fr": "utilisateur"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Claim this ticket to someone else instead of yourself.",
+                    "en-GB": "Claim this ticket to someone else instead of yourself.",
+                    "es-ES": "Reclama este ticket para otra persona en lugar de para ti.",
+                    "es-419": "Reclama este ticket para otra persona en lugar de para ti.",
+                    "fr": "Réclamez ce ticket pour quelqu'un d'autre au lieu de vous-même."
+                }
+            },
+            {
+                "name": "reason",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "reason",
+                    "en-GB": "reason",
+                    "es-ES": "razón",
+                    "es-419": "razón",
+                    "fr": "raison"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Specify an optional reason that will be visible in logs.",
+                    "en-GB": "Specify an optional reason that will be visible in logs.",
+                    "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                    "es-419": "Especifica una razón opcional que será visible en los registros.",
+                    "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                }
+            }
+        ]
+    },
+    {
+        "name": "clear",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "clear",
+            "en-GB": "clear",
+            "es-ES": "limpiar",
+            "es-419": "limpiar",
+            "fr": "effacer"
+        },
+        "descriptionTranslations": {
+            "en-US": "Delete multiple tickets at the same time.",
+            "en-GB": "Delete multiple tickets at the same time.",
+            "es-ES": "Elimina múltiples tiquets al mismo tiempo.",
+            "es-419": "Elimina múltiples tiquets al mismo tiempo.",
+            "fr": "Supprimez plusieurs tickets en même temps."
+        },
+        "options": [
+            {
+                "name": "filter",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "filter",
+                    "en-GB": "filter",
+                    "es-ES": "filtro",
+                    "es-419": "filtro",
+                    "fr": "filtre"
+                },
+                "descriptionTranslations": {
+                    "en-US": "The filter for clearing tickets.",
+                    "en-GB": "The filter for clearing tickets.",
+                    "es-ES": "El filtro para limpiar tiquets.",
+                    "es-419": "El filtro para limpiar tiquets.",
+                    "fr": "Le filtre pour supprimer les tickets."
+                },
+                "choices": [
+                    {
+                        "name": "All",
+                        "nameTranslations":{
+                            "en-US": "All",
+                            "en-GB": "All",
+                            "es-ES": "Todos",
+                            "es-419": "Todos",
+                            "fr": "Tous"
+                        }
+                    },
+                    {
+                        "name": "Open",
+                        "nameTranslations":{
+                            "en-US": "Open",
+                            "en-GB": "Open",
+                            "es-ES": "Abiertos",
+                            "es-419": "Abiertos",
+                            "fr": "Ouverts"
+                        }
+                    },
+                    {
+                        "name": "Closed",
+                        "nameTranslations":{
+                            "en-US": "Closed",
+                            "en-GB": "Closed",
+                            "es-ES": "Cerrados",
+                            "es-419": "Cerrados",
+                            "fr": "Fermés"
+                        }
+                    },
+                    {
+                        "name": "Claimed",
+                        "nameTranslations":{
+                            "en-US": "Claimed",
+                            "en-GB": "Claimed",
+                            "es-ES": "Reclamados",
+                            "es-419": "Reclamados",
+                            "fr": "Réclamés"
+                        }
+                    },
+                    {
+                        "name": "Unclaimed",
+                        "nameTranslations":{
+                            "en-US": "Unclaimed",
+                            "en-GB": "Unclaimed",
+                            "es-ES": "No reclamados",
+                            "es-419": "No reclamados",
+                            "fr": "Non réclamés"
+                        }
+                    },
+                    {
+                        "name": "Pinned",
+                        "nameTranslations":{
+                            "en-US": "Pinned",
+                            "en-GB": "Pinned",
+                            "es-ES": "Fijados",
+                            "es-419": "Fijados",
+                            "fr": "Épinglés"
+                        }
+                    },
+                    {
+                        "name": "Unpinned",
+                        "nameTranslations":{
+                            "en-US": "Unpinned",
+                            "en-GB": "Unpinned",
+                            "es-ES": "No fijados",
+                            "es-419": "No fijados",
+                            "fr": "Non épinglés"
+                        }
+                    },
+                    {
+                        "name": "Autoclosed",
+                        "nameTranslations":{
+                            "en-US": "Autoclosed",
+                            "en-GB": "Autoclosed",
+                            "es-ES": "Autocerrados",
+                            "es-419": "Autocerrados",
+                            "fr": "Fermés automatiquement"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "close",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "close",
+            "en-GB": "close",
+            "es-ES": "cerrar",
+            "es-419": "cerrar",
+            "fr": "fermer"
+        },
+        "descriptionTranslations": {
+            "en-US": "Close a ticket.",
+            "en-GB": "Close a ticket.",
+            "es-ES": "Cierra un ticket.",
+            "es-419": "Cierra un ticket.",
+            "fr": "Ferme un ticket."
+        },
+        "options": [
+            {
+                "name": "reason",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "reason",
+                    "en-GB": "reason",
+                    "es-ES": "razón",
+                    "es-419": "razón",
+                    "fr": "raison"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Specify an optional reason that will be visible in logs.",
+                    "en-GB": "Specify an optional reason that will be visible in logs.",
+                    "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                    "es-419": "Especifica una razón opcional que será visible en los registros.",
+                    "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                }
+            }
+        ]
+    },
+    {
+        "name": "delete",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "delete",
+            "en-GB": "delete",
+            "es-ES": "eliminar",
+            "es-419": "eliminar",
+            "fr": "supprimer"
+        },
+        "descriptionTranslations": {
+            "en-US": "Delete a ticket.",
+            "en-GB": "Delete a ticket.",
+            "es-ES": "Elimina un tiquet.",
+            "es-419": "Elimina un tiquet.",
+            "fr": "Supprime un ticket."
+        },
+        "options": [
+            {
+                "name": "reason",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "reason",
+                    "en-GB": "reason",
+                    "es-ES": "razón",
+                    "es-419": "razón",
+                    "fr": "raison"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Specify an optional reason that will be visible in logs.",
+                    "en-GB": "Specify an optional reason that will be visible in logs.",
+                    "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                    "es-419": "Especifica una razón opcional que será visible en los registros.",
+                    "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                }
+            },
+            {
+                "name": "notranscript",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "notranscript",
+                    "en-GB": "notranscript",
+                    "es-ES": "sintranscripción",
+                    "es-419": "sintranscripción",
+                    "fr": "sanstranscription"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Delete this ticket without creating a transcript.",
+                    "en-GB": "Delete this ticket without creating a transcript.",
+                    "es-ES": "Elimina este tiquet sin crear una transcripción.",
+                    "es-419": "Elimina este tiquet sin crear una transcripción.",
+                    "fr": "Supprimez ce ticket sans créer de transcription."
+                },
+                "choices":[
+                    {
+                        "name": "True",
+                        "nameTranslations":{
+                            "en-US": "True",
+                            "en-GB": "True",
+                            "es-ES": "Verdadero",
+                            "es-419": "Verdadero",
+                            "fr": "Vrai"
+                        }
+                    },
+                    {
+                        "name": "False",
+                        "nameTranslations":{
+                            "en-US": "False",
+                            "en-GB": "False",
+                            "es-ES": "Falso",
+                            "es-419": "Falso",
+                            "fr": "Faux"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "help",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "help",
+            "en-GB": "help",
+            "es-ES": "ayuda",
+            "es-419": "ayuda",
+            "fr": "aide"
+        },
+        "descriptionTranslations": {
+            "en-US": "Get a list of all the available commands.",
+            "en-GB": "Get a list of all the available commands.",
+            "es-ES": "Obtiene una lista de todos los comandos disponibles.",
+            "es-419": "Obtiene una lista de todos los comandos disponibles.",
+            "fr": "Obtenez une liste de toutes les commandes disponibles."
+        }
+    },
+    {
+        "name": "move",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "move",
+            "en-GB": "move",
+            "es-ES": "mover",
+            "es-419": "mover",
+            "fr": "déplacer"
+        },
+        "descriptionTranslations": {
+            "en-US": "Move a ticket.",
+            "en-GB": "Move a ticket.",
+            "es-ES": "Mueve un tiquet.",
+            "es-419": "Mueve un tiquet.",
+            "fr": "Déplacez un ticket."
+        },
+        "options": [
+            {
+                "name": "id",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "id",
+                    "en-GB": "id",
+                    "es-ES": "id",
+                    "es-419": "id",
+                    "fr": "id"
+                },
+                "descriptionTranslations": {
+                    "en-US": "The identifier of the option that you want to move to.",
+                    "en-GB": "The identifier of the option that you want to move to.",
+                    "es-ES": "El identificador de la opción a la que quieres moverlo.",
+                    "es-419": "El identificador de la opción a la que quieres moverlo.",
+                    "fr": "L'identifiant de l'option que vous souhaitez déplacer."
+                }
+            },
+            {
+                "name": "reason",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "reason",
+                    "en-GB": "reason",
+                    "es-ES": "razón",
+                    "es-419": "razón",
+                    "fr": "raison"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Specify an optional reason that will be visible in logs.",
+                    "en-GB": "Specify an optional reason that will be visible in logs.",
+                    "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                    "es-419": "Especifica una razón opcional que será visible en los registros.",
+                    "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                }
+            }
+        ]
+    },
+    {
+        "name": "panel",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "panel",
+            "en-GB": "panel",
+            "es-ES": "panel",
+            "es-419": "panel",
+            "fr": "panneau"
+        },
+        "descriptionTranslations": {
+            "en-US": "Spawn a message with a dropdown or buttons (for ticket creation).",
+            "en-GB": "Spawn a message with a dropdown or buttons (for ticket creation).",
+            "es-ES": "Crea un mensaje con un desplegable o botones (para la creación de tiquets).",
+            "es-419": "Crea un mensaje con un desplegable o botones (para la creación de tiquets).",
+            "fr": "Fait apparaître un message avec un menu déroulant ou des boutons (pour la création de tickets)."
+        },
+        "options": [
+            {
+                "name": "id",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "id",
+                    "en-GB": "id",
+                    "es-ES": "id",
+                    "es-419": "id",
+                    "fr": "id"
+                },
+                "descriptionTranslations": {
+                    "en-US": "The identifier of the panel that you want to spawn.",
+                    "en-GB": "The identifier of the panel that you want to spawn.",
+                    "es-ES": "El identificador del panel que quieres crear.",
+                    "es-419": "El identificador del panel que quieres crear.",
+                    "fr": "L'identifiant du panneau que vous souhaitez faire apparaître."
+                }
+            },
+            {
+                "name": "auto-update",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "auto-update",
+                    "en-GB": "auto-update",
+                    "es-ES": "autoactualizar",
+                    "es-419": "autoactualizar",
+                    "fr": "mise-à-jour-automatique"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Do you want this panel to automatically update when edited?",
+                    "en-GB": "Do you want this panel to automatically update when edited?",
+                    "es-ES": "Quieres que este panel se actualize automàticamente cuando se edite?",
+                    "es-419": "Quieres que este panel se actualize automàticamente cuando se edite?",
+                    "fr": "Voulez-vous que ce panneau se mette à jour automatiquement lorsqu'il est édité?"
+                },
+                "choices":[
+                    {
+                        "name": "True",
+                        "nameTranslations":{
+                            "en-US": "True",
+                            "en-GB": "True",
+                            "es-ES": "Verdadero",
+                            "es-419": "Verdadero",
+                            "fr": "Vrai"
+                        }
+                    },
+                    {
+                        "name": "False",
+                        "nameTranslations":{
+                            "en-US": "False",
+                            "en-GB": "False",
+                            "es-ES": "Falso",
+                            "es-419": "Falso",
+                            "fr": "Faux"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "pin",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "pin",
+            "en-GB": "pin",
+            "es-ES": "fijar",
+            "es-419": "fijar",
+            "fr": "épingler"
+        },
+        "descriptionTranslations": {
+            "en-US": "Pin a ticket.",
+            "en-GB": "Pin a ticket.",
+            "es-ES": "Fija un tiquet.",
+            "es-419": "Fija un tiquet.",
+            "fr": "Épinglez un ticket."
+        },
+        "options": [
+            {
+                "name": "reason",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "reason",
+                    "en-GB": "reason",
+                    "es-ES": "razón",
+                    "es-419": "razón",
+                    "fr": "raison"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Specify an optional reason that will be visible in logs.",
+                    "en-GB": "Specify an optional reason that will be visible in logs.",
+                    "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                    "es-419": "Especifica una razón opcional que será visible en los registros.",
+                    "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                }
+            }
+        ]
+    },
+    {
+        "name": "remove",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "remove",
+            "en-GB": "remove",
+            "es-ES": "eliminar",
+            "es-419": "eliminar",
+            "fr": "supprimer"
+        },
+        "descriptionTranslations": {
+            "en-US": "Remove a user from a ticket.",
+            "en-GB": "Remove a user from a ticket.",
+            "es-ES": "Quita un usuario de un tiquet.",
+            "es-419": "Quita un usuario de un tiquet.",
+            "fr": "Supprimer un utilisateur d'un ticket."
+        },
+        "options": [
+            {
+                "name": "user",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "user",
+                    "en-GB": "user",
+                    "es-ES": "usuario",
+                    "es-419": "usuario",
+                    "fr": "utilisateur"
+                },
+                "descriptionTranslations": {
+                    "en-US": "The user to remove.",
+                    "en-GB": "The user to remove.",
+                    "es-ES": "El usuario a quitar.",
+                    "es-419": "El usuario a quitar.",
+                    "fr": "L'utilisateur à supprimer."
+                }
+            },
+            {
+                "name": "reason",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "reason",
+                    "en-GB": "reason",
+                    "es-ES": "razón",
+                    "es-419": "razón",
+                    "fr": "raison"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Specify an optional reason that will be visible in logs.",
+                    "en-GB": "Specify an optional reason that will be visible in logs.",
+                    "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                    "es-419": "Especifica una razón opcional que será visible en los registros.",
+                    "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                }
+            }
+        ]
+    },
+    {
+        "name": "rename",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "rename",
+            "en-GB": "rename",
+            "es-ES": "renombrar",
+            "es-419": "renombrar",
+            "fr": "renommer"
+        },
+        "descriptionTranslations": {
+            "en-US": "Rename a ticket.",
+            "en-GB": "Rename a ticket.",
+            "es-ES": "Renombra un tiquet.",
+            "es-419": "Renombra un tiquet.",
+            "fr": "Renommez un ticket."
+        },
+        "options": [
+            {
+                "name": "name",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "name",
+                    "en-GB": "name",
+                    "es-ES": "nombre",
+                    "es-419": "nombre",
+                    "fr": "nom"
+                },
+                "descriptionTranslations": {
+                    "en-US": "The new name for this ticket.",
+                    "en-GB": "The new name for this ticket.",
+                    "es-ES": "El nuevo nombre para este tiquet.",
+                    "es-419": "El nuevo nombre para este tiquet.",
+                    "fr": "Le nouveau nom pour ce ticket."
+                }
+            },
+            {
+                "name": "reason",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "reason",
+                    "en-GB": "reason",
+                    "es-ES": "razón",
+                    "es-419": "razón",
+                    "fr": "raison"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Specify an optional reason that will be visible in logs.",
+                    "en-GB": "Specify an optional reason that will be visible in logs.",
+                    "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                    "es-419": "Especifica una razón opcional que será visible en los registros.",
+                    "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                }
+            }
+        ]
+    },
+    {
+        "name": "reopen",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "reopen",
+            "en-GB": "reopen",
+            "es-ES": "reabrir",
+            "es-419": "reabrir",
+            "fr": "réouvrir"
+        },
+        "descriptionTranslations": {
+            "en-US": "Reopen a ticket.",
+            "en-GB": "Reopen a ticket.",
+            "es-ES": "Reabre un tiquet.",
+            "es-419": "Reabre un tiquet.",
+            "fr": "Réouvrir un ticket."
+        },
+        "options": [
+            {
+                "name": "reason",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "reason",
+                    "en-GB": "reason",
+                    "es-ES": "razón",
+                    "es-419": "razón",
+                    "fr": "raison"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Specify an optional reason that will be visible in logs.",
+                    "en-GB": "Specify an optional reason that will be visible in logs.",
+                    "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                    "es-419": "Especifica una razón opcional que será visible en los registros.",
+                    "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                }
+            }
+        ]
+    },
+    {
+        "name": "stats",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "stats",
+            "en-GB": "stats",
+            "es-ES": "estadísticas",
+            "es-419": "estadísticas",
+            "fr": "statistiques"
+        },
+        "descriptionTranslations": {
+            "en-US": "Get the statistics of the ticket system.",
+            "en-GB": "Get the statistics of the ticket system.",
+            "es-ES": "Obtiene las estadísticas del sistema de tiquets.",
+            "es-419": "Obtiene las estadísticas del sistema de tiquets.",
+            "fr": "Obtenez les statistiques du système de tickets."
+        },
+        "options": [
+            {
+                "name": "global",
+                "type": "subcommand",
+                "nameTranslations": {
+                    "en-US": "global",
+                    "en-GB": "global",
+                    "es-ES": "globales",
+                    "es-419": "globales",
+                    "fr": "globales"
+                },
+                "descriptionTranslations": {
+                    "en-US": "View the global stats.",
+                    "en-GB": "View the global stats.",
+                    "es-ES": "Muestra las estadísticas globales.",
+                    "es-419": "Muestra las estadísticas globales.",
+                    "fr": "Affiche les statistiques globales."
+                }
+            },
+            {
+                "name": "reset",
+                "type": "subcommand",
+                "nameTranslations": {
+                    "en-US": "reset",
+                    "en-GB": "reset",
+                    "es-ES": "reiniciar",
+                    "es-419": "reiniciar",
+                    "fr": "réinitialiser"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Reset all the stats of the bot (and start counting from zero).",
+                    "en-GB": "Reset all the stats of the bot (and start counting from zero).",
+                    "es-ES": "Reinicia todas las estadísticas del bot (y empieza a contar desde cero).",
+                    "es-419": "Reinicia todas las estadísticas del bot (y empieza a contar desde cero).",
+                    "fr": "Réinitialisez toutes les statistiques du bot (et commencez à compter à zéro)."
+                },
+                "options": [
+                    {
+                        "name": "reason",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "reason",
+                            "en-GB": "reason",
+                            "es-ES": "razón",
+                            "es-419": "razón",
+                            "fr": "raison"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "Specify an optional reason that will be visible in logs.",
+                            "en-GB": "Specify an optional reason that will be visible in logs.",
+                            "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                            "es-419": "Especifica una razón opcional que será visible en los registros.",
+                            "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "ticket",
+                "type": "subcommand",
+                "nameTranslations": {
+                    "en-US": "ticket",
+                    "en-GB": "ticket",
+                    "es-ES": "tiquet",
+                    "es-419": "tiquet",
+                    "fr": "ticket"
+                },
+                "descriptionTranslations": {
+                    "en-US": "View the stats of a ticket in the server.",
+                    "en-GB": "View the stats of a ticket in the server.",
+                    "es-ES": "Muestra las estadísticas de un tiquet en el servidor.",
+                    "es-419": "Muestra las estadísticas de un tiquet en el servidor.",
+                    "fr": "Affiche les statistiques d'un ticket dans le serveur."
+                },
+                "options": [
+                    {
+                        "name": "ticket",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "ticket",
+                            "en-GB": "ticket",
+                            "es-ES": "tiquet",
+                            "es-419": "tiquet",
+                            "fr": "ticket"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "The ticket to view.",
+                            "en-GB": "The ticket to view.",
+                            "es-ES": "El tiquet a mostrar.",
+                            "es-419": "El tiquet a mostrar.",
+                            "fr": "Le ticket à afficher."
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "user",
+                "type": "subcommand",
+                "nameTranslations": {
+                    "en-US": "user",
+                    "en-GB": "user",
+                    "es-ES": "usuario",
+                    "es-419": "usuario",
+                    "fr": "utilisateur"
+                },
+                "descriptionTranslations": {
+                    "en-US": "View the stats of a user in the server.",
+                    "en-GB": "View the stats of a user in the server.",
+                    "es-ES": "Muestra las estadísticas de un usuario en el servidor.",
+                    "es-419": "Muestra las estadísticas de un usuario en el servidor.",
+                    "fr": "Affiche les statistiques d'un utilisateur dans le serveur."
+                },
+                "options": [
+                    {
+                        "name": "user",
+                        "type": "option",
+                        "nameTranslations": {
+                            "en-US": "user",
+                            "en-GB": "user",
+                            "es-ES": "usuario",
+                            "es-419": "usuario",
+                            "fr": "utilisateur"
+                        },
+                        "descriptionTranslations": {
+                            "en-US": "The user to view.",
+                            "en-GB": "The user to view.",
+                            "es-ES": "El usuario a mostrar.",
+                            "es-419": "El usuario a mostrar.",
+                            "fr": "L'utilisateur à afficher."
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "unclaim",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "unclaim",
+            "en-GB": "unclaim",
+            "es-ES": "liberar",
+            "es-419": "liberar",
+            "fr": "libérer"
+        },
+        "descriptionTranslations": {
+            "en-US": "Unclaim a ticket.",
+            "en-GB": "Unclaim a ticket.",
+            "es-ES": "Libera un tiquet.",
+            "es-419": "Libera un tiquet.",
+            "fr": "Libérer un ticket."
+        },
+        "options": [
+            {
+                "name": "reason",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "reason",
+                    "en-GB": "reason",
+                    "es-ES": "razón",
+                    "es-419": "razón",
+                    "fr": "raison"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Specify an optional reason that will be visible in logs.",
+                    "en-GB": "Specify an optional reason that will be visible in logs.",
+                    "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                    "es-419": "Especifica una razón opcional que será visible en los registros.",
+                    "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                }
+            }
+        ]
+    },
+    {
+        "name": "unpin",
+        "type": "command",
+        "nameTranslations": {
+            "en-US": "unpin",
+            "en-GB": "unpin",
+            "es-ES": "desfijar",
+            "es-419": "desfijar",
+            "fr": "désépingler"
+        },
+        "descriptionTranslations": {
+            "en-US": "Unpin a ticket.",
+            "en-GB": "Unpin a ticket.",
+            "es-ES": "Desfija un tiquet.",
+            "es-419": "Desfija un tiquet.",
+            "fr": "Désépinglez un ticket."
+        },
+        "options": [
+            {
+                "name": "reason",
+                "type": "option",
+                "nameTranslations": {
+                    "en-US": "reason",
+                    "en-GB": "reason",
+                    "es-ES": "razón",
+                    "es-419": "razón",
+                    "fr": "raison"
+                },
+                "descriptionTranslations": {
+                    "en-US": "Specify an optional reason that will be visible in logs.",
+                    "en-GB": "Specify an optional reason that will be visible in logs.",
+                    "es-ES": "Especifica una razón opcional que será visible en los registros.",
+                    "es-419": "Especifica una razón opcional que será visible en los registros.",
+                    "fr": "Spécifiez une raison optionnelle qui sera visible dans les registres."
+                }
+            }
+        ]
+    }
+]
