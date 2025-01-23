@@ -8,6 +8,9 @@ export class OTKillSwitchManager extends api.ODManagerData {
 }
 
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-kill-switch":api.ODPlugin
+    }
     export interface ODSlashCommandManagerIds_Default {
         "ot-kill-switch:kill":api.ODSlashCommand
     }
@@ -148,7 +151,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
         new api.ODWorker("ot-kill-switch:kill",0,async (instance,params,source,cancel) => {
             const {guild,channel,user,options} = instance
             if (!guild){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build("button",{channel,user}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build(source,{channel,user}))
                 return cancel()
             }
 

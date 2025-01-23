@@ -4,6 +4,9 @@ if (utilities.project != "openticket") throw new api.ODPluginError("This plugin 
 
 //DECLARATION
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-better-status":api.ODPlugin
+    }
     export interface ODConfigManagerIds_Default {
         "ot-better-status:config":OTBetterStatusConfig
     }

@@ -4,6 +4,9 @@ if (utilities.project != "openticket") throw new api.ODPluginError("This plugin 
 
 //DECLARATION
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-jump-to-top":api.ODPlugin
+    }
     export interface ODSlashCommandManagerIds_Default {
         "ot-jump-to-top:top":api.ODSlashCommand
     }
@@ -85,23 +88,23 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
         new api.ODWorker("ot-jump-to-top:top",0,async (instance,params,source,cancel) => {
             const {guild,channel,user} = instance
             if (!guild){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build("button",{channel,user}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build(source,{channel,user}))
                 return cancel()
             }
             const ticket = openticket.tickets.get(channel.id)
             if (!ticket || channel.isDMBased()){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-ticket-unknown").build("button",{guild,channel,user}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error-ticket-unknown").build(source,{guild,channel,user}))
                 return cancel()
             }
             //return when busy
             if (ticket.get("openticket:busy").value){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-ticket-busy").build("button",{guild,channel,user}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error-ticket-busy").build(source,{guild,channel,user}))
                 return cancel()
             }
 
             const msg = await openticket.tickets.getTicketMessage(ticket)
             if (!msg){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build("button",{guild,channel,user,error:"Unable to find ticket message!",layout:"simple"}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build(source,{guild,channel,user,error:"Unable to find ticket message!",layout:"simple"}))
                 return cancel()
             }
 

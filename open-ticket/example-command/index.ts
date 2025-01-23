@@ -4,6 +4,9 @@ if (utilities.project != "openticket") throw new api.ODPluginError("This plugin 
 
 //DECLARATION
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "example-command":api.ODPlugin
+    }
     export interface ODSlashCommandManagerIds_Default {
         "example-command:ping":api.ODSlashCommand
     }
@@ -86,7 +89,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
         new api.ODWorker("example-command:ping",0,async (instance,params,source,cancel) => {
             const {guild,channel,user} = instance
             if (!guild){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build("button",{channel,user}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build(source,{channel,user}))
                 return cancel()
             }
             await instance.reply(await openticket.builders.messages.getSafe("example-command:ping-message").build(source,{}))

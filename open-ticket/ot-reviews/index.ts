@@ -29,6 +29,9 @@ class OTReviewsConfig extends api.ODJsonConfig {
     }
 }
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-reviews":api.ODPlugin
+    }
     export interface ODConfigManagerIds_Default {
         "ot-reviews:config": OTReviewsConfig
     }
@@ -229,22 +232,22 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
                     {key:"userid",value:user.id,hidden:true},
                     {key:"review",value:instance.options.getString("text",true)}
                 ])
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build("button",{guild,channel,user,error:"You're unable to create a review when you are blacklisted.",layout:"simple"}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build(source,{guild,channel,user,error:"You're unable to create a review when you are blacklisted.",layout:"simple"}))
                 return cancel()
             }
 
             if (config.data.reviewMode == "one-per-ticket" && reviewsCreated >= ticketsCreated){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build("button",{guild,channel,user,error:"You can only create a review when you've created a ticket.",layout:"simple"}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build(source,{guild,channel,user,error:"You can only create a review when you've created a ticket.",layout:"simple"}))
                 return cancel()
             }else if (config.data.reviewMode == "unlimited-per-ticket" && ticketsCreated < 1){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build("button",{guild,channel,user,error:"You can only create a review when you've created at least 1 ticket.",layout:"simple"}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build(source,{guild,channel,user,error:"You can only create a review when you've created at least 1 ticket.",layout:"simple"}))
                 return cancel()
             }else return
         }),
         new api.ODWorker("ot-reviews:review",0,async (instance,params,source,cancel) => {
             const {guild,channel,user} = instance
             if (!guild || channel.isDMBased()){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build("button",{channel,user}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build(source,{channel,user}))
                 return cancel()
             }
             if (!(instance.interaction instanceof discord.ChatInputCommandInteraction)) return cancel()

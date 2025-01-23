@@ -4,6 +4,9 @@ if (utilities.project != "openticket") throw new api.ODPluginError("This plugin 
 
 //DECLARATION
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-shutdown":api.ODPlugin
+    }
     export interface ODSlashCommandManagerIds_Default {
         "ot-shutdown:shutdown":api.ODSlashCommand
     }
@@ -93,7 +96,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
         new api.ODWorker("ot-shutdown:shutdown",0,async (instance,params,source,cancel) => {
             const {guild,channel,user} = instance
             if (!guild){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build("button",{channel,user}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build(source,{channel,user}))
                 return cancel()
             }
             await instance.reply(await openticket.builders.messages.getSafe("ot-shutdown:shutdown-message").build(source,{}))
