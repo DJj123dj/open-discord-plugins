@@ -1,0 +1,23 @@
+{
+    "name":"OT Forms",
+    "id":"ot-forms",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"guillee.3",
+        "shortDescription":"An advanced forms plugin for OpenTickets.",
+        "longDescription":"This plugin allows you to create advanced forms with 3 types of questions: modal, dropdown and buttons. See README for more information.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["forms","questions","modal","dropdown","buttons"]
+    }
+}
