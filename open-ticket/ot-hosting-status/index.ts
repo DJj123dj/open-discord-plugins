@@ -14,6 +14,9 @@ export interface OTHostingStatusOptions {
 }
 
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-hosting-status":api.ODPlugin
+    }
     export interface ODSlashCommandManagerIds_Default {
         "ot-hosting-status:hosting":api.ODSlashCommand
     }
@@ -93,7 +96,7 @@ openticket.events.get("onHelpMenuComponentLoad").listen((menu) => {
     }))
 })
 
-//REGISTER EMBED BUILDER
+//REGISTER EMBED BUILDERS
 openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
     embeds.add(new api.ODEmbed("ot-hosting-status:hosting-embed"))
     embeds.get("ot-hosting-status:hosting-embed").workers.add(
@@ -124,7 +127,7 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
     )
 })
 
-//REGISTER MESSAGE BUILDER
+//REGISTER MESSAGE BUILDERS
 openticket.events.get("onMessageBuilderLoad").listen((messages) => {
     messages.add(new api.ODMessage("ot-hosting-status:hosting-message"))
     messages.get("ot-hosting-status:hosting-message").workers.add(
@@ -159,12 +162,12 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
             //check for guild & permissions
             if (!openticket.permissions.hasPermissions("admin",await openticket.permissions.getPermissions(user,channel,guild))){
                 //no permissions
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-no-permissions").build("button",{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin"]}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error-no-permissions").build(source,{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin"]}))
                 return cancel()
             }
             //check if in guild
             if (!guild){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build("button",{channel,user}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build(source,{channel,user}))
                 return cancel()
             }
 

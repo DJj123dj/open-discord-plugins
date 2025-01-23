@@ -9,6 +9,9 @@ class OTAssignRoleConfig extends api.ODJsonConfig {
     }
 }
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-assign-role":api.ODPlugin
+    }
     export interface ODConfigManagerIds_Default {
         "ot-assign-role:config": OTAssignRoleConfig
     }

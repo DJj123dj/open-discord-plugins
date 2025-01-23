@@ -1,57 +1,26 @@
-import { api } from "../../src/index";
-//REGISTER CONFIG
-export class OTCommandTranslateConfig_Default extends api.ODJsonConfig {
-    declare data: [
-        {
-            name: string,
-            type: string,
-            nameTranslations: {
-                [key: string]: string
-            },
-            descriptionTranslations: {
-                [key: string]: string
-            },
-            options?: [
-                {
-                    name: string,
-                    type: string,
-                    nameTranslations: {
-                        [key: string]: string
-                    },
-                    descriptionTranslations: {
-                        [key: string]: string
-                    },
-                    choices?: [
-                        {
-                            name: string,
-                            nameTranslations: {
-                                [key: string]: string
-                            }
-                        }
-                    ],
-                    options?: [
-                        {
-                            name: string,
-                            type: string,
-                            nameTranslations: {
-                                [key: string]: string
-                            },
-                            descriptionTranslations: {
-                                [key: string]: string
-                            },
-                            choices?: [
-                                {
-                                    name: string,
-                                    nameTranslations: {
-                                        [key: string]: string
-                                    }
-                                }
-                            ],
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+import { api, openticket, utilities } from "#opendiscord"
+import discord from "discord.js"
+
+export interface OTTranslateCmdsConfigChoice {
+    name: string,
+    nameTranslations: Record<discord.Locale,string>
 }
 
+export interface OTTranslateCmdsConfigOption {
+    name: string,
+    type: string,
+    nameTranslations: Record<discord.Locale,string>,
+    descriptionTranslations: Record<discord.Locale,string>,
+    choices?: OTTranslateCmdsConfigChoice[],
+    options?: OTTranslateCmdsConfigOption[]
+}
+
+export class OTTranslateCmdsConfig extends api.ODJsonConfig {
+    declare data: {
+        name: string,
+        type: string,
+        nameTranslations: Record<discord.Locale,string>,
+        descriptionTranslations: Record<discord.Locale,string>,
+        options?: OTTranslateCmdsConfigOption[]
+    }[]
+}

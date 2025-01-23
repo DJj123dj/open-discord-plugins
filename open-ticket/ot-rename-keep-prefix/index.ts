@@ -1,6 +1,13 @@
 import {api, openticket, utilities} from "#opendiscord"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
+//DECLARATION
+declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-rename-keep-prefix":api.ODPlugin
+    }
+}
+
 //REGISTER WORKER 
 openticket.events.get("afterActionsLoaded").listen((actions) => {
     //get ticket rename action

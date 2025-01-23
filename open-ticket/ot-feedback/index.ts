@@ -49,6 +49,9 @@ class OTFeedbackConfig extends api.ODJsonConfig {
     }
 }
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-feedback":api.ODPlugin
+    }
     export interface ODConfigManagerIds_Default {
         "ot-feedback:config": OTFeedbackConfig
     }

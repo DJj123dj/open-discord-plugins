@@ -43,6 +43,9 @@ class OTEphemeralMessagesConfig extends api.ODJsonConfig {
     }
 }
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-ephemeral-messages":api.ODPlugin
+    }
     export interface ODConfigManagerIds_Default {
         "ot-ephemeral-messages:config":OTEphemeralMessagesConfig
     }
