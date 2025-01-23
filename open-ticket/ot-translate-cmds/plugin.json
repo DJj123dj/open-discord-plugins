@@ -14,10 +14,10 @@
 
     "details":{
         "author":"guillee.3",
-        "shortDescription":"Translates OpenTicket command names.",
-        "longDescription":"This plugin translates OpenTicket command names and descriptions to the user's language settings in the Discord application. Translations are appreciated. Please, read the README file if you want to modify or add any translation.",
+        "shortDescription":"Translate all built-in command names, descriptions & options.",
+        "longDescription":"Translate all built-in command names, descriptions & options to the user's language settings in the Discord app. Please read the README.md file if you want to modify or add any translation.",
         "imageUrl":"",
         "projectUrl":"",
-        "tags":["command","translate","languages"]
+        "tags":["command","translate","languages","translation","slash"]
     }
 }

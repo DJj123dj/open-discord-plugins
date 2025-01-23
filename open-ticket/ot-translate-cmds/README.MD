@@ -1,55 +1,53 @@
-# OT Command Translate
-Translates OpenTicket command names and descriptions to the user's language settings in the Discord application. 
+# OT Translate Commands
+Translate all built-in command names, descriptions & options to the user's language settings in the Discord app.
 
-The language translation must be added at the `config.json` file.
-
-## Help us adding more languages
+### Contributing
 We'll appreciate if you contribute with any language.
 
-## Supported Locales
->The following table lists the locales allowed for translations. **Only these locales can be used.**
->
-> | ID      | Language Name         | Native Name         |
-> |---------|-----------------------|---------------------|
-> | da      | Danish                | Dansk               |
-> | de      | German                | Deutsch             |
-> | en-GB   | English, UK           | English, UK         |
-> | en-US   | English, US           | English, US         |
-> | es-ES   | Spanish               | Español             |
-> | es-419  | Spanish, LATAM        | Español, LATAM      |
-> | fi      | Finnish               | Suomi               |
-> | fr      | French                | Français            |
-> | hr      | Croatian              | Hrvatski            |
-> | hu      | Hungarian             | Magyar              |
-> | id      | Indonesian            | Bahasa Indonesia    |
-> | it      | Italian               | Italiano            |
-> | lt      | Lithuanian            | Lietuviškai         |
-> | nl      | Dutch                 | Nederlands          |
-> | no      | Norwegian             | Norsk               |
-> | pl      | Polish                | Polski              |
-> | pt-BR   | Portuguese, Brazilian | Português do Brasil |
-> | ro      | Romanian, Romania     | Română              |
-> | sv-SE   | Swedish               | Svenska             |
-> | vi      | Vietnamese            | Tiếng Việt          |
-> | tr      | Turkish               | Türkçe              |
-> | cs      | Czech                 | Čeština             |
-> | el      | Greek                 | Ελληνικά            |
-> | bg      | Bulgarian             | български           |
-> | ru      | Russian               | Pусский             |
-> | uk      | Ukrainian             | Українська          |
-> | hi      | Hindi                 | हिन्दी                |
-> | th      | Thai                  | ไทย                |
-> | zh-CN   | Chinese, China        | 中文                |
-> | ja      | Japanese              | 日本語              |
-> | zh-TW   | Chinese, Taiwan       | 繁體中文            |
-> | ko      | Korean                | 한국어              |
+New language translations must be added at the `translations.json` file.
 
-## Structure for Translations
-> 
+### Supported Locales
+>The following table lists the locales allowed for translations. **📌 Only these locales can be used!**
+>
+> |Identifier |Language Name            | Native Name        |
+> |-----------|-------------------------|--------------------|
+> |da         |Danish                   |Dansk               |
+> |de         |German                   |Deutsch             |
+> |en-GB      |English, UK              |English, UK         |
+> |en-US      |English, US              |English, US         |
+> |es-ES      |Spanish                  |Español             |
+> |es-419     |Spanish, LATAM           |Español, LATAM      |
+> |fi         |Finnish                  |Suomi               |
+> |fr         |French                   |Français            |
+> |hr         |Croatian                 |Hrvatski            |
+> |hu         |Hungarian                |Magyar              |
+> |id         |Indonesian               |Bahasa Indonesia    |
+> |it         |Italian                  |Italiano            |
+> |lt         |Lithuanian               |Lietuviškai         |
+> |nl         |Dutch                    |Nederlands          |
+> |no         |Norwegian                |Norsk               |
+> |pl         |Polish                   |Polski              |
+> |pt-BR      |Portuguese, Brazilian    |Português do Brasil |
+> |ro         |Romanian, Romania        |Română              |
+> |sv-SE      |Swedish                  |Svenska             |
+> |vi         |Vietnamese               |Tiếng Việt          |
+> |tr         |Turkish                  |Türkçe              |
+> |cs         |Czech                    |Čeština             |
+> |el         |Greek                    |Ελληνικά            |
+> |bg         |Bulgarian                |български           |
+> |ru         |Russian                  |Pусский             |
+> |uk         |Ukrainian                |Українська          |
+> |hi         |Hindi                    |हिन्दी                 |
+> |th         |Thai                     |ไทย                 |
+> |zh-CN      |Chinese, China           |中文                 |
+> |ja         |Japanese                 |日本語               |
+> |zh-TW      |Chinese, Taiwan          |繁體中文             |
+> |ko         |Korean                   |한국어               |
+
+### Translation Structure
 > Each command or option in the configuration file must include `nameTranslations` and `descriptionTranslations` for all supported locales. Below is an example of a command structure:
 > 
-> ### Example
-> 
+> #### Example Structure
 >  ```json
 > {
 >     "name": "add",
@@ -78,12 +76,12 @@ We'll appreciate if you contribute with any language.
 >     ]
 > }
 > ```
- 
-## Understanding the Structure
+>
+> #### Understanding The Structure
 > 
 > Each command or option contains fields like:
 > 1. **`name`**: **Do not modify.** The identifier of the command or option.
-> 2. **`type`**: **Do not modify.** The type of the command or option (e.g., `command`, `subcommand`, `string`).
+> 2. **`type`**: **Do not modify.** The type of the command or option (e.g., `command`, `subcommand`, `string`, `number`, `boolean`, ...).
 > 3. **`nameTranslations`**: 
 >    - Sets the command or option name to its translation for each locale.
 >    - Example: `"en-GB": "add"` for English.
@@ -91,7 +89,7 @@ We'll appreciate if you contribute with any language.
 >    - Sets the command or option description to its translation for each locale.
 >    - Example: `"en-GB": "Add a user to a ticket."` for English.
 
-## How to Add a New Locale
+### How to Add a New Locale?
 > 
 > If you want to add translations for a new locale, follow these steps:
 > 
@@ -101,8 +99,7 @@ We'll appreciate if you contribute with any language.
 > 
 > *Do **NOT** modify any other fields like `name` or `type`.*
 > 
-> ### Example Adding a New Locale
-> 
+> #### Example Adddition
 > Suppose you want to add French (`fr-FR`):
 > 
 > Before:
@@ -127,11 +124,9 @@ We'll appreciate if you contribute with any language.
 > }
 > ```
 
-## Validation
-> 
+### Validation
 > Before saving the configuration file:
 > - Verify that all supported locales are present in `nameTranslations` and `descriptionTranslations`.
 > - Ensure there are no typos in the locale keys and they match exactly with the IDs in the **Supported Locales** table above.
 > 
 > *By following this guide, you can easily add translations to your configuration file while maintaining compatibility with the plugin.*
-
