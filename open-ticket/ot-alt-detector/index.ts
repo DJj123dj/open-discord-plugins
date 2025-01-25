@@ -35,6 +35,11 @@ declare module "#opendiscord-types" {
     }
 }
 
+//ACCESS PRESENCE INTENTS
+openticket.events.get("onClientLoad").listen((client) => {
+    client.privileges.push("Presence")
+})
+
 //REGISTER PLUGIN CLASS
 openticket.events.get("onPluginClassLoad").listen((classes) => {
     classes.add(new OTAltDetector("ot-alt-detector:detector",new AltDetector()))
