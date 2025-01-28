@@ -49,6 +49,9 @@ export class OTCustomEmbedManager extends api.ODManager<OTCustomEmbed> {
 }
 
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-embeds":api.ODPlugin
+    }
     export interface ODConfigManagerIds_Default {
         "ot-embeds:config":OTCustomEmbedsConfig
     }
@@ -358,7 +361,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
         new api.ODWorker("ot-embeds:embed",0,async (instance,params,source,cancel) => {
             const {guild,channel,user} = instance
             if (!guild){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build("button",{channel,user}))
+                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build(source,{channel,user}))
                 return cancel()
             }
 

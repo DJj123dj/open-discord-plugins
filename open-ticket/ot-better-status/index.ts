@@ -4,6 +4,9 @@ if (utilities.project != "openticket") throw new api.ODPluginError("This plugin 
 
 //DECLARATION
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-better-status":api.ODPlugin
+    }
     export interface ODConfigManagerIds_Default {
         "ot-better-status:config":OTBetterStatusConfig
     }
@@ -126,6 +129,7 @@ openticket.events.get("onCheckerLoad").listen((checkers) => {
 //ACCESS PRESENCE INTENTS
 openticket.events.get("onClientLoad").listen((client) => {
     client.privileges.push("Presence")
+    client.intents.push("GuildPresences")
 })
 
 //DISABLE DEFAULTS (disables the default status behaviour from config/general.json)

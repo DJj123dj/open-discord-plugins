@@ -1,396 +1,45 @@
-import { api } from "../../src/index";
-export const commandTranslateConfigStructure = new api.ODCheckerArrayStructure("ot-command-translate:config",{allowedTypes:["object"],propertyChecker:new api.ODCheckerObjectSwitchStructure("ot-command-translate:config",{objects:[
-    //COMMAND
-    {name:"command",priority:0,properties:[{key:"type",value:"command"}],checker:new api.ODCheckerObjectStructure("ot-command-translate:command",{children:[
-        {key:"name",optional:false,priority:0,checker:new api.ODCheckerCustomStructure_UniqueId("ot-command-translate:command-name","ot-command-translate","command-names",{regex:/^[A-Za-z0-9-éèçàêâôûîñ]+$/,minLength:1,maxLength:32})},
+import { api, openticket, utilities } from "#opendiscord"
+import discord from "discord.js"
 
-        //NAME TRANSLATIONS
-        {key:"nameTranslations",optional:false,priority:0,checker:new api.ODCheckerObjectStructure("ot-command-translate:command-name-translations",{children:[
-            {key:"da",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-da",{maxLength:100})},
-            {key:"de",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-de",{maxLength:100})},
-            {key:"en-GB",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-GB",{maxLength:100})},
-            {key:"en-US",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-US",{maxLength:100})},
-            {key:"es-ES",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es",{maxLength:100})},
-            {key:"es-419",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es-latam",{maxLength:100})},
-            {key:"fi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fi",{maxLength:100})},
-            {key:"fr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fr",{maxLength:100})},
-            {key:"hr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hr",{maxLength:100})},
-            {key:"hu",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hu",{maxLength:100})},
-            {key:"id",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-id",{maxLength:100})},
-            {key:"it",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-it",{maxLength:100})},
-            {key:"lt",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-lt",{maxLength:100})},
-            {key:"nl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-nl",{maxLength:100})},
-            {key:"no",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-no",{maxLength:100})},
-            {key:"pl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pl",{maxLength:100})},
-            {key:"pt-BR",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pt-BR",{maxLength:100})},
-            {key:"ro",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ro",{maxLength:100})},
-            {key:"sv-SE",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-sv-SE",{maxLength:100})},
-            {key:"vi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-vi",{maxLength:100})},
-            {key:"tr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-tr",{maxLength:100})},
-            {key:"cs",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-cs",{maxLength:100})},
-            {key:"el",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-el",{maxLength:100})},
-            {key:"bg",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-bg",{maxLength:100})},
-            {key:"ru",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ru",{maxLength:100})},
-            {key:"uk",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-uk",{maxLength:100})},
-            {key:"hi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hi",{maxLength:100})},
-            {key:"th",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-th",{maxLength:100})},
-            {key:"zh-CN",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-CN",{maxLength:100})},
-            {key:"ja",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ja",{maxLength:100})},
-            {key:"zh-TW",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-TW",{maxLength:100})},
-            {key:"ko",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ko",{maxLength:100})}
-        ]})},
-        
-        //DESCRIPTION TRANSLATIONS
-        {key:"descriptionTranslations",optional:false,priority:0,checker:new api.ODCheckerObjectStructure("ot-command-translate:command-description-translations",{children:[
-            {key:"da",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-da",{maxLength:100})},
-            {key:"de",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-de",{maxLength:100})},
-            {key:"en-GB",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-GB",{maxLength:100})},
-            {key:"en-US",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-US",{maxLength:100})},
-            {key:"es-ES",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es",{maxLength:100})},
-            {key:"es-419",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es-latam",{maxLength:100})},
-            {key:"fi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fi",{maxLength:100})},
-            {key:"fr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fr",{maxLength:100})},
-            {key:"hr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hr",{maxLength:100})},
-            {key:"hu",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hu",{maxLength:100})},
-            {key:"id",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-id",{maxLength:100})},
-            {key:"it",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-it",{maxLength:100})},
-            {key:"lt",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-lt",{maxLength:100})},
-            {key:"nl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-nl",{maxLength:100})},
-            {key:"no",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-no",{maxLength:100})},
-            {key:"pl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pl",{maxLength:100})},
-            {key:"pt-BR",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pt-BR",{maxLength:100})},
-            {key:"ro",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ro",{maxLength:100})},
-            {key:"sv-SE",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-sv-SE",{maxLength:100})},
-            {key:"vi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-vi",{maxLength:100})},
-            {key:"tr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-tr",{maxLength:100})},
-            {key:"cs",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-cs",{maxLength:100})},
-            {key:"el",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-el",{maxLength:100})},
-            {key:"bg",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-bg",{maxLength:100})},
-            {key:"ru",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ru",{maxLength:100})},
-            {key:"uk",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-uk",{maxLength:100})},
-            {key:"hi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hi",{maxLength:100})},
-            {key:"th",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-th",{maxLength:100})},
-            {key:"zh-CN",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-CN",{maxLength:100})},
-            {key:"ja",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ja",{maxLength:100})},
-            {key:"zh-TW",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-TW",{maxLength:100})},
-            {key:"ko",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ko",{maxLength:100})}
-        ]})},
-        
-        //OPTIONS
-        {key:"options",optional:true,priority:0,checker:new api.ODCheckerArrayStructure("ot-command-translate:command-options",{allowedTypes:["object"],propertyChecker:new api.ODCheckerObjectSwitchStructure("ot-command-translate:command-options",{objects:[
-            //SUBCOMMAND
-            {name:"subcommand",priority:0,properties:[{key:"type",value:"subcommand"}],checker:new api.ODCheckerObjectStructure("ot-command-translate:subcommand",{children:[
-                {key:"name",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:subcommand-name",{minLength: 1, maxLength:32})},
-                
-                //NAME TRANSLATIONS
-                {key:"nameTranslations",optional:false,priority:0,checker:new api.ODCheckerObjectStructure("ot-command-translate:subcommand-name-translations",{children:[
-                    {key:"da",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-da",{maxLength:100})},
-                    {key:"de",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-de",{maxLength:100})},
-                    {key:"en-GB",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-GB",{maxLength:100})},
-                    {key:"en-US",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-US",{maxLength:100})},
-                    {key:"es-ES",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es",{maxLength:100})},
-                    {key:"es-419",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es-latam",{maxLength:100})},
-                    {key:"fi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fi",{maxLength:100})},
-                    {key:"fr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fr",{maxLength:100})},
-                    {key:"hr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hr",{maxLength:100})},
-                    {key:"hu",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hu",{maxLength:100})},
-                    {key:"id",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-id",{maxLength:100})},
-                    {key:"it",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-it",{maxLength:100})},
-                    {key:"lt",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-lt",{maxLength:100})},
-                    {key:"nl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-nl",{maxLength:100})},
-                    {key:"no",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-no",{maxLength:100})},
-                    {key:"pl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pl",{maxLength:100})},
-                    {key:"pt-BR",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pt-BR",{maxLength:100})},
-                    {key:"ro",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ro",{maxLength:100})},
-                    {key:"sv-SE",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-sv-SE",{maxLength:100})},
-                    {key:"vi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-vi",{maxLength:100})},
-                    {key:"tr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-tr",{maxLength:100})},
-                    {key:"cs",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-cs",{maxLength:100})},
-                    {key:"el",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-el",{maxLength:100})},
-                    {key:"bg",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-bg",{maxLength:100})},
-                    {key:"ru",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ru",{maxLength:100})},
-                    {key:"uk",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-uk",{maxLength:100})},
-                    {key:"hi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hi",{maxLength:100})},
-                    {key:"th",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-th",{maxLength:100})},
-                    {key:"zh-CN",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-CN",{maxLength:100})},
-                    {key:"ja",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ja",{maxLength:100})},
-                    {key:"zh-TW",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-TW",{maxLength:100})},
-                    {key:"ko",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ko",{maxLength:100})}
-                ]})},
+//list of supported locales
+const supportedLocales: (`${discord.Locale}`)[] = ["id","en-US","en-GB","bg","zh-CN","zh-TW","hr","cs","da","nl","fi","fr","de","el","hi","hu","it","ja","ko","lt","no","pl","pt-BR","ro","ru","es-ES","es-419","sv-SE","th","tr","uk","vi"]
 
-                //DESCRIPTION TRANSLATIONS
-                {key:"descriptionTranslations",optional:false,priority:0,checker:new api.ODCheckerObjectStructure("ot-command-translate:subcommand-description-translations",{children:[
-                    {key:"da",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-da",{maxLength:100})},
-                    {key:"de",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-de",{maxLength:100})},
-                    {key:"en-GB",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-GB",{maxLength:100})},
-                    {key:"en-US",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-US",{maxLength:100})},
-                    {key:"es-ES",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es",{maxLength:100})},
-                    {key:"es-419",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es-latam",{maxLength:100})},
-                    {key:"fi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fi",{maxLength:100})},
-                    {key:"fr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fr",{maxLength:100})},
-                    {key:"hr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hr",{maxLength:100})},
-                    {key:"hu",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hu",{maxLength:100})},
-                    {key:"id",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-id",{maxLength:100})},
-                    {key:"it",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-it",{maxLength:100})},
-                    {key:"lt",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-lt",{maxLength:100})},
-                    {key:"nl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-nl",{maxLength:100})},
-                    {key:"no",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-no",{maxLength:100})},
-                    {key:"pl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pl",{maxLength:100})},
-                    {key:"pt-BR",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pt-BR",{maxLength:100})},
-                    {key:"ro",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ro",{maxLength:100})},
-                    {key:"sv-SE",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-sv-SE",{maxLength:100})},
-                    {key:"vi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-vi",{maxLength:100})},
-                    {key:"tr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-tr",{maxLength:100})},
-                    {key:"cs",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-cs",{maxLength:100})},
-                    {key:"el",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-el",{maxLength:100})},
-                    {key:"bg",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-bg",{maxLength:100})},
-                    {key:"ru",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ru",{maxLength:100})},
-                    {key:"uk",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-uk",{maxLength:100})},
-                    {key:"hi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hi",{maxLength:100})},
-                    {key:"th",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-th",{maxLength:100})},
-                    {key:"zh-CN",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-CN",{maxLength:100})},
-                    {key:"ja",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ja",{maxLength:100})},
-                    {key:"zh-TW",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-TW",{maxLength:100})},
-                    {key:"ko",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ko",{maxLength:100})}
-                ]})},
+function createLocaleChecker(id:api.ODValidId): api.ODCheckerObjectStructure {
+    const children = supportedLocales.map((locale) => {
+        return {key:locale,optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-translate-cmds:translation-"+locale,{maxLength:100})}
+    })
+    return new api.ODCheckerObjectStructure(id,{children})
+}
 
-                //OPTIONS
-                {key:"options",optional:true,priority:0,checker:new api.ODCheckerArrayStructure("ot-command-translate:subcommand-options",{allowedTypes:["object"],propertyChecker:new api.ODCheckerObjectSwitchStructure("ot-command-translate:subcommand-options",{objects:[
-                    //OPTION
-                    {name:"option",priority:0,properties:[{key:"type",value:"option"}],checker:new api.ODCheckerObjectStructure("ot-command-translate:option",{children:[
-                        {key:"name",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:option-name",{minLength:1,maxLength:32})},
-                        
-                        //NAME TRANSLATIONS
-                        {key:"nameTranslations",optional:false,priority:0,checker:new api.ODCheckerObjectStructure("ot-command-translate:option-name-translations",{children:[
-                            {key:"da",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-da",{maxLength:100})},
-                            {key:"de",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-de",{maxLength:100})},
-                            {key:"en-GB",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-GB",{maxLength:100})},
-                            {key:"en-US",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-US",{maxLength:100})},
-                            {key:"es-ES",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es",{maxLength:100})},
-                            {key:"es-419",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es-latam",{maxLength:100})},
-                            {key:"fi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fi",{maxLength:100})},
-                            {key:"fr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fr",{maxLength:100})},
-                            {key:"hr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hr",{maxLength:100})},
-                            {key:"hu",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hu",{maxLength:100})},
-                            {key:"id",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-id",{maxLength:100})},
-                            {key:"it",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-it",{maxLength:100})},
-                            {key:"lt",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-lt",{maxLength:100})},
-                            {key:"nl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-nl",{maxLength:100})},
-                            {key:"no",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-no",{maxLength:100})},
-                            {key:"pl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pl",{maxLength:100})},
-                            {key:"pt-BR",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pt-BR",{maxLength:100})},
-                            {key:"ro",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ro",{maxLength:100})},
-                            {key:"sv-SE",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-sv-SE",{maxLength:100})},
-                            {key:"vi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-vi",{maxLength:100})},
-                            {key:"tr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-tr",{maxLength:100})},
-                            {key:"cs",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-cs",{maxLength:100})},
-                            {key:"el",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-el",{maxLength:100})},
-                            {key:"bg",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-bg",{maxLength:100})},
-                            {key:"ru",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ru",{maxLength:100})},
-                            {key:"uk",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-uk",{maxLength:100})},
-                            {key:"hi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hi",{maxLength:100})},
-                            {key:"th",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-th",{maxLength:100})},
-                            {key:"zh-CN",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-CN",{maxLength:100})},
-                            {key:"ja",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ja",{maxLength:100})},
-                            {key:"zh-TW",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-TW",{maxLength:100})},
-                            {key:"ko",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ko",{maxLength:100})}
-                        ]})},
-
-                        //DESCRIPTION TRANSLATIONS
-                        {key:"descriptionTranslations",optional:false,priority:0,checker:new api.ODCheckerObjectStructure("ot-command-translate:option-description-translations",{children:[
-                            {key:"da",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-da",{maxLength:100})},
-                            {key:"de",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-de",{maxLength:100})},
-                            {key:"en-GB",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-GB",{maxLength:100})},
-                            {key:"en-US",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-US",{maxLength:100})},
-                            {key:"es-ES",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es",{maxLength:100})},
-                            {key:"es-419",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es-latam",{maxLength:100})},
-                            {key:"fi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fi",{maxLength:100})},
-                            {key:"fr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fr",{maxLength:100})},
-                            {key:"hr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hr",{maxLength:100})},
-                            {key:"hu",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hu",{maxLength:100})},
-                            {key:"id",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-id",{maxLength:100})},
-                            {key:"it",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-it",{maxLength:100})},
-                            {key:"lt",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-lt",{maxLength:100})},
-                            {key:"nl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-nl",{maxLength:100})},
-                            {key:"no",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-no",{maxLength:100})},
-                            {key:"pl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pl",{maxLength:100})},
-                            {key:"pt-BR",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pt-BR",{maxLength:100})},
-                            {key:"ro",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ro",{maxLength:100})},
-                            {key:"sv-SE",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-sv-SE",{maxLength:100})},
-                            {key:"vi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-vi",{maxLength:100})},
-                            {key:"tr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-tr",{maxLength:100})},
-                            {key:"cs",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-cs",{maxLength:100})},
-                            {key:"el",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-el",{maxLength:100})},
-                            {key:"bg",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-bg",{maxLength:100})},
-                            {key:"ru",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ru",{maxLength:100})},
-                            {key:"uk",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-uk",{maxLength:100})},
-                            {key:"hi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hi",{maxLength:100})},
-                            {key:"th",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-th",{maxLength:100})},
-                            {key:"zh-CN",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-CN",{maxLength:100})},
-                            {key:"ja",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ja",{maxLength:100})},
-                            {key:"zh-TW",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-TW",{maxLength:100})},
-                            {key:"ko",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ko",{maxLength:100})}
-                        ]})},
-
-                        //CHOICES
-                        {key:"choices",optional:true,priority:0,checker:new api.ODCheckerArrayStructure("ot-command-translate:option-choices",{allowedTypes:["object"],propertyChecker:new api.ODCheckerObjectStructure("ot-command-translate:option-choice",{children:[
-                            {key:"name",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:option-choice-name",{minLength:1,maxLength:32})},
-                            
-                            //NAME TRANSLATIONS
-                            {key:"nameTranslations",optional:false,priority:0,checker:new api.ODCheckerObjectStructure("ot-command-translate:option-choice-name-translations",{children:[
-                                {key:"da",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-da",{maxLength:100})},
-                                {key:"de",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-de",{maxLength:100})},
-                                {key:"en-GB",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-GB",{maxLength:100})},
-                                {key:"en-US",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-US",{maxLength:100})},
-                                {key:"es-ES",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es",{maxLength:100})},
-                                {key:"es-419",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es-latam",{maxLength:100})},
-                                {key:"fi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fi",{maxLength:100})},
-                                {key:"fr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fr",{maxLength:100})},
-                                {key:"hr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hr",{maxLength:100})},
-                                {key:"hu",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hu",{maxLength:100})},
-                                {key:"id",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-id",{maxLength:100})},
-                                {key:"it",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-it",{maxLength:100})},
-                                {key:"lt",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-lt",{maxLength:100})},
-                                {key:"nl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-nl",{maxLength:100})},
-                                {key:"no",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-no",{maxLength:100})},
-                                {key:"pl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pl",{maxLength:100})},
-                                {key:"pt-BR",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pt-BR",{maxLength:100})},
-                                {key:"ro",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ro",{maxLength:100})},
-                                {key:"sv-SE",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-sv-SE",{maxLength:100})},
-                                {key:"vi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-vi",{maxLength:100})},
-                                {key:"tr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-tr",{maxLength:100})},
-                                {key:"cs",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-cs",{maxLength:100})},
-                                {key:"el",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-el",{maxLength:100})},
-                                {key:"bg",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-bg",{maxLength:100})},
-                                {key:"ru",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ru",{maxLength:100})},
-                                {key:"uk",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-uk",{maxLength:100})},
-                                {key:"hi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hi",{maxLength:100})},
-                                {key:"th",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-th",{maxLength:100})},
-                                {key:"zh-CN",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-CN",{maxLength:100})},
-                                {key:"ja",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ja",{maxLength:100})},
-                                {key:"zh-TW",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-TW",{maxLength:100})},
-                                {key:"ko",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ko",{maxLength:100})}
-                            ]})},
-                        ]})})},
-                    ]})},
-                ]})})},
-            ]})},
-            {name:"option",priority:0,properties:[{key:"type",value:"option"}],checker:new api.ODCheckerObjectStructure("ot-command-translate:user",{children:[
-                {key:"name",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:user-name",{minLength:1,maxLength:32})},
-                
-                //NAME TRANSLATIONS
-                {key:"nameTranslations",optional:false,priority:0,checker:new api.ODCheckerObjectStructure("ot-command-translate:user-name-translations",{children:[
-                    {key:"da",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-da",{maxLength:100})},
-                    {key:"de",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-de",{maxLength:100})},
-                    {key:"en-GB",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-GB",{maxLength:100})},
-                    {key:"en-US",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-US",{maxLength:100})},
-                    {key:"es-ES",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es",{maxLength:100})},
-                    {key:"es-419",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es-latam",{maxLength:100})},
-                    {key:"fi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fi",{maxLength:100})},
-                    {key:"fr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fr",{maxLength:100})},
-                    {key:"hr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hr",{maxLength:100})},
-                    {key:"hu",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hu",{maxLength:100})},
-                    {key:"id",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-id",{maxLength:100})},
-                    {key:"it",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-it",{maxLength:100})},
-                    {key:"lt",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-lt",{maxLength:100})},
-                    {key:"nl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-nl",{maxLength:100})},
-                    {key:"no",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-no",{maxLength:100})},
-                    {key:"pl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pl",{maxLength:100})},
-                    {key:"pt-BR",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pt-BR",{maxLength:100})},
-                    {key:"ro",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ro",{maxLength:100})},
-                    {key:"sv-SE",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-sv-SE",{maxLength:100})},
-                    {key:"vi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-vi",{maxLength:100})},
-                    {key:"tr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-tr",{maxLength:100})},
-                    {key:"cs",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-cs",{maxLength:100})},
-                    {key:"el",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-el",{maxLength:100})},
-                    {key:"bg",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-bg",{maxLength:100})},
-                    {key:"ru",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ru",{maxLength:100})},
-                    {key:"uk",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-uk",{maxLength:100})},
-                    {key:"hi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hi",{maxLength:100})},
-                    {key:"th",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-th",{maxLength:100})},
-                    {key:"zh-CN",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-CN",{maxLength:100})},
-                    {key:"ja",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ja",{maxLength:100})},
-                    {key:"zh-TW",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-TW",{maxLength:100})},
-                    {key:"ko",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ko",{maxLength:100})}
-                ]})},
-
-                //DESCRIPTION TRANSLATIONS
-                {key:"descriptionTranslations",optional:false,priority:0,checker:new api.ODCheckerObjectStructure("ot-command-translate:user-description-translations",{children:[
-                    {key:"da",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-da",{maxLength:100})},
-                    {key:"de",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-de",{maxLength:100})},
-                    {key:"en-GB",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-GB",{maxLength:100})},
-                    {key:"en-US",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-US",{maxLength:100})},
-                    {key:"es-ES",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es",{maxLength:100})},
-                    {key:"es-419",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es-latam",{maxLength:100})},
-                    {key:"fi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fi",{maxLength:100})},
-                    {key:"fr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fr",{maxLength:100})},
-                    {key:"hr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hr",{maxLength:100})},
-                    {key:"hu",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hu",{maxLength:100})},
-                    {key:"id",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-id",{maxLength:100})},
-                    {key:"it",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-it",{maxLength:100})},
-                    {key:"lt",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-lt",{maxLength:100})},
-                    {key:"nl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-nl",{maxLength:100})},
-                    {key:"no",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-no",{maxLength:100})},
-                    {key:"pl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pl",{maxLength:100})},
-                    {key:"pt-BR",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pt-BR",{maxLength:100})},
-                    {key:"ro",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ro",{maxLength:100})},
-                    {key:"sv-SE",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-sv-SE",{maxLength:100})},
-                    {key:"vi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-vi",{maxLength:100})},
-                    {key:"tr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-tr",{maxLength:100})},
-                    {key:"cs",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-cs",{maxLength:100})},
-                    {key:"el",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-el",{maxLength:100})},
-                    {key:"bg",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-bg",{maxLength:100})},
-                    {key:"ru",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ru",{maxLength:100})},
-                    {key:"uk",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-uk",{maxLength:100})},
-                    {key:"hi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hi",{maxLength:100})},
-                    {key:"th",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-th",{maxLength:100})},
-                    {key:"zh-CN",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-CN",{maxLength:100})},
-                    {key:"ja",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ja",{maxLength:100})},
-                    {key:"zh-TW",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-TW",{maxLength:100})},
-                    {key:"ko",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ko",{maxLength:100})}
-                ]})},
-
-                //CHOICES
-                {key:"choices",optional:true,priority:0,checker:new api.ODCheckerArrayStructure("ot-command-translate:option-choices",{allowedTypes:["object"],propertyChecker:new api.ODCheckerObjectStructure("ot-command-translate:option-choice",{children:[
-                    {key:"name",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:option-choice-name",{minLength:1,maxLength:100})},
-                    
-                    //NAME TRANSLATIONS
-                    {key:"nameTranslations",optional:false,priority:0,checker:new api.ODCheckerObjectStructure("ot-command-translate:option-choice-name-translations",{children:[
-                        {key:"da",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-da",{minLength:1,maxLength:100})},
-                        {key:"de",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-de",{minLength:1,maxLength:100})},
-                        {key:"en-GB",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-GB",{minLength:1,maxLength:100})},
-                        {key:"en-US",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-en-US",{maxLength:100})},
-                        {key:"es-ES",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es",{maxLength:100})},
-                        {key:"es-419",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-es-latam",{maxLength:100})},
-                        {key:"fi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fi",{maxLength:100})},
-                        {key:"fr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-fr",{maxLength:100})},
-                        {key:"hr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hr",{maxLength:100})},
-                        {key:"hu",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hu",{maxLength:100})},
-                        {key:"id",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-id",{maxLength:100})},
-                        {key:"it",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-it",{maxLength:100})},
-                        {key:"lt",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-lt",{maxLength:100})},
-                        {key:"nl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-nl",{maxLength:100})},
-                        {key:"no",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-no",{maxLength:100})},
-                        {key:"pl",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pl",{maxLength:100})},
-                        {key:"pt-BR",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-pt-BR",{maxLength:100})},
-                        {key:"ro",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ro",{maxLength:100})},
-                        {key:"sv-SE",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-sv-SE",{maxLength:100})},
-                        {key:"vi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-vi",{maxLength:100})},
-                        {key:"tr",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-tr",{maxLength:100})},
-                        {key:"cs",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-cs",{maxLength:100})},
-                        {key:"el",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-el",{maxLength:100})},
-                        {key:"bg",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-bg",{maxLength:100})},
-                        {key:"ru",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ru",{maxLength:100})},
-                        {key:"uk",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-uk",{maxLength:100})},
-                        {key:"hi",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-hi",{maxLength:100})},
-                        {key:"th",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-th",{maxLength:100})},
-                        {key:"zh-CN",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-CN",{maxLength:100})},
-                        {key:"ja",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ja",{maxLength:100})},
-                        {key:"zh-TW",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-zh-TW",{maxLength:100})},
-                        {key:"ko",optional:true,priority:0,checker:new api.ODCheckerStringStructure("ot-command-translate:command-name-translation-ko",{maxLength:100})}
-                    ]})}
-                ]})})}
-            ]})}
+function createNormalOptionChecker(): api.ODCheckerObjectStructure {
+    return new api.ODCheckerObjectStructure("ot-translate-cmds:option",{children:[
+        {key:"name",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-translate-cmds:option-name",{minLength:1,maxLength:64})},
+        {key:"nameTranslations",optional:false,priority:0,checker:createLocaleChecker("ot-translate-cmds:option-name-translations")},
+        {key:"descriptionTranslations",optional:false,priority:0,checker:createLocaleChecker("ot-translate-cmds:option-description-translations")},
+        {key:"choices",optional:true,priority:0,checker:new api.ODCheckerArrayStructure("ot-translate-cmds:option-choices",{allowedTypes:["object"],propertyChecker:new api.ODCheckerObjectStructure("ot-translate-cmds:option-choice",{children:[
+            {key:"name",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-translate-cmds:option-choice-name",{minLength:1,maxLength:100})},
+            {key:"nameTranslations",optional:false,priority:0,checker:createLocaleChecker("ot-translate-cmds:choice-name-translations")}
         ]})})}
-    ]})}
+    ]})
+}
+
+function createSubcommandOptionChecker(): api.ODCheckerObjectStructure {
+    return new api.ODCheckerObjectStructure("ot-translate-cmds:option-subcommand",{children:[
+        {key:"name",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-translate-cmds:subcommand-name",{minLength:1,maxLength:64})},
+        {key:"nameTranslations",optional:false,priority:0,checker:createLocaleChecker("ot-translate-cmds:option-name-translations")},
+        {key:"descriptionTranslations",optional:false,priority:0,checker:createLocaleChecker("ot-translate-cmds:option-description-translations")},
+        {key:"options",optional:true,priority:0,checker:new api.ODCheckerArrayStructure("ot-translate-cmds:subcommand-options",{allowedTypes:["object"],propertyChecker:createNormalOptionChecker()})},
+    ]})
+}
+
+export const translateCmdsConfigStructure = new api.ODCheckerArrayStructure("ot-translate-cmds:translations",{allowedTypes:["object"],propertyChecker:new api.ODCheckerObjectStructure("ot-translate-cmds:command",{children:[
+    {key:"name",optional:false,priority:0,checker:new api.ODCheckerCustomStructure_UniqueId("ot-translate-cmds:command-name","ot-translate-cmds","command-names",{minLength:1,maxLength:64})},
+    {key:"nameTranslations",optional:false,priority:0,checker:createLocaleChecker("ot-translate-cmds:command-name-translations")},
+    {key:"descriptionTranslations",optional:false,priority:0,checker:createLocaleChecker("ot-translate-cmds:command-description-translations")},
+    {key:"options",optional:true,priority:0,checker:new api.ODCheckerArrayStructure("ot-translate-cmds:command-options",{allowedTypes:["object"],propertyChecker:new api.ODCheckerObjectSwitchStructure("ot-translate-cmds:command-options",{objects:[
+        //SUBCOMMAND OPTION
+        {name:"subcommand",priority:0,properties:[{key:"type",value:"subcommand"}],checker:createSubcommandOptionChecker()},
+        //NORMAL OPTION
+        {name:"option",priority:0,properties:[{key:"type",value:"option"}],checker:createNormalOptionChecker()}
+    ]})})}
 ]})})

@@ -1,60 +1,56 @@
-import { api, openticket, utilities } from "../../src/index";
-
-import { OTCommandTranslateConfig_Default } from "./configDefaults";
-import { commandTranslateConfigStructure } from "./checkerStructures";
-
+import { api, openticket, utilities } from "#opendiscord"
+import { OTTranslateCmdsConfig } from "./configDefaults"
+import { translateCmdsConfigStructure } from "./checkerStructures"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
-if (!utilities.isBeta) throw new api.ODPluginError("This plugin is made for the beta version of Open Ticket!")
-
 
 //DECLARATION
-declare module "../../src/core/api/api.js" {
-    export interface ODConfigManagerIds_Default {
-        "ot-translate-cmds:config": OTCommandTranslateConfig_Default;
+declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-translate-cmds":api.ODPlugin
     }
-    export interface ODHelpMenuManagerIds_Default {
-        "dashboard-plugin": api.ODHelpMenuCategory;
+    export interface ODConfigManagerIds_Default {
+        "ot-translate-cmds:translations": OTTranslateCmdsConfig;
     }
     export interface ODCheckerManagerIds_Default {
-        "ot-translate-cmds:config":api.ODChecker;
+        "ot-translate-cmds:translations":api.ODChecker;
     }
 }
 
+//REGISTER CONFIG
 openticket.events.get("onConfigLoad").listen((configs) => {
-    configs.add(new OTCommandTranslateConfig_Default("ot-translate-cmds:config","config.json","./plugins/ot-translate-cmds/"));
+    configs.add(new OTTranslateCmdsConfig("ot-translate-cmds:translations","translations.json","./plugins/ot-translate-cmds/"));
 })
 
-
-// REGISTER CONFIG CHECKER
+//REGISTER CONFIG CHECKER
 openticket.events.get("onCheckerLoad").listen((checkers) => {
-    const config = openticket.configs.get("ot-translate-cmds:config")
-    checkers.add(new api.ODChecker("ot-translate-cmds:config",checkers.storage,0,config,commandTranslateConfigStructure))
+    const config = openticket.configs.get("ot-translate-cmds:translations")
+    checkers.add(new api.ODChecker("ot-translate-cmds:translations",checkers.storage,0,config,translateCmdsConfigStructure))
 })
 
+//APPLY TRANSLATIONS
+openticket.events.get("afterSlashCommandsLoaded").listen(async (slash,client) => {
+    const cmdTranslations = openticket.configs.get("ot-translate-cmds:translations").data
 
-openticket.events.get("afterSlashCommandsLoaded").listen(async (slash, client) => {
-    const commandData = openticket.configs.get("ot-translate-cmds:config").data;
-
-    for (const commandCfg of commandData) {
-        const cmd = openticket.client.slashCommands.get(`openticket:${commandCfg.name}`);
+    for (const cmdTranslation of cmdTranslations) {
+        const cmd = openticket.client.slashCommands.get(`openticket:${cmdTranslation.name}`);
         if (!cmd) continue;
 
         // COMMAND TRANSLATION
-        cmd.builder.nameLocalizations = commandCfg.nameTranslations || {};
-        cmd.builder.descriptionLocalizations = commandCfg.descriptionTranslations || {};
+        cmd.builder.nameLocalizations = cmdTranslation.nameTranslations || {};
+        cmd.builder.descriptionLocalizations = cmdTranslation.descriptionTranslations || {};
 
-        if (commandCfg.options) {
-            for (const optionCfg of commandCfg.options) {
-                const option = cmd.builder.options?.find(o => o.name === optionCfg.name);
+        if (cmdTranslation.options) {
+            for (const optTranslation of cmdTranslation.options) {
+                const option = cmd.builder.options?.find(o => o.name === optTranslation.name);
                 if (!option) continue;
 
                 // OPTION/SUBCOMMAND TRANSLATION
-                option.nameLocalizations = optionCfg.nameTranslations || {};
-                option.descriptionLocalizations = optionCfg.descriptionTranslations || {};
+                option.nameLocalizations = optTranslation.nameTranslations || {};
+                option.descriptionLocalizations = optTranslation.descriptionTranslations || {};
 
                 // CHOICE TRANSLATION
-                if(optionCfg.choices && "choices" in option) {
-                    for (const choiceCfg of optionCfg.choices) {
+                if(optTranslation.choices && "choices" in option){
+                    for (const choiceCfg of optTranslation.choices){
                         const choice = option.choices?.find(c => c.name === choiceCfg.name);
                         if (!choice) continue;
 
@@ -62,18 +58,18 @@ openticket.events.get("afterSlashCommandsLoaded").listen(async (slash, client) =
                     }
                 }
 
-                if (optionCfg.type === "subcommand" && optionCfg.options && "options" in option) {
-                    for (const subOptCfg of optionCfg.options) {
-                        const subOption = option.options?.find(o => o.name === subOptCfg.name);
+                if (optTranslation.type === "subcommand" && optTranslation.options && "options" in option) {
+                    for (const subOptTranslation of optTranslation.options) {
+                        const subOption = option.options?.find(o => o.name === subOptTranslation.name);
                         if (!subOption) continue;
 
                         // SUBCOMMAND OPTION TRANSLATION
-                        subOption.nameLocalizations = subOptCfg.nameTranslations || {};
-                        subOption.descriptionLocalizations = subOptCfg.descriptionTranslations || {};
+                        subOption.nameLocalizations = subOptTranslation.nameTranslations || {};
+                        subOption.descriptionLocalizations = subOptTranslation.descriptionTranslations || {};
 
                         // CHOICE TRANSLATION
-                        if(subOptCfg.choices && "choices" in subOption) {
-                            for (const choiceCfg of subOptCfg.choices) {
+                        if(subOptTranslation.choices && "choices" in subOption) {
+                            for (const choiceCfg of subOptTranslation.choices) {
                                 const choice = subOption.choices?.find(c => c.name === choiceCfg.name);
                                 if (!choice) continue;
 
@@ -85,4 +81,4 @@ openticket.events.get("afterSlashCommandsLoaded").listen(async (slash, client) =
             }
         }
     }
-});
+})

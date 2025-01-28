@@ -10,6 +10,9 @@ class OTMoveActionsConfig extends api.ODJsonConfig {
     }
 }
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-move-actions":api.ODPlugin
+    }
     export interface ODConfigManagerIds_Default {
         "ot-move-actions:config": OTMoveActionsConfig
     }

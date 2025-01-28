@@ -25,6 +25,9 @@ class OTCustomiseButtonsConfig extends api.ODJsonConfig {
     }
 }
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-customise-buttons":api.ODPlugin
+    }
     export interface ODConfigManagerIds_Default {
         "ot-customise-buttons:config":OTCustomiseButtonsConfig
     }

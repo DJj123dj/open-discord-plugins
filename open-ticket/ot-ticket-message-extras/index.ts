@@ -9,6 +9,9 @@ class OTTicketMessageExtrasConfig extends api.ODJsonConfig {
     }
 }
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-ticket-message-extras":api.ODPlugin
+    }
     export interface ODConfigManagerIds_Default {
         "ot-ticket-message-extras:config": OTTicketMessageExtrasConfig
     }

@@ -5,6 +5,9 @@ if (utilities.project != "openticket") throw new api.ODPluginError("This plugin 
 
 //DECLARATION
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-config-reload":api.ODPlugin
+    }
     export interface ODConfigManagerIds_Default {
         "ot-config-reload:general": api.ODJsonConfig_DefaultGeneral;
         "ot-config-reload:options": api.ODJsonConfig_DefaultOptions;

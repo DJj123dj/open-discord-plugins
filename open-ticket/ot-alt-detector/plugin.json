@@ -1,10 +1,10 @@
 {
     "name":"OT Alt Detector",
     "id":"ot-alt-detector",
-    "version":"1.0.0",
+    "version":"1.0.2",
     "startFile":"index.ts",
 
-    "enabled":true,
+    "enabled":false,
     "priority":0,
     "events":["ot-alt-detector:onAltDetect","ot-alt-detector:afterAltDetected"],
 

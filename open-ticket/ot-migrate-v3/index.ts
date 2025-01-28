@@ -5,6 +5,9 @@ if (utilities.project != "openticket") throw new api.ODPluginError("This plugin 
 
 //DECLARATION
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-migrate-v3":api.ODPlugin
+    }
     export interface ODButtonManagerIds_Default {
         "ot-migrate-v3:migrate-button":{source:"other",params:{},workers:"ot-migrate-v3:migrate-button"},
     }

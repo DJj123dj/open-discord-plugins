@@ -17,6 +17,9 @@ export class OTAltDetector extends api.ODManagerData {
     }
 }
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-alt-detector":api.ODPlugin
+    }
     export interface ODMessageManagerIds_Default {
         "ot-alt-detector:log-message":{source:"other",params:{member:discord.GuildMember,result:AltDetectorResult},workers:"ot-alt-detector:log-message"},
     }
@@ -31,6 +34,12 @@ declare module "#opendiscord-types" {
         "ot-alt-detector:detector": OTAltDetector
     }
 }
+
+//ACCESS PRESENCE INTENTS
+openticket.events.get("onClientLoad").listen((client) => {
+    client.privileges.push("Presence")
+    client.intents.push("GuildPresences")
+})
 
 //REGISTER PLUGIN CLASS
 openticket.events.get("onPluginClassLoad").listen((classes) => {
