@@ -22,7 +22,7 @@ export class OTForms_AnswersManager {
     private _formColor: discord.ColorResolvable;
     private _answers: { question: OTForms_Question, answer: string | null }[];
     private _currentPage: number = 1;
-    private timestamp: Date = new Date();
+    private timestamp: number = Date.now();
 
     constructor(formId: string, sessionId: string, source: "button" | "other", type: "initial" | "partial" | "completed", user: discord.User, formColor: discord.ColorResolvable, answers: { question: OTForms_Question, answer: string | null }[]) {
         this.formId = formId;
@@ -166,7 +166,7 @@ export class OTForms_AnswersManager {
             formColor: discord.ColorResolvable,
             answers: { question: OTForms_Question, answer: string | null }[],
             currentPage: number,
-            timestamp: Date
+            timestamp: number
         } = {
             formId: this.formId,
             sessionId: this.sessionId,
@@ -204,7 +204,7 @@ export class OTForms_AnswersManager {
                 formColor: discord.ColorResolvable,
                 answers: { question: OTForms_Question, answer: string | null }[],
                 currentPage: number,
-                timestamp: Date
+                timestamp: number
             } = answersManagerData.value;
 
             const formId = data.formId;

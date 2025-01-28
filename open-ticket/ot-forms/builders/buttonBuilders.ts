@@ -35,7 +35,7 @@ openticket.events.get("onButtonBuilderLoad").listen((buttons) => {
             instance.setMode("button");
             instance.setColor("red");
             instance.setEmoji("🗑️");
-            instance.setLabel("Eliminar");
+            instance.setLabel("Delete");
             instance.setCustomId(`ot-forms:db_${formId}_${sessionId}`);
         })
     );

@@ -72,7 +72,7 @@ declare module "#opendiscord-types" {
                     formColor: discord.ColorResolvable,
                     answers: { question: OTForms_Question, answer: string | null }[],
                     currentPage: number,
-                    timestamp: Date
+                    timestamp: number
                 },
     }
 }

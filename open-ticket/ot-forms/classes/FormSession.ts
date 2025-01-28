@@ -128,7 +128,7 @@ export class OTForms_FormSession {
                 await this.sendButtonQuestion(question as OTForms_ButtonQuestion);
                 break;
             default:
-                console.error('Tipus de pregunta desconegut:', question.type);
+                console.error('Unknown question type: ', question.type);
         }
     }
 
