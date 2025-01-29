@@ -1,11 +1,11 @@
-import { api, openticket } from "#opendiscord";
-import * as discord from "discord.js";
+import {api, openticket, utilities} from "#opendiscord"
+import * as discord from "discord.js"
 
 //REGISTER SLASH COMMAND
 const act = discord.ApplicationCommandType
 const acot = discord.ApplicationCommandOptionType
 openticket.events.get("onSlashCommandLoad").listen((slash) => {
-    const config = openticket.configs.get("ot-forms:config")
+    const config = openticket.configs.get("ot-ticket-forms:config")
 
     //create form choices
     const formChoices : {name:string, value:string}[] = []
@@ -13,7 +13,7 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
         formChoices.push({name:form.name,value:form.id})
     })
     
-    slash.add(new api.ODSlashCommand("ot-forms:form",{
+    slash.add(new api.ODSlashCommand("ot-ticket-forms:form",{
         name:"form",
         description:"Send a form.",
         type:act.ChatInput,

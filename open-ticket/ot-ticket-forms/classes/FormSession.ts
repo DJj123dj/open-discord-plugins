@@ -118,7 +118,7 @@ export class OTForms_FormSession {
         const question = this.form.questions[this.currentQuestionNumber];
         switch (question.type) {
             case 'short':
-            case 'long':
+            case 'paragraph':
                 await this.sendModalQuestions();
                 break;
             case 'dropdown':
@@ -152,14 +152,14 @@ export class OTForms_FormSession {
         // Max 5 questions per modal
         while (count < 5 && this.currentQuestionNumber + 1 <= this.form.questions.length) {
             const question = this.form.questions[this.currentQuestionNumber + count];
-            if (question.type !== "short" && question.type !== "long") break;
+            if (!question || (question.type !== "short" && question.type !== "paragraph")) break;
             modalQuestions.push(question as OTForms_ModalQuestion);
             count++;
         }
 
         // Show modal
         await this.instance.modal(
-            await openticket.builders.modals.getSafe("ot-forms:questions-modal").build("other", {
+            await openticket.builders.modals.getSafe("ot-ticket-forms:questions-modal").build("other", {
                 formId: this.form.id,
                 sessionId: this.id,
                 formName: this.form.name,
@@ -179,7 +179,7 @@ export class OTForms_FormSession {
             return;
         }
 
-        const message = await openticket.builders.messages.getSafe("ot-forms:question-message").build("other", {
+        const message = await openticket.builders.messages.getSafe("ot-ticket-forms:question-message").build("other", {
             formId: this.form.id,
             sessionId: this.id,
             question: question,
@@ -210,7 +210,7 @@ export class OTForms_FormSession {
             return;
         }
 
-        const message = await openticket.builders.messages.getSafe("ot-forms:question-message").build("other", {
+        const message = await openticket.builders.messages.getSafe("ot-ticket-forms:question-message").build("other", {
             formId: this.form.id,
             sessionId: this.id,
             question: question,
@@ -241,7 +241,7 @@ export class OTForms_FormSession {
             return;
         }
 
-        const message = await openticket.builders.messages.getSafe("ot-forms:continue-message").build("button", {
+        const message = await openticket.builders.messages.getSafe("ot-ticket-forms:continue-message").build("button", {
             formId:this.form.id,
             sessionId: this.id,
             currentSection: this.currentSection,
@@ -281,7 +281,7 @@ export class OTForms_FormSession {
      */
     private async finalize(): Promise<void> {
         if(this.instance) {
-            const message = await openticket.builders.messages.getSafe("ot-forms:continue-message").build("button", {
+            const message = await openticket.builders.messages.getSafe("ot-ticket-forms:continue-message").build("button", {
                 formId:this.form.id,
                 sessionId: this.id,
                 currentSection: this.currentSection,

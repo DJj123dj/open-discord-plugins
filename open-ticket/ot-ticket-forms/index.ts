@@ -1,9 +1,11 @@
 import {api, openticket, utilities} from "#opendiscord"
 import * as discord from "discord.js"
+if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
+
 import { OTForms_Form } from "./classes/Form"
 import { OTForms_AnswersManager } from "./classes/AnswersManager";
 
-import "./configManager/configRegistration";
+import "./config/configRegistration";
 import "./builders/messageBuilders";
 import "./builders/embedBuilders";
 import "./builders/buttonBuilders";
@@ -11,21 +13,13 @@ import "./builders/modalBuilders";
 import "./builders/dropdownBuilders";
 import "./builders/commandBuilders";
 
-if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
-
 const forms = new Map<string, OTForms_Form>();
 
-/* READY FOR USAGE EVENT
- * When the plugin is ready for usage, sort the questions of each form by their number.
- */
-openticket.events.get("onReadyForUsage").listen(async () => {
-    const formsConfig = openticket.configs.get("ot-forms:config").data;
-    for(const formConfig of formsConfig) {
-        formConfig.questions.sort((a, b) => a.number - b.number);
-    }
-});
-
 openticket.events.get("afterCodeExecuted").listen(async () => {
+    const formsConfig = openticket.configs.get("ot-ticket-forms:config").data;
+    for(const formConfig of formsConfig) {
+        formConfig.questions.sort((a, b) => a.position - b.position);
+    }
     openticket.log("Plugin \"ot-forms\" restoring answers...", "plugin");
     await OTForms_AnswersManager.restore();
 })
@@ -35,13 +29,13 @@ openticket.events.get("afterCodeExecuted").listen(async () => {
  * If it is, send the form to the channel.
  */
 openticket.events.get("afterTicketCreated").listen(async (ticket, creator, channel) => {
-    const formsConfig = openticket.configs.get("ot-forms:config").data;
+    const formsConfig = openticket.configs.get("ot-ticket-forms:config").data;
     const ticketId = ticket.option.id.value;
 
     for(const formConfig of formsConfig) {
-        if (formConfig.OTTicketAutoSend.includes(ticketId)) {
+        if (formConfig.autoSendOptionIds.includes(ticketId)) {
 
-            const startMessageTemplate = await openticket.builders.messages.getSafe("ot-forms:start-form-message").build("ticket", {
+            const startMessageTemplate = await openticket.builders.messages.getSafe("ot-ticket-forms:start-form-message").build("ticket", {
                 formId: formConfig.id,
                 formName: formConfig.name,
                 formDescription: formConfig.description,
@@ -50,13 +44,13 @@ openticket.events.get("afterTicketCreated").listen(async (ticket, creator, chann
             });
 
             const startMessage = await channel.send(startMessageTemplate.message);
-            const answersChannel = await channel.guild.channels.fetch(formConfig.responsesChannel);
+            const answersChannel = await channel.guild.channels.fetch(formConfig.responseChannel);
             if(!answersChannel || !answersChannel.isTextBased()) {
                 openticket.log("Error: Invalid answers channel.", "plugin");
                 return;
             }
             
-            const questions = formConfig.questions.sort((a, b) => a.number - b.number);
+            const questions = formConfig.questions.sort((a, b) => a.position - b.position);
             const form = new OTForms_Form(formConfig.id, startMessage, formConfig.name, formConfig.color, startMessage, questions, answersChannel);
             forms.set(formConfig.id, form);
         }
@@ -66,14 +60,14 @@ openticket.events.get("afterTicketCreated").listen(async (ticket, creator, chann
 //REGISTER COMMAND RESPONDER
 openticket.events.get("onCommandResponderLoad").listen((commands) => {
     const generalConfig = openticket.configs.get("openticket:general")
-    const formsConfig = openticket.configs.get("ot-forms:config").data;
+    const formsConfig = openticket.configs.get("ot-ticket-forms:config").data;
 
     /* FORM COMMAND RESPONDER
      * The command manage forms. Currently limited to sending forms to a channel.
      */
-    commands.add(new api.ODCommandResponder("ot-forms:form",generalConfig.data.prefix,"form"))
-    commands.get("ot-forms:form").workers.add([
-        new api.ODWorker("ot-forms:form",0,async (instance,params,source,cancel) => {
+    commands.add(new api.ODCommandResponder("ot-ticket-forms:form",generalConfig.data.prefix,"form"))
+    commands.get("ot-ticket-forms:form").workers.add([
+        new api.ODWorker("ot-ticket-forms:form",0,async (instance,params,source,cancel) => {
             const {guild,channel,user} = instance
             if (!guild){
                 instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build("button",{channel,user}))
@@ -99,7 +93,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
                     return cancel()
                 }
 
-                const startMessageTemplate = await openticket.builders.messages.getSafe("ot-forms:start-form-message").build("ticket", {
+                const startMessageTemplate = await openticket.builders.messages.getSafe("ot-ticket-forms:start-form-message").build("ticket", {
                     formId: formConfig.id,
                     formName: formConfig.name,
                     formDescription: formConfig.description,
@@ -108,20 +102,20 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
                 });
 
                 const startMessage = await formChannel.send(startMessageTemplate.message);
-                const answersChannel = await guild.channels.fetch(formConfig.responsesChannel);
+                const answersChannel = await guild.channels.fetch(formConfig.responseChannel);
                 if(!answersChannel || !answersChannel.isTextBased()) {
                     openticket.log("Error: Invalid answers channel.", "plugin");
                     return;
                 }
 
-                const questions = formConfig.questions.sort((a, b) => a.number - b.number);
+                const questions = formConfig.questions.sort((a, b) => a.position - b.position);
                 const form = new OTForms_Form(formConfig.id, startMessage, formConfig.name, formConfig.color, startMessage, questions, answersChannel);
                 forms.set(formConfig.id, form);
             }
 
-            await instance.reply(await openticket.builders.messages.getSafe("ot-forms:success-message").build(source,{}))
+            await instance.reply(await openticket.builders.messages.getSafe("ot-ticket-forms:success-message").build(source,{}))
         }),
-        new api.ODWorker("ot-forms:logs",-1,(instance,params,source,cancel) => {
+        new api.ODWorker("ot-ticket-forms:logs",-1,(instance,params,source,cancel) => {
             const scope = instance.options.getSubCommand() as "send"
             openticket.log(instance.user.displayName+" used the 'form "+scope+"' command!","plugin",[
                 {key:"user",value:instance.user.username},
@@ -135,7 +129,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
 
 //REGISTER HELP MENU
 openticket.events.get("onHelpMenuComponentLoad").listen((menu) => {
-    menu.get("openticket:extra").add(new api.ODHelpMenuCommandComponent("ot-forms:form",0,{
+    menu.get("openticket:extra").add(new api.ODHelpMenuCommandComponent("ot-ticket-forms:form",0,{
         slashName:"form send",
         slashDescription:"Send a form to a channel.",
     }))
@@ -146,8 +140,8 @@ openticket.events.get("onButtonResponderLoad").listen((buttons, responders, acti
     /* START FORM BUTTON RESPONDER
      * The button to start answering a form.
      */
-    buttons.add(new api.ODButtonResponder("ot-forms:start-form-button", /^ot-forms:sb_/));
-    openticket.responders.buttons.get("ot-forms:start-form-button").workers.add(new api.ODWorker("ot-forms:start-form-button", 0, async (instance, params, source, cancel) => {
+    buttons.add(new api.ODButtonResponder("ot-ticket-forms:start-form-button", /^ot-ticket-forms:sb_/));
+    openticket.responders.buttons.get("ot-ticket-forms:start-form-button").workers.add(new api.ODWorker("ot-ticket-forms:start-form-button", 0, async (instance, params, source, cancel) => {
         const formId = instance.interaction.customId.split("_")[1];
         const form = forms.get(formId);
         if (!form) return
@@ -160,8 +154,8 @@ openticket.events.get("onButtonResponderLoad").listen((buttons, responders, acti
     /* CONTINUE BUTTON RESPONDER
      * The button between two form questions. To continue to the next section of the form.
      */
-    buttons.add(new api.ODButtonResponder("ot-forms:continue-button", /^ot-forms:cb_/));
-    openticket.responders.buttons.get("ot-forms:continue-button").workers.add(new api.ODWorker("ot-forms:continue-button", 0, async (instance, params, source, cancel) => {
+    buttons.add(new api.ODButtonResponder("ot-ticket-forms:continue-button", /^ot-ticket-forms:cb_/));
+    openticket.responders.buttons.get("ot-ticket-forms:continue-button").workers.add(new api.ODWorker("ot-ticket-forms:continue-button", 0, async (instance, params, source, cancel) => {
         const customIdParts = instance.interaction.customId.split("_");
         const formId = customIdParts[1];
         const form = forms.get(formId);
@@ -180,8 +174,8 @@ openticket.events.get("onButtonResponderLoad").listen((buttons, responders, acti
     /* DELETE ANSWERS MESSAGE BUTTON RESPONDER
      * The button to delete a form session. Visible on the answers message until the form is completed.
      */
-    buttons.add(new api.ODButtonResponder("ot-forms:delete-answers-button", /^ot-forms:db_/));
-    openticket.responders.buttons.get("ot-forms:delete-answers-button").workers.add(new api.ODWorker("ot-forms:delete-answers-button", 0, async (instance, params, source, cancel) => {
+    buttons.add(new api.ODButtonResponder("ot-ticket-forms:delete-answers-button", /^ot-ticket-forms:db_/));
+    openticket.responders.buttons.get("ot-ticket-forms:delete-answers-button").workers.add(new api.ODWorker("ot-ticket-forms:delete-answers-button", 0, async (instance, params, source, cancel) => {
         await instance.defer("update",true);
         OTForms_AnswersManager.removeInstance(instance.message.id);
         instance.message.delete();
@@ -199,8 +193,8 @@ openticket.events.get("onButtonResponderLoad").listen((buttons, responders, acti
     /* QUESTION BUTTON RESPONDER
      * A type button question can have multiple question buttons. Every button represents a possible answer.
      */
-    buttons.add(new api.ODButtonResponder("ot-forms:question-button", /^ot-forms:qb_/));
-    openticket.responders.buttons.get("ot-forms:question-button").workers.add(new api.ODWorker("ot-forms:question-button", 0, async (instance, params, source, cancel) => {
+    buttons.add(new api.ODButtonResponder("ot-ticket-forms:question-button", /^ot-ticket-forms:qb_/));
+    openticket.responders.buttons.get("ot-ticket-forms:question-button").workers.add(new api.ODWorker("ot-ticket-forms:question-button", 0, async (instance, params, source, cancel) => {
         const customIdParts = instance.interaction.customId.split("_");
         const formId = customIdParts[1];
         const form = forms.get(formId);
@@ -221,8 +215,8 @@ openticket.events.get("onButtonResponderLoad").listen((buttons, responders, acti
     /* NEXT PAGE BUTTON RESPONDER
      * The button to go to the next page of the answers message.
      */
-    buttons.add(new api.ODButtonResponder("ot-forms:next-page-button", /^ot-forms:npb_/));
-    openticket.responders.buttons.get("ot-forms:next-page-button").workers.add(new api.ODWorker("ot-forms:next-page-button", 0, async (instance, params, source, cancel) => {
+    buttons.add(new api.ODButtonResponder("ot-ticket-forms:next-page-button", /^ot-ticket-forms:npb_/));
+    openticket.responders.buttons.get("ot-ticket-forms:next-page-button").workers.add(new api.ODWorker("ot-ticket-forms:next-page-button", 0, async (instance, params, source, cancel) => {
         instance.defer("update",true);
         const answersManager = OTForms_AnswersManager.getInstance(instance.message.id);
         if (!answersManager) return;
@@ -235,8 +229,8 @@ openticket.events.get("onButtonResponderLoad").listen((buttons, responders, acti
     /* PREVIOUS PAGE BUTTON RESPONDER
      * The button to go to the previous page of the answers message.
      */
-    buttons.add(new api.ODButtonResponder("ot-forms:previous-page-button", /^ot-forms:ppb_/));
-    openticket.responders.buttons.get("ot-forms:previous-page-button").workers.add(new api.ODWorker("ot-forms:previous-page-button", 0, async (instance, params, source, cancel) => {
+    buttons.add(new api.ODButtonResponder("ot-ticket-forms:previous-page-button", /^ot-ticket-forms:ppb_/));
+    openticket.responders.buttons.get("ot-ticket-forms:previous-page-button").workers.add(new api.ODWorker("ot-ticket-forms:previous-page-button", 0, async (instance, params, source, cancel) => {
         instance.defer("update",true);
         const answersManager = OTForms_AnswersManager.getInstance(instance.message.id);
         if (!answersManager) return;
@@ -252,8 +246,8 @@ openticket.events.get("onModalResponderLoad").listen((modals, responders, action
     /* QUESTIONS MODAL RESPONDER
      * This modal is used to answer questions of a form.
      */
-    modals.add(new api.ODModalResponder("ot-forms:questions-modal", /^ot-forms:qm_/));
-    openticket.responders.modals.get("ot-forms:questions-modal").workers.add(new api.ODWorker("ot-forms:questions-modal", 0, async (instance, params, source, cancel) => {
+    modals.add(new api.ODModalResponder("ot-ticket-forms:questions-modal", /^ot-ticket-forms:qm_/));
+    openticket.responders.modals.get("ot-ticket-forms:questions-modal").workers.add(new api.ODWorker("ot-ticket-forms:questions-modal", 0, async (instance, params, source, cancel) => {
         const customIdParts = instance.interaction.customId.split("_");
         const formId = customIdParts[1];
         const form = forms.get(formId);
@@ -282,8 +276,8 @@ openticket.events.get("onDropdownResponderLoad").listen((dropdowns, responders, 
     /* QUESTION DROPDOWN RESPONDER
      * This dropdown is used to answer questions of a form. It can be used for multiple choice questions.
      */
-    dropdowns.add(new api.ODDropdownResponder("ot-forms:question-dropdown", /^ot-forms:qd_/));
-    openticket.responders.dropdowns.get("ot-forms:question-dropdown").workers.add(new api.ODWorker("ot-forms:question-dropdown", 0, async (instance, params, source, cancel) => {
+    dropdowns.add(new api.ODDropdownResponder("ot-ticket-forms:question-dropdown", /^ot-ticket-forms:qd_/));
+    openticket.responders.dropdowns.get("ot-ticket-forms:question-dropdown").workers.add(new api.ODWorker("ot-ticket-forms:question-dropdown", 0, async (instance, params, source, cancel) => {
         const customIdParts = instance.interaction.customId.split("_");
         const formId = customIdParts[1];
         const form = forms.get(formId);

@@ -1,0 +1,91 @@
+[
+    {
+        "id":"example-form-1",
+        "name":"Example Form 1",
+        "description":"This is an example form",
+        "color":"#f8ba00",
+        
+        "responseChannel":"1266481974453997600",
+        "autoSendOptionIds":["example-ticket"],
+        
+        "questions":[
+            {
+                "position":1,
+                "question":"Hi there! How is it going with you? abcdefg",
+                "type":"short",
+                "optional":false,
+                "placeholder":"Single line response, no paragraphs allowed."
+            },
+            {
+                "position":2,
+                "question":"Hi there! How is it going with you?",
+                "type":"paragraph",
+                "optional":false,
+                "placeholder":"Multi line response, paragraphs allowed."
+            },
+            {
+                "position":3,
+                "question":"This is an example of a dropdown/select menu question.",
+                "type":"dropdown",
+                
+                "placeholder": "You can only select one option from the dropdown",
+                "minAnswerChoices":1,
+                "maxAnswerChoices":1,
+                "choices":[
+                    {
+                        "name":"This is the first choice.",
+                        "emoji":"🍺",
+                        "description":"description 1"
+                    },
+                    {
+                        "name":"This is the second choice.",
+                        "emoji":"🍺",
+                        "description":"description 2"
+                    }
+                ]
+            },
+            {
+                "position":4,
+                "question":"This is an example of a question with buttons.",
+                "type":"button",
+                
+                "choices":[
+                    {
+                        "name":"This is a button choice.",
+                        "emoji":"🍺",
+                        "color": "gray"
+                    },
+                    {
+                        "name":"Another button.",
+                        "emoji":"🍺",
+                        "color":"blue"
+                    },
+                    {
+                        "name":"And another button.",
+                        "emoji":"🍺",
+                        "color":"red"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id":"example-form-2",
+        "name":"Example Form 2",
+        "description":"You can add as many forms as you want. (or leave this empty)",
+        "color":"#f8ba00",
+        
+        "responseChannel":"1266481974453997600",
+        "autoSendOptionIds":[],
+        
+        "questions":[
+            {
+                "position":1,
+                "question":"Question Nr1",
+                "type":"paragraph",
+                "optional":false,
+                "placeholder":"the placeholder"
+            }      
+        ]
+    }
+]

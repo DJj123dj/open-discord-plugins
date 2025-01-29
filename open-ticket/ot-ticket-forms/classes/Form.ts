@@ -30,15 +30,15 @@ export class OTForms_Form {
 
         // Calculate total sections
         this.totalSections = 0;
-        let lastQuestionType: "short" | "long" | "dropdown" | "button" | undefined;
+        let lastQuestionType: "short" | "paragraph" | "dropdown" | "button" | undefined;
         let typeTextCount = 1;
         questions.forEach((question) => {
-            if (question.type !== "short" && question.type !== "long") {
-                // If it's not type text ("short" or "long"), it counts as a section
+            if (question.type !== "short" && question.type !== "paragraph") {
+                // If it's not type text ("short" or "paragraph"), it counts as a section
                 this.totalSections++;
             } else {
                 // If it's type text, it only counts as a section if the last question wasn't text
-                if (typeTextCount === 5 || (lastQuestionType !== "short" && lastQuestionType !== "long")) {
+                if (typeTextCount === 5 || (lastQuestionType !== "short" && lastQuestionType !== "paragraph")) {
                     this.totalSections++;
                     typeTextCount = 1;
                 } else {
@@ -76,7 +76,7 @@ export class OTForms_Form {
      * Generates a new session id.
      */
     private generateSessionId(): string {
-        return `ot-forms:session-${this.sessionCounter++}`;
+        return `ot-ticket-forms:session-${this.sessionCounter++}`;
     }
 
     /* GET SESSION

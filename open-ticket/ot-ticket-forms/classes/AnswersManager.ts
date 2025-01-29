@@ -22,7 +22,7 @@ export class OTForms_AnswersManager {
     private _formColor: discord.ColorResolvable;
     private _answers: { question: OTForms_Question, answer: string | null }[];
     private _currentPage: number = 1;
-    private timestamp: number = Date.now();
+    private timestamp: Date = new Date();
 
     constructor(formId: string, sessionId: string, source: "button" | "other", type: "initial" | "partial" | "completed", user: discord.User, formColor: discord.ColorResolvable, answers: { question: OTForms_Question, answer: string | null }[]) {
         this.formId = formId;
@@ -83,7 +83,7 @@ export class OTForms_AnswersManager {
     async sendMessage(channel: discord.GuildTextBasedChannel, pageNumber: number = this._currentPage): Promise<void> {
         if(this.pages.length === 0) return;
         this._currentPage = pageNumber;
-        this._message = await channel.send((await openticket.builders.messages.getSafe("ot-forms:answers-message").build(this.source, { formId: this.formId, sessionId: this.sessionId, type: this._type, currentPageNumber: pageNumber, totalPages: this.pages.length, currentPage: this.pages[pageNumber - 1] })).message);
+        this._message = await channel.send((await openticket.builders.messages.getSafe("ot-ticket-forms:answers-message").build(this.source, { formId: this.formId, sessionId: this.sessionId, type: this._type, currentPageNumber: pageNumber, totalPages: this.pages.length, currentPage: this.pages[pageNumber - 1] })).message);
         const message = this._message;
         if(!message) return;
         OTForms_AnswersManager._instances.set(message.id, this);
@@ -96,7 +96,7 @@ export class OTForms_AnswersManager {
     async editMessage(pageNumber: number = this._currentPage): Promise<void> {
         if(!this._message) return;
         this._currentPage = pageNumber;
-        await this._message.edit((await openticket.builders.messages.getSafe("ot-forms:answers-message").build(this.source, { formId: this.formId, sessionId: this.sessionId, type: this._type, currentPageNumber: pageNumber, totalPages: this.pages.length, currentPage: this.pages[pageNumber - 1] })).message);
+        await this._message.edit((await openticket.builders.messages.getSafe("ot-ticket-forms:answers-message").build(this.source, { formId: this.formId, sessionId: this.sessionId, type: this._type, currentPageNumber: pageNumber, totalPages: this.pages.length, currentPage: this.pages[pageNumber - 1] })).message);
         await this.save();
     }
 
@@ -125,7 +125,7 @@ export class OTForms_AnswersManager {
             fields.push({ name: fieldName, value: `\`\`\`${fieldValue}\`\`\``, inline: false });
 
             // Creates a new embed with the new field
-            currentEmbedStructure = await openticket.builders.embeds.getSafe("ot-forms:answers-embed").build(source, { type, user, formColor, fields, timestamp: this.timestamp });
+            currentEmbedStructure = await openticket.builders.embeds.getSafe("ot-ticket-forms:answers-embed").build(source, { type, user, formColor, fields, timestamp: this.timestamp });
             currentEmbed = currentEmbedStructure.embed;
             if(!currentEmbed) return embeds;
             // Checks the size of the new embed
@@ -136,7 +136,7 @@ export class OTForms_AnswersManager {
             // If the total size exceeds the 6000 characters limit or the fields are more than 25, creates a new embed
             if (newEmbedSize > MAX_EMBED_SIZE || embedFields.length >= MAX_EMBED_FIELDS) {
                 fields.pop();
-                currentEmbedStructure = await openticket.builders.embeds.getSafe("ot-forms:answers-embed").build(source, { type, user, formColor, fields, timestamp: this.timestamp });
+                currentEmbedStructure = await openticket.builders.embeds.getSafe("ot-ticket-forms:answers-embed").build(source, { type, user, formColor, fields, timestamp: this.timestamp });
                 embeds.push(currentEmbedStructure);
                 fields = [{ name: fieldName, value: `\`\`\`${fieldValue}\`\`\`` }];
             }
@@ -144,7 +144,7 @@ export class OTForms_AnswersManager {
   
         // Adds the last embed
         if (fields.length > 0) {
-            currentEmbedStructure = await openticket.builders.embeds.getSafe("ot-forms:answers-embed").build(source, { type, user, formColor, fields, timestamp: this.timestamp });
+            currentEmbedStructure = await openticket.builders.embeds.getSafe("ot-ticket-forms:answers-embed").build(source, { type, user, formColor, fields, timestamp: this.timestamp });
             embeds.push(currentEmbedStructure);
         }
     
@@ -177,13 +177,13 @@ export class OTForms_AnswersManager {
             formColor: this._formColor,
             answers: this._answers,
             currentPage: this._currentPage,
-            timestamp: this.timestamp
+            timestamp: this.timestamp.getTime()
         };
 
         const channelId = this._message ? this._message.channel.id : null;
         const messageId = this._message ? this._message.id : null;
 
-        openticket.databases.get("openticket:global").set("ot-forms:answers-manager", `${channelId}_${messageId}`, data);
+        openticket.databases.get("openticket:global").set("ot-ticket-forms:answers-manager", `${channelId}_${messageId}`, data);
     }
 
     /* restore
@@ -191,7 +191,7 @@ export class OTForms_AnswersManager {
      */
     static async restore(): Promise<void> {
         const globalDatabase = openticket.databases.get("openticket:global")
-        const answersManagerCategory = await globalDatabase.getCategory("ot-forms:answers-manager") ?? [];
+        const answersManagerCategory = await globalDatabase.getCategory("ot-ticket-forms:answers-manager") ?? [];
 
         for (const answersManagerData of answersManagerCategory) {
             const data: {
@@ -227,7 +227,7 @@ export class OTForms_AnswersManager {
                 openticket.log("Channel not found for restoring answers manager. Form answers will not be restored.", "plugin", [
                     {key:"channel", value:channelId}
                 ]);
-                globalDatabase.delete("ot-forms:answers-manager", `${channelId}_${messageId}`);
+                globalDatabase.delete("ot-ticket-forms:answers-manager", `${channelId}_${messageId}`);
                 return;
             }
             if(!channel || !channel.isTextBased()) {
@@ -248,7 +248,7 @@ export class OTForms_AnswersManager {
                 openticket.log("Message not found for restoring answers manager. Form answers will not be restored.", "plugin", [
                     {key:"message", value:messageId}
                 ]);
-                globalDatabase.delete("ot-forms:answers-manager", `${channelId}_${messageId}`);
+                globalDatabase.delete("ot-ticket-forms:answers-manager", `${channelId}_${messageId}`);
                 return;
             }
 
@@ -261,7 +261,7 @@ export class OTForms_AnswersManager {
 
             const answersManager = new OTForms_AnswersManager(formId, sessionId, source, type, user, formColor, answers);
             answersManager._currentPage = currentPage;
-            answersManager.timestamp = data.timestamp;
+            answersManager.timestamp = new Date(data.timestamp);
             answersManager._message = message;
             await answersManager.render();
             OTForms_AnswersManager._instances.set(message.id, answersManager);
