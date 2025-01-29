@@ -4,6 +4,7 @@
 <a href="https://discord.com/invite/26vT9wt3n3"><img alt="Discord Invite Link" src="https://img.shields.io/badge/discord-support%20server-5865F2.svg?style=flat-square&logo=discord"></img></a>
 <a href="https://github.com/DJj123dj/open-discord-plugins/blob/main/LICENSE"><img alt="Open Discord Plugins License" src="https://img.shields.io/badge/license-MIT-important.svg?style=flat-square"></img></a>
 <a href="https://discord.dj-dj.be"><img alt="Open Discord Plugins Stars" src="https://img.shields.io/github/stars/djj123dj/open-discord-plugins?color=yellow&label=stars&logo=github&style=flat-square"></img></a>
+<a href="https://github.com/sponsors/DJj123dj"><img alt="Sponsor DJj123dj" src="https://img.shields.io/badge/sponsor-DJj123dj-ea4aaa?style=flat-square&logo=githubsponsors"></img></a>
 </p>
 
 <p align="center">
@@ -31,7 +32,7 @@ All plugins are checked for malicious code, bugs & errors before being listed he
 > [`ot-migrate-v3`](https://github.com/DJj123dj/open-discord-plugins/tree/main/open-ticket/ot-migrate-v3/),
 > [`ot-reviews`](https://github.com/DJj123dj/open-discord-plugins/tree/main/open-ticket/ot-reviews/),
 > [`ot-feedback`](https://github.com/DJj123dj/open-discord-plugins/tree/main/open-ticket/ot-feedback/),
-> [`ot-customise-buttons`](https://github.com/DJj123dj/open-discord-plugins/tree/main/open-ticket/ot-customise-buttons/)**
+> [`ot-tags`](https://github.com/DJj123dj/open-discord-plugins/tree/main/open-ticket/ot-tags/)**
 
 ### 📦 Official *(made by DJdj Development)*
 |Name                                                                  |Category                    |Description              |
@@ -49,18 +50,22 @@ All plugins are checked for malicious code, bugs & errors before being listed he
 |[`ot-rename-keep-prefix`](./open-ticket/ot-rename-keep-prefix/)       |🎨 Customisation            |Simple plugin to keep the channel prefix when using the /rename command. |
 |[`ot-customise-buttons`](./open-ticket/ot-customise-buttons/)         |🎨 Customisation            |Customise almost all built-in buttons. This includes the claim, reopen, close & delete buttons. |
 |[`ot-ephemeral-messages`](./open-ticket/ot-ephemeral-messages/)       |🎨 Customisation            |Customise for every messages if it needs to be ephemeral or not. |
+|[`ot-footers`](./open-ticket/ot-footers/)                             |🎨 Customisation            |A simple plugin to add footers in all Open Ticket embeds. |
 |[`ot-alt-detector`](./open-ticket/ot-alt-detector/)                   |💼 Management               |Use the discord-alt-detector npm package by DJdj Development in your ticket bot. |
 |[`ot-embeds`](./open-ticket/ot-embeds/)                               |💼 Management               |Create custom premade embeds in the config or use the command to create one from scratch. |
 |[`ot-move-actions`](./open-ticket/ot-move-actions/)                   |💼 Management               |Automatically unclaim/unpin a ticket when it's moved using `/move`. |
 |[`ot-reviews`](./open-ticket/ot-reviews/)                             |💼 Management               |Review system for Open Ticket! It is very customisable and has lots of features. |
+|[`ot-tags`](./open-ticket/ot-tags/)                                   |💼 Management               |Use tags to quickly reply with a pre-existing text. |
 |[`ot-better-status`](./open-ticket/ot-better-status/)                 |🤖 Client                   |An advanced status plugin to rotate between states. It also allows for the use of variables. |
 
 ### ✅ Verified *(made by community)*
 |Name                                                                 |Author                      |Category                    |Description              |
 |---------------------------------------------------------------------|----------------------------|----------------------------|-------------------------|
 |[`ot-config-reload`](./open-ticket/ot-config-reload/)                |guillee.3                   |⚙️ Utility                  |This plugin adds a new command that allows reloading the Open Ticket config files without the need for a restart. |
+|[`ot-ticket-forms`](./open-ticket/ot-ticket-forms/)                  |guillee.3                   |💼 Management               |An advanced forms plugin for Open Ticket. |
 |[`ot-feedback`](./open-ticket/ot-feedback/)                          |an_developer                |💼 Management               |A plugin to gather feedback of your support service. |
 |[`ot-assign-role`](./open-ticket/ot-assign-role/)                    |rapid.fast                  |💼 Management               |This plugin assigns a predefined role to a user upon creating a ticket. |
+|[`ot-translate-cmds`](./open-ticket/ot-translate-cmds/)              |guillee.3                   |🤖 Client                  |Translate all built-in command names, descriptions & options. |
 
 ### 📢 Categories
 - **📄 Example** - These plugins serve as an example or starting template.
@@ -92,9 +97,11 @@ A big thanks to all our sponsors! Without them, it wouldn't be possible to creat
 <table>
 <tr>
 <td><img src="https://github.com/roppl3r.png" alt="Profile Picture" width="80px"></td>
+<td><img src="https://github.com/BENZORICH.png" alt="Profile Picture" width="80px"></td>
 </tr>
 <tr>
 <th><a href="https://github.com/roppl3r">roppl3r</a></th>
+<th><a href="https://github.com/BENZORICH">BENZORICH</a></th>
 </tr>
 </table>
 
@@ -111,4 +118,4 @@ A big thanks to all our sponsors! Without them, it wouldn't be possible to creat
 **README.md**<br>
 [open-ticket](https://otgithub.dj-dj.be) - [discord](https://discord.dj-dj.be)<br>
 
-© 2024 - [DJdj Development](https://www.dj-dj.be) - [Terms](https://www.dj-dj.be/terms#terms) - [Privacy Policy](https://www.dj-dj.be/terms#privacy)
+© 2025 - [DJdj Development](https://www.dj-dj.be) - [Terms](https://www.dj-dj.be/terms) - [Privacy Policy](https://www.dj-dj.be/privacy) - [Support Us](https://github.com/sponsors/DJj123dj)
