@@ -1,0 +1,23 @@
+{
+    "name":"OT Tags",
+    "id":"ot-tags",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":false,
+    "priority":0,
+    "events":["ot-tags:onTagCreated","ot-tags:onTagRemoved","ot-tags:onTagEdited","ot-tags:onTagUsed","ot-tags:onAutoTagTriggered"],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"Use tags to quickly reply with a pre-existing text!",
+        "longDescription":"Use tags to quickly reply with a pre-existing text! Or let the bot answer automatically based on keywords.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["tags","auto-answer","keywords","utility"]
+    }
+}
