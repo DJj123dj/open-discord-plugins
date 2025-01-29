@@ -3,6 +3,9 @@ import discord from "discord.js";
 import { ODJsonConfig_DefaultForms, OTForms_Question, OTForms_ButtonQuestion, OTForms_DropdownQuestion, OTForms_ModalQuestion, OTForms_DropdownChoice, OTForms_ButtonChoice } from "./configDefaults";
 
 declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-ticket-forms":api.ODPlugin
+    }
     export interface ODConfigManagerIds_Default {
         "ot-ticket-forms:config":ODJsonConfig_DefaultForms
     }
