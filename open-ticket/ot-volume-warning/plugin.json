@@ -1,0 +1,23 @@
+{
+    "name":"OT Volume Warning",
+    "id":"ot-volume-warning",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"guillee.3",
+        "shortDescription":"Alerts ticket creators when too many tickets are open, indicating possible response delays.",
+        "longDescription":"This plugin detects high ticket volumes and notifies users about potential response delays, ensuring transparency and better communication.",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["alert","ticket","delay","response","time"]
+    }
+}

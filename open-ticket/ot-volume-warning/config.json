@@ -1,0 +1,23 @@
+{
+    "openTicketsWarningLimit":3,
+
+    "customMessage": {
+        "enabled":false,
+        "ping":false,
+        "text":"Text (or leave it empty)",
+        "embed":{
+            "enabled":true,
+            "title":"Title (or leave it empty)",
+            "titleEmoji":"📢 (or leave it empty)",
+            "description":"Description (or leave it empty)",
+            "customColor":"#f8ba00 (or leave it empty)",
+            
+            "image":"https://www.example.com/image.png (or leave empty)",
+            "thumbnail":"https://www.example.com/image.png (or leave empty)",
+            "fields":[
+                {"name":"field name","value":"field value","inline":false}
+            ],
+            "timestamp":true
+        }
+    }
+}
