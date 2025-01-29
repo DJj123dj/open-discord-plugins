@@ -1,0 +1,23 @@
+{
+    "name":"OT Footers",
+    "id":"ot-footers",
+    "version":"1.0.0",
+    "startFile":"index.ts",
+
+    "enabled":true,
+    "priority":0,
+    "events":[],
+
+    "npmDependencies":[],
+    "requiredPlugins":[],
+    "incompatiblePlugins":[],
+
+    "details":{
+        "author":"DJj123dj",
+        "shortDescription":"A simple plugin to add footers in all Open Ticket embeds!",
+        "longDescription":"A simple plugin to add footers in all Open Ticket embeds. This also includes panels & ticket messages!",
+        "imageUrl":"",
+        "projectUrl":"",
+        "tags":["footer","customisability","embeds"]
+    }
+}

@@ -1,0 +1,51 @@
+{
+    "generalFooter":{
+        "enabled":false,
+        "includePluginEmbeds":true,
+        "footer":"Example Footer Text",
+        "footerImage":"https://www.example.com/image.png (or leave empty)"
+    },
+    "dmLogsFooter":{
+        "enabled":false,
+        "footer":"Example Footer Text",
+        "footerImage":"https://www.example.com/image.png (or leave empty)"
+    },
+    "logsFooter":{
+        "enabled":false,
+        "footer":"Example Footer Text",
+        "footerImage":"https://www.example.com/image.png (or leave empty)"
+    },
+    "errorFooter":{
+        "enabled":false,
+        "footer":"Example Footer Text",
+        "footerImage":"https://www.example.com/image.png (or leave empty)"
+    },
+    "panelFooterImages":[
+        {
+            "id":"<valid-panel-id-1>",
+            "panelFooter":"Example Footer Text", 
+            "panelFooterImage":"https://www.example.com/image.png (or leave empty)"
+        },
+        {
+            "id":"<valid-panel-id-2>",
+            "panelFooter":"Example Footer Text", 
+            "panelFooterImage":"https://www.example.com/image.png (or leave empty)"
+        }
+    ],
+    "optionFooterImages":[
+        {
+            "id":"<valid-option-id-1>",
+            "ticketFooter":"Example Footer Text", 
+            "ticketFooterImage":"https://www.example.com/image.png (or leave empty)",
+            "dmFooter":"Example Footer Text", 
+            "dmFooterImage":"https://www.example.com/image.png (or leave empty)"
+        },
+        {
+            "id":"<valid-option-id-2>",
+            "ticketFooter":"Example Footer Text", 
+            "ticketFooterImage":"https://www.example.com/image.png (or leave empty)",
+            "dmFooter":"Example Footer Text", 
+            "dmFooterImage":"https://www.example.com/image.png (or leave empty)"
+        }
+    ]
+}
