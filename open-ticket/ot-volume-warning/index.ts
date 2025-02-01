@@ -5,7 +5,7 @@ if (utilities.project != "openticket") throw new api.ODPluginError("This plugin 
 //DECLARATION
 class OTVolumeWarningConfig extends api.ODJsonConfig {
     declare data: {
-        openTicketsWarningLimit: number,
+        amountOfTicketsBeforeWarning: number,
         customMessage: {
             enabled: boolean,
             ping: boolean,
@@ -40,20 +40,20 @@ declare module "#opendiscord-types" {
         "ot-volume-warning:config":api.ODChecker;
     }
     export interface ODMessageManagerIds_Default {
-        "ot-volume-warning:delay-warning-message":{source:"ticket"|"other",params:{userId:string},workers:"ot-volume-warning:delay-warning-message"},
+        "ot-volume-warning:delay-warning-message":{source:"ticket"|"other",params:{user:discord.User},workers:"ot-volume-warning:delay-warning-message"},
     }
     export interface ODEmbedManagerIds_Default {
-        "ot-volume-warning:delay-warning-embed":{source:"ticket"|"other",params:{custom:boolean},workers:"ot-volume-warning:delay-warning-embed"},
+        "ot-volume-warning:delay-warning-embed":{source:"ticket"|"other",params:{user:discord.User,custom:boolean},workers:"ot-volume-warning:delay-warning-embed"},
     }
 }
 
-// REGISTER CONFIG
+//REGISTER CONFIG
 openticket.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTVolumeWarningConfig("ot-volume-warning:config","config.json","./plugins/ot-volume-warning/"));
 })
 
 const delayWarningConfigStructure = new api.ODCheckerObjectStructure("ot-volume-warning:config",{children:[
-    {key:"openTicketsWarningLimit",optional:false,priority:0,checker:new api.ODCheckerNumberStructure("ot-volume-warning:warning-limit",{min:0})},
+    {key:"amountOfTicketsBeforeWarning",optional:false,priority:0,checker:new api.ODCheckerNumberStructure("ot-volume-warning:limit",{min:0,floatAllowed:false,negativeAllowed:false,zeroAllowed:true})},
 
     {key:"customMessage",optional:false,priority:0,checker:new api.ODCheckerEnabledObjectStructure("ot-volume-warning:customMessage",{property:"enabled",enabledValue:true,checker:new api.ODCheckerObjectStructure("ot-volume-warning:customMessage",{children:[
         {key:"ping",optional:false,priority:0,checker:new api.ODCheckerBooleanStructure("ot-volume-warning:ping",{})},
@@ -78,7 +78,7 @@ const delayWarningConfigStructure = new api.ODCheckerObjectStructure("ot-volume-
     ]})})}
 ]});
 
-// REGISTER CONFIG CHECKER
+//REGISTER CONFIG CHECKER
 openticket.events.get("onCheckerLoad").listen((checkers) => {
     const config = openticket.configs.get("ot-volume-warning:config")
     checkers.add(new api.ODChecker("ot-volume-warning:config",checkers.storage,0,config,delayWarningConfigStructure))
@@ -86,29 +86,29 @@ openticket.events.get("onCheckerLoad").listen((checkers) => {
 
 //REGISTER EMBED BUILDER
 openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
+    const generalConfig = openticket.configs.get("openticket:general")
+    const config = openticket.configs.get("ot-volume-warning:config")
+
     embeds.add(new api.ODEmbed("ot-volume-warning:delay-warning-embed"))
     embeds.get("ot-volume-warning:delay-warning-embed").workers.add(
         new api.ODWorker("ot-volume-warning:delay-warning-embed",0,(instance,params,source,cancel) => {
             const { custom } = params;
 
             if(!custom) {
-                const titleText = "Increased Response Times"
-                const embedColor = openticket.configs.get("openticket:general").data.mainColor
+                const titleText = utilities.emojiTitle("⏳","Increased Response Times")
+                const embedColor = generalConfig.data.mainColor
                 const description = "We are currently experiencing a high ticket demand. This may result in longer response times than usual.\nWe appreciate your patience and will assist you as soon as possible."
             
                 instance.setTitle(titleText)
                 instance.setColor(embedColor)
                 instance.setDescription(description)
             } else {
-                const config = openticket.configs.get("ot-volume-warning:config").data.customMessage.embed;
-                const { title, titleEmoji, description, customColor, image, thumbnail, fields, timestamp } = config;
+                const { title, titleEmoji, description, customColor, image, thumbnail, fields, timestamp } = config.data.customMessage.embed
         
                 if(titleEmoji) instance.setTitle(utilities.emojiTitle(titleEmoji,title))
                 else instance.setTitle(title)
 
-                let color = customColor;
-                if(!customColor) color = openticket.configs.get("openticket:general").data.mainColor;
-                instance.setColor(color)
+                instance.setColor(customColor ? customColor : generalConfig.data.mainColor)
 
                 if(description) instance.setDescription(description)
                 if(image) instance.setImage(image)
@@ -122,31 +122,35 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
 
 //REGISTER MESSAGE BUILDER
 openticket.events.get("onMessageBuilderLoad").listen((messages) => {
+    const config = openticket.configs.get("ot-volume-warning:config")
+
     messages.add(new api.ODMessage("ot-volume-warning:delay-warning-message"))
     messages.get("ot-volume-warning:delay-warning-message").workers.add(
         new api.ODWorker("ot-volume-warning:delay-warning-message",0,async (instance,params,source,cancel) => {
-            const { userId } = params
-            const customMessage = openticket.configs.get("ot-volume-warning:config").data.customMessage;
+            const { user } = params
+
+            const customMessage = config.data.customMessage;
             if(customMessage.enabled) {
-                const content = `${customMessage.ping ? `${discord.userMention(userId)} ` : ""}${customMessage.text}`;
+                //custom message
+                const content = `${customMessage.ping ? `${discord.userMention(user.id)} ` : ""}${customMessage.text}`;
                 if(content) instance.setContent(content);
-                if(customMessage.embed.enabled) instance.addEmbed(await openticket.builders.embeds.getSafe("ot-volume-warning:delay-warning-embed").build(source,{custom:true}));
-            } else {
-                instance.addEmbed(await openticket.builders.embeds.getSafe("ot-volume-warning:delay-warning-embed").build(source,{custom:false}));
+                if(customMessage.embed.enabled) instance.addEmbed(await openticket.builders.embeds.getSafe("ot-volume-warning:delay-warning-embed").build(source,{user,custom:true}));
+            
+            }else{
+                //pre-made message
+                instance.addEmbed(await openticket.builders.embeds.getSafe("ot-volume-warning:delay-warning-embed").build(source,{user,custom:false}));
             }
         })
     )
 })
 
-//REGISTER TICKET
+//LISTEN FOR TICKET CREATION
 openticket.events.get("afterTicketCreated").listen(async (ticket, creator, channel) => {
-    const config = openticket.configs.get("ot-volume-warning:config").data;
-    const openTicketsWarningLimit = config.openTicketsWarningLimit;
-    const openTickets = openticket.tickets.getFiltered((ticket) => !ticket.get("openticket:closed").value).length;
-    const userId = creator.id;
-
-    if(openTickets >= openTicketsWarningLimit) {
-        const messageTemplate = await openticket.builders.messages.getSafe("ot-volume-warning:delay-warning-message").build("ticket",{userId});
+    const config = openticket.configs.get("ot-volume-warning:config")
+    
+    const currentlyOpenTickets = openticket.tickets.getFiltered((ticket) => !ticket.get("openticket:closed").value).length;
+    if(currentlyOpenTickets >= config.data.amountOfTicketsBeforeWarning) {
+        const messageTemplate = await openticket.builders.messages.getSafe("ot-volume-warning:delay-warning-message").build("ticket",{user:creator});
         await channel.send(messageTemplate.message);
     }
 })

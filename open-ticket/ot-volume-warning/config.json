@@ -1,5 +1,5 @@
 {
-    "openTicketsWarningLimit":3,
+    "amountOfTicketsBeforeWarning":10,
 
     "customMessage": {
         "enabled":false,
