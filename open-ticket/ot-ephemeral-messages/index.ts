@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
@@ -55,13 +55,13 @@ declare module "#opendiscord-types" {
 }
 
 //REGISTER CONFIG
-openticket.events.get("onConfigLoad").listen((configs) => {
+opendiscord.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTEphemeralMessagesConfig("ot-ephemeral-messages:config","config.json","./plugins/ot-ephemeral-messages/"))
 })
 
 //REGISTER CONFIG CHECKER
-openticket.events.get("onCheckerLoad").listen((checkers) => {
-    const config = openticket.configs.get("ot-ephemeral-messages:config")
+opendiscord.events.get("onCheckerLoad").listen((checkers) => {
+    const config = opendiscord.configs.get("ot-ephemeral-messages:config")
     const structure = new api.ODCheckerObjectStructure("ot-ephemeral-messages:config",{children:[
         {key:"ticketCreatedEphemeral",optional:false,priority:0,checker:new api.ODCheckerBooleanStructure("ot-ephemeral-messages:ephemeral",{})},
         {key:"ticketClosedEphemeral",optional:false,priority:0,checker:new api.ODCheckerBooleanStructure("ot-ephemeral-messages:ephemeral",{})},
@@ -103,148 +103,148 @@ openticket.events.get("onCheckerLoad").listen((checkers) => {
 })
 
 //EDIT MESSAGES
-openticket.events.get("afterMessageBuildersLoaded").listen((messages) => {
-    const config = openticket.configs.get("ot-ephemeral-messages:config")
+opendiscord.events.get("afterMessageBuildersLoaded").listen((messages) => {
+    const config = opendiscord.configs.get("ot-ephemeral-messages:config")
 
     //ticket created (reply)
-    messages.get("openticket:ticket-created").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:ticket-created").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.ticketCreatedEphemeral)
     }))
 
     //ticket close message
-    messages.get("openticket:close-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:close-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.ticketClosedEphemeral)
     }))
 
     //ticket reopen message
-    messages.get("openticket:reopen-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:reopen-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.ticketReopenedEphemeral)
     }))
 
     //ticket delete message
-    messages.get("openticket:delete-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:delete-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.ticketDeletedEphemeral)
     }))
 
     //ticket claim message
-    messages.get("openticket:claim-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:claim-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.ticketClaimedEphemeral)
     }))
 
     //ticket unclaim message
-    messages.get("openticket:unclaim-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:unclaim-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.ticketUnclaimedEphemeral)
     }))
 
     //ticket pin message
-    messages.get("openticket:pin-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:pin-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.ticketPinnedEphemeral)
     }))
 
     //ticket unpin message
-    messages.get("openticket:unpin-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:unpin-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.ticketUnpinnedEphemeral)
     }))
 
     //ticket move message
-    messages.get("openticket:move-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:move-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.ticketMovedEphemeral)
     }))
 
     //ticket rename message
-    messages.get("openticket:rename-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:rename-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.ticketRenamedEphemeral)
     }))
 
     //ticket add message
-    messages.get("openticket:add-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:add-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.ticketUserAddedEphemeral)
     }))
 
     //ticket remove message
-    messages.get("openticket:remove-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:remove-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.ticketUserRemovedEphemeral)
     }))
 
     //help menu
-    messages.get("openticket:help-menu").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:help-menu").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.helpEphemeral)
     }))
 
     //clear command
-    messages.get("openticket:clear-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:clear-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.clearEphemeral)
     }))
 
     //stats global command
-    messages.get("openticket:stats-global").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:stats-global").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.statsGlobalEphemeral)
     }))
 
     //stats user command
-    messages.get("openticket:stats-user").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:stats-user").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.statsUserEphemeral)
     }))
 
     //stats ticket command
-    messages.get("openticket:stats-ticket").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:stats-ticket").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.statsTicketEphemeral)
     }))
 
     //blacklist view command
-    messages.get("openticket:blacklist-view").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:blacklist-view").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.blacklistViewEphemeral)
     }))
 
     //blacklist get command
-    messages.get("openticket:blacklist-get").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:blacklist-get").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.blacklistGetEphemeral)
     }))
 
     //blacklist add command
-    messages.get("openticket:blacklist-add").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:blacklist-add").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.blacklistAddEphemeral)
     }))
 
     //blacklist remove command
-    messages.get("openticket:blacklist-remove").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:blacklist-remove").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.blacklistRemoveEphemeral)
     }))
 
     //autoclose enabled command
-    messages.get("openticket:autoclose-enable").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:autoclose-enable").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.autocloseEnabledEphemeral)
     }))
 
     //autoclose disabled command
-    messages.get("openticket:autoclose-disable").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:autoclose-disable").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.autocloseDisabledEphemeral)
     }))
 
     //autodelete enabled command
-    messages.get("openticket:autodelete-enable").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:autodelete-enable").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.autodeleteEnabledEphemeral)
     }))
 
     //autodelete disabled command
-    messages.get("openticket:autodelete-disable").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+    messages.get("opendiscord:autodelete-disable").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
         instance.setEphemeral(config.data.autodeleteDisabledEphemeral)
     }))
 
     //PLUGIN INTEGRATIONS
-    if (openticket.plugins.isPluginLoaded("ot-config-reload")){
+    if (opendiscord.plugins.isPluginLoaded("ot-config-reload")){
         //OT Config Reload
         messages.get("ot-config-reload:config-reload-result").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
             instance.setEphemeral(config.data.pluginIntegrations["OTConfigReload_reloadEphemeral"])
         }))
     }
-    if (openticket.plugins.isPluginLoaded("ot-jump-to-top")){
+    if (opendiscord.plugins.isPluginLoaded("ot-jump-to-top")){
         //OT Jump To Top
         messages.get("ot-jump-to-top:top-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
             instance.setEphemeral(config.data.pluginIntegrations["OTJumpToTop_topEphemeral"])
         }))
     }
-    if (openticket.plugins.isPluginLoaded("ot-kill-switch")){
+    if (opendiscord.plugins.isPluginLoaded("ot-kill-switch")){
         //OT Kill Switch
         messages.get("ot-kill-switch:kill-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
             instance.setEphemeral(config.data.pluginIntegrations["OTKillSwitch_killEphemeral"])
@@ -254,52 +254,52 @@ openticket.events.get("afterMessageBuildersLoaded").listen((messages) => {
 
 
 //EDIT RESPONDERS (to support ephemeral when using deferReply())
-openticket.events.get("afterCommandRespondersLoaded").listen((commands) => {
-    const config = openticket.configs.get("ot-ephemeral-messages:config")
+opendiscord.events.get("afterCommandRespondersLoaded").listen((commands) => {
+    const config = opendiscord.configs.get("ot-ephemeral-messages:config")
 
-    commands.get("openticket:ticket").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:ticket").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.ticketCreatedEphemeral) await instance.defer(true)
     }))
 
     //primary ticket actions
-    commands.get("openticket:close").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:close").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.ticketClosedEphemeral) await instance.defer(true)
     }))
-    commands.get("openticket:reopen").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:reopen").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.ticketReopenedEphemeral) await instance.defer(true)
     }))
-    commands.get("openticket:delete").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:delete").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.ticketDeletedEphemeral) await instance.defer(true)
     }))
-    commands.get("openticket:claim").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:claim").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.ticketClaimedEphemeral) await instance.defer(true)
     }))
-    commands.get("openticket:unclaim").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:unclaim").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.ticketUnclaimedEphemeral) await instance.defer(true)
     }))
-    commands.get("openticket:pin").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:pin").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.ticketPinnedEphemeral) await instance.defer(true)
     }))
-    commands.get("openticket:unpin").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:unpin").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.ticketUnpinnedEphemeral) await instance.defer(true)
     }))
 
     //other ticket actions
-    commands.get("openticket:move").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:move").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.ticketMovedEphemeral) await instance.defer(true)
     }))
-    commands.get("openticket:rename").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:rename").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.ticketRenamedEphemeral) await instance.defer(true)
     }))
-    commands.get("openticket:add").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:add").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.ticketUserAddedEphemeral) await instance.defer(true)
     }))
-    commands.get("openticket:remove").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:remove").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.ticketUserRemovedEphemeral) await instance.defer(true)
     }))
 
     //clear command
-    commands.get("openticket:clear").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
+    commands.get("opendiscord:clear").workers.add(new api.ODWorker("ot-ephemeral-messages:defer-ephemeral",2,async (instance,params,source,cancel) => {
         if (config.data.clearEphemeral) await instance.defer(true)
     }))
 })

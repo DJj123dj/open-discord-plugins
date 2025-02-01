@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
@@ -48,7 +48,7 @@ declare module "#opendiscord-types" {
 }
 
 //REGISTER CONFIG
-openticket.events.get("onConfigLoad").listen((configs) => {
+opendiscord.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTVolumeWarningConfig("ot-volume-warning:config","config.json","./plugins/ot-volume-warning/"));
 })
 
@@ -68,7 +68,7 @@ const delayWarningConfigStructure = new api.ODCheckerObjectStructure("ot-volume-
             {key:"image",optional:false,priority:0,checker:new api.ODCheckerCustomStructure_UrlString("ot-volume-warning:embed-image",true,{allowHttp:false,allowedExtensions:[".png",".jpg",".jpeg",".webp",".gif"]})},
             {key:"thumbnail",optional:false,priority:0,checker:new api.ODCheckerCustomStructure_UrlString("ot-volume-warning:embed-thumbnail",true,{allowHttp:false,allowedExtensions:[".png",".jpg",".jpeg",".webp",".gif"]})},
             
-            {key:"fields",optional:false,priority:0,checker:new api.ODCheckerArrayStructure("ot-volume-warning:embed-fields",{allowedTypes:["object"],propertyChecker:new api.ODCheckerObjectStructure("openticket:panel-embed-fields",{children:[
+            {key:"fields",optional:false,priority:0,checker:new api.ODCheckerArrayStructure("ot-volume-warning:embed-fields",{allowedTypes:["object"],propertyChecker:new api.ODCheckerObjectStructure("opendiscord:panel-embed-fields",{children:[
                 {key:"name",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-volume-warning:embed-field-name",{minLength:1,maxLength:256})},
                 {key:"value",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-volume-warning:embed-field-value",{minLength:1,maxLength:1024})},
                 {key:"inline",optional:false,priority:0,checker:new api.ODCheckerBooleanStructure("ot-volume-warning:embed-field-inline",{})}
@@ -79,15 +79,15 @@ const delayWarningConfigStructure = new api.ODCheckerObjectStructure("ot-volume-
 ]});
 
 //REGISTER CONFIG CHECKER
-openticket.events.get("onCheckerLoad").listen((checkers) => {
-    const config = openticket.configs.get("ot-volume-warning:config")
+opendiscord.events.get("onCheckerLoad").listen((checkers) => {
+    const config = opendiscord.configs.get("ot-volume-warning:config")
     checkers.add(new api.ODChecker("ot-volume-warning:config",checkers.storage,0,config,delayWarningConfigStructure))
 })
 
 //REGISTER EMBED BUILDER
-openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
-    const generalConfig = openticket.configs.get("openticket:general")
-    const config = openticket.configs.get("ot-volume-warning:config")
+opendiscord.events.get("onEmbedBuilderLoad").listen((embeds) => {
+    const generalConfig = opendiscord.configs.get("opendiscord:general")
+    const config = opendiscord.configs.get("ot-volume-warning:config")
 
     embeds.add(new api.ODEmbed("ot-volume-warning:delay-warning-embed"))
     embeds.get("ot-volume-warning:delay-warning-embed").workers.add(
@@ -121,8 +121,8 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
 })
 
 //REGISTER MESSAGE BUILDER
-openticket.events.get("onMessageBuilderLoad").listen((messages) => {
-    const config = openticket.configs.get("ot-volume-warning:config")
+opendiscord.events.get("onMessageBuilderLoad").listen((messages) => {
+    const config = opendiscord.configs.get("ot-volume-warning:config")
 
     messages.add(new api.ODMessage("ot-volume-warning:delay-warning-message"))
     messages.get("ot-volume-warning:delay-warning-message").workers.add(
@@ -134,23 +134,23 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
                 //custom message
                 const content = `${customMessage.ping ? `${discord.userMention(user.id)} ` : ""}${customMessage.text}`;
                 if(content) instance.setContent(content);
-                if(customMessage.embed.enabled) instance.addEmbed(await openticket.builders.embeds.getSafe("ot-volume-warning:delay-warning-embed").build(source,{user,custom:true}));
+                if(customMessage.embed.enabled) instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-volume-warning:delay-warning-embed").build(source,{user,custom:true}));
             
             }else{
                 //pre-made message
-                instance.addEmbed(await openticket.builders.embeds.getSafe("ot-volume-warning:delay-warning-embed").build(source,{user,custom:false}));
+                instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-volume-warning:delay-warning-embed").build(source,{user,custom:false}));
             }
         })
     )
 })
 
 //LISTEN FOR TICKET CREATION
-openticket.events.get("afterTicketCreated").listen(async (ticket, creator, channel) => {
-    const config = openticket.configs.get("ot-volume-warning:config")
+opendiscord.events.get("afterTicketCreated").listen(async (ticket, creator, channel) => {
+    const config = opendiscord.configs.get("ot-volume-warning:config")
     
-    const currentlyOpenTickets = openticket.tickets.getFiltered((ticket) => !ticket.get("openticket:closed").value).length;
+    const currentlyOpenTickets = opendiscord.tickets.getFiltered((ticket) => !ticket.get("opendiscord:closed").value).length;
     if(currentlyOpenTickets >= config.data.amountOfTicketsBeforeWarning) {
-        const messageTemplate = await openticket.builders.messages.getSafe("ot-volume-warning:delay-warning-message").build("ticket",{user:creator});
+        const messageTemplate = await opendiscord.builders.messages.getSafe("ot-volume-warning:delay-warning-message").build("ticket",{user:creator});
         await channel.send(messageTemplate.message);
     }
 })

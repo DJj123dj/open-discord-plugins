@@ -1,4 +1,4 @@
-import { api, openticket, utilities } from "#opendiscord"
+import { api, opendiscord, utilities } from "#opendiscord"
 import discord from "discord.js"
 
 //list of supported locales

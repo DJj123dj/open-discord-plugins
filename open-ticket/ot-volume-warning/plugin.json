@@ -1,7 +1,7 @@
 {
     "name":"OT Volume Warning",
     "id":"ot-volume-warning",
-    "version":"1.0.0",
+    "version":"1.0.1",
     "startFile":"index.ts",
 
     "enabled":true,

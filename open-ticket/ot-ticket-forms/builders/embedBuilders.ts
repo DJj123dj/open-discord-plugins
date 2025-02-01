@@ -1,8 +1,8 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 
 // EMBEDS
-openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
+opendiscord.events.get("onEmbedBuilderLoad").listen((embeds) => {
     /* START FORM EMBED
      * The embed that shows the initial form message with the Answer button.
      */

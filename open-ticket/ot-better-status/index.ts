@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
@@ -117,29 +117,29 @@ export class OTBetterStatusConfig extends api.ODJsonConfig {
         }[]
     }
 }
-openticket.events.get("onConfigLoad").listen((configs) => {
+opendiscord.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTBetterStatusConfig("ot-better-status:config","config.json","./plugins/ot-better-status/"))
 })
 
 //REGISTER CONFIG CHECKER
-openticket.events.get("onCheckerLoad").listen((checkers) => {
-    checkers.add(new api.ODChecker("ot-better-status:config",checkers.storage,0,openticket.configs.get("ot-better-status:config"),betterStatusConfigStructure))
+opendiscord.events.get("onCheckerLoad").listen((checkers) => {
+    checkers.add(new api.ODChecker("ot-better-status:config",checkers.storage,0,opendiscord.configs.get("ot-better-status:config"),betterStatusConfigStructure))
 })
 
 //ACCESS PRESENCE INTENTS
-openticket.events.get("onClientLoad").listen((client) => {
+opendiscord.events.get("onClientLoad").listen((client) => {
     client.privileges.push("Presence")
     client.intents.push("GuildPresences")
 })
 
 //DISABLE DEFAULTS (disables the default status behaviour from config/general.json)
-openticket.defaults.setDefault("clientActivityLoading",false)
-openticket.defaults.setDefault("clientActivityInitiating",false)
+opendiscord.defaults.setDefault("clientActivityLoading",false)
+opendiscord.defaults.setDefault("clientActivityInitiating",false)
 
 //GET ALL ADMIN MEMBERS
 async function getAdminGuildMembers(): Promise<discord.GuildMember[]> {
-    const globalAdminIds = openticket.configs.get("openticket:general").data.globalAdmins
-    const ticketAdminIds = openticket.configs.get("openticket:options").data.filter((opt) => opt.type == "ticket").map((opt) => opt.ticketAdmins.concat(opt.readonlyAdmins))
+    const globalAdminIds = opendiscord.configs.get("opendiscord:general").data.globalAdmins
+    const ticketAdminIds = opendiscord.configs.get("opendiscord:options").data.filter((opt) => opt.type == "ticket").map((opt) => opt.ticketAdmins.concat(opt.readonlyAdmins))
 
     const finalAdminIds: string[] = [...globalAdminIds]
     ticketAdminIds.forEach((optAdmins) => {
@@ -149,7 +149,7 @@ async function getAdminGuildMembers(): Promise<discord.GuildMember[]> {
     })
 
     //return when not in main server
-    const mainServer = openticket.client.mainServer
+    const mainServer = opendiscord.client.mainServer
     if (!mainServer) return []
 
     //collect all members
@@ -169,7 +169,7 @@ async function getAdminGuildMembers(): Promise<discord.GuildMember[]> {
 //PROCESS VARIABLES
 async function processVariables(variables:{name:string,variable:OTBetterStatusAllVariables}[], text:string): Promise<string> {
     //return when not in main server
-    const mainServer = openticket.client.mainServer
+    const mainServer = opendiscord.client.mainServer
     if (!mainServer) return "<ERROR: mainServer>"
 
     let processedText = text
@@ -184,30 +184,30 @@ async function processVariables(variables:{name:string,variable:OTBetterStatusAl
         else if (vari.variable == "guild.bots") content = (await mainServer.members.list()).filter((m) => m.user.bot).size.toString()
         else if (vari.variable == "guild.roles") content = mainServer.roles.cache.size.toString()
         else if (vari.variable == "guild.channels") content = mainServer.channels.cache.size.toString()
-        else if (vari.variable == "stats.tickets.created") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-created"))?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.closed") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-closed"))?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.deleted") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-deleted"))?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.reopened") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-reopened"))?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.autoclosed") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-autoclosed"))?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.autodeleted") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-autodeleted"))?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.claimed") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-claimed"))?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.pinned") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-pinned"))?.toString() ?? "0"
-        else if (vari.variable == "stats.tickets.moved") content = (await openticket.stats.get("openticket:global").getStat("openticket:tickets-moved"))?.toString() ?? "0"
-        else if (vari.variable == "stats.users.blacklisted") content = (await openticket.stats.get("openticket:global").getStat("openticket:users-blacklisted"))?.toString() ?? "0"
-        else if (vari.variable == "stats.transcripts.created") content = (await openticket.stats.get("openticket:global").getStat("openticket:transcripts-created"))?.toString() ?? "0"
-        else if (vari.variable == "tickets.open") content = openticket.tickets.getFiltered((ticket) => !ticket.get("openticket:closed").value).length.toString()
-        else if (vari.variable == "tickets.closed") content = openticket.tickets.getFiltered((ticket) => ticket.get("openticket:closed").value).length.toString()
-        else if (vari.variable == "tickets.claimed") content = openticket.tickets.getFiltered((ticket) => ticket.get("openticket:claimed").value).length.toString()
-        else if (vari.variable == "tickets.pinned") content = openticket.tickets.getFiltered((ticket) => ticket.get("openticket:pinned").value).length.toString()
-        else if (vari.variable == "system.version") content = openticket.versions.get("openticket:version").toString()
-        else if (vari.variable == "system.uptime.minutes") content = Math.floor((new Date().getTime() - openticket.processStartupDate.getTime())/1000/60).toString()
-        else if (vari.variable == "system.uptime.hours") content = Math.floor((new Date().getTime() - openticket.processStartupDate.getTime())/1000/60/60).toString()
-        else if (vari.variable == "system.uptime.days") content = Math.floor((new Date().getTime() - openticket.processStartupDate.getTime())/1000/60/60/24).toString()
-        else if (vari.variable == "system.plugins") content = openticket.plugins.getLength().toString()
-        else if (vari.variable == "system.tickets") content = openticket.tickets.getLength().toString()
-        else if (vari.variable == "system.questions") content = openticket.questions.getLength().toString()
-        else if (vari.variable == "system.options") content = openticket.options.getLength().toString()
-        else if (vari.variable == "system.panels") content = openticket.panels.getLength().toString()
+        else if (vari.variable == "stats.tickets.created") content = (await opendiscord.stats.get("opendiscord:global").getStat("opendiscord:tickets-created"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.closed") content = (await opendiscord.stats.get("opendiscord:global").getStat("opendiscord:tickets-closed"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.deleted") content = (await opendiscord.stats.get("opendiscord:global").getStat("opendiscord:tickets-deleted"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.reopened") content = (await opendiscord.stats.get("opendiscord:global").getStat("opendiscord:tickets-reopened"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.autoclosed") content = (await opendiscord.stats.get("opendiscord:global").getStat("opendiscord:tickets-autoclosed"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.autodeleted") content = (await opendiscord.stats.get("opendiscord:global").getStat("opendiscord:tickets-autodeleted"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.claimed") content = (await opendiscord.stats.get("opendiscord:global").getStat("opendiscord:tickets-claimed"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.pinned") content = (await opendiscord.stats.get("opendiscord:global").getStat("opendiscord:tickets-pinned"))?.toString() ?? "0"
+        else if (vari.variable == "stats.tickets.moved") content = (await opendiscord.stats.get("opendiscord:global").getStat("opendiscord:tickets-moved"))?.toString() ?? "0"
+        else if (vari.variable == "stats.users.blacklisted") content = (await opendiscord.stats.get("opendiscord:global").getStat("opendiscord:users-blacklisted"))?.toString() ?? "0"
+        else if (vari.variable == "stats.transcripts.created") content = (await opendiscord.stats.get("opendiscord:global").getStat("opendiscord:transcripts-created"))?.toString() ?? "0"
+        else if (vari.variable == "tickets.open") content = opendiscord.tickets.getFiltered((ticket) => !ticket.get("opendiscord:closed").value).length.toString()
+        else if (vari.variable == "tickets.closed") content = opendiscord.tickets.getFiltered((ticket) => ticket.get("opendiscord:closed").value).length.toString()
+        else if (vari.variable == "tickets.claimed") content = opendiscord.tickets.getFiltered((ticket) => ticket.get("opendiscord:claimed").value).length.toString()
+        else if (vari.variable == "tickets.pinned") content = opendiscord.tickets.getFiltered((ticket) => ticket.get("opendiscord:pinned").value).length.toString()
+        else if (vari.variable == "system.version") content = opendiscord.versions.get("opendiscord:version").toString()
+        else if (vari.variable == "system.uptime.minutes") content = Math.floor((new Date().getTime() - opendiscord.processStartupDate.getTime())/1000/60).toString()
+        else if (vari.variable == "system.uptime.hours") content = Math.floor((new Date().getTime() - opendiscord.processStartupDate.getTime())/1000/60/60).toString()
+        else if (vari.variable == "system.uptime.days") content = Math.floor((new Date().getTime() - opendiscord.processStartupDate.getTime())/1000/60/60/24).toString()
+        else if (vari.variable == "system.plugins") content = opendiscord.plugins.getLength().toString()
+        else if (vari.variable == "system.tickets") content = opendiscord.tickets.getLength().toString()
+        else if (vari.variable == "system.questions") content = opendiscord.questions.getLength().toString()
+        else if (vari.variable == "system.options") content = opendiscord.options.getLength().toString()
+        else if (vari.variable == "system.panels") content = opendiscord.panels.getLength().toString()
         else content = ""
 
         processedText = processedText.replaceAll(vari.name,content)
@@ -217,8 +217,8 @@ async function processVariables(variables:{name:string,variable:OTBetterStatusAl
 }
 
 //REGISTER CLIENT ACTIVITY
-openticket.events.get("onClientActivityInit").listen((activity) => {
-    const config = openticket.configs.get("ot-better-status:config")
+opendiscord.events.get("onClientActivityInit").listen((activity) => {
+    const config = opendiscord.configs.get("ot-better-status:config")
     const switchDelay = config.data.stateSwitchDelaySeconds*1000
     const states = config.data.states
     const variables = config.data.variables
@@ -226,11 +226,11 @@ openticket.events.get("onClientActivityInit").listen((activity) => {
     const maxState = config.data.states.length-1
 
     //first status starts after bot initialisation
-    openticket.events.get("onReadyForUsage").listen(async () => {
-        openticket.client.activity.setStatus(states[0].type,await processVariables(variables,states[0].text),states[0].status,true)
+    opendiscord.events.get("onReadyForUsage").listen(async () => {
+        opendiscord.client.activity.setStatus(states[0].type,await processVariables(variables,states[0].text),states[0].status,true)
         setInterval(async () => {
             state = (state >= maxState) ? 0 : state+1
-            openticket.client.activity.setStatus(states[state].type,await processVariables(variables,states[state].text),states[state].status,true)
+            opendiscord.client.activity.setStatus(states[state].type,await processVariables(variables,states[state].text),states[state].status,true)
         },switchDelay)
     })
 })

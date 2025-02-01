@@ -1,8 +1,8 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 
 // BUTTONS
-openticket.events.get("onButtonBuilderLoad").listen((buttons) => {
+opendiscord.events.get("onButtonBuilderLoad").listen((buttons) => {
     buttons.add(new api.ODButton("ot-ticket-forms:start-form-button"));
     buttons.get("ot-ticket-forms:start-form-button").workers.add(
         new api.ODWorker("ot-ticket-forms:start-form-button", 0, (instance, params, source, cancel) => {

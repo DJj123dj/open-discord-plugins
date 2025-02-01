@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 import crypto from "crypto"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
@@ -25,7 +25,7 @@ declare module "#opendiscord-types" {
 }
 
 //REGISTER BUTTON BUILDERS
-openticket.events.get("onButtonBuilderLoad").listen((buttons) => {
+opendiscord.events.get("onButtonBuilderLoad").listen((buttons) => {
     buttons.add(new api.ODButton("ot-migrate-v3:migrate-button"))
     buttons.get("ot-migrate-v3:migrate-button").workers.add(
         new api.ODWorker("ot-migrate-v3:migrate-button",0,(instance,params,source,cancel) => {
@@ -39,7 +39,7 @@ openticket.events.get("onButtonBuilderLoad").listen((buttons) => {
 })
 
 //REGISTER EMBED BUILDERS
-openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
+opendiscord.events.get("onEmbedBuilderLoad").listen((embeds) => {
     embeds.add(new api.ODEmbed("ot-migrate-v3:migrate-embed"))
     embeds.get("ot-migrate-v3:migrate-embed").workers.add(
         new api.ODWorker("ot-migrate-v3:migrate-embed",0,(instance,params,source,cancel) => {
@@ -52,7 +52,7 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
     embeds.add(new api.ODEmbed("ot-migrate-v3:success-embed"))
     embeds.get("ot-migrate-v3:success-embed").workers.add(
         new api.ODWorker("ot-migrate-v3:success-embed",0,(instance,params,source,cancel) => {
-            const generalConfig = openticket.configs.get("openticket:general")
+            const generalConfig = opendiscord.configs.get("opendiscord:general")
             instance.setTitle(utilities.emojiTitle("🔀","Ticket Migrated Succesfully!"))
             instance.setColor(generalConfig.data.mainColor)
             instance.setDescription("This ticket has been migrated to Open Ticket v4 successfully!")
@@ -63,21 +63,21 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
 })
 
 //REGISTER MESSAGE BUILDERS
-openticket.events.get("onMessageBuilderLoad").listen((messages) => {
+opendiscord.events.get("onMessageBuilderLoad").listen((messages) => {
     messages.add(new api.ODMessage("ot-migrate-v3:migrate-message"))
     messages.get("ot-migrate-v3:migrate-message").workers.add(
         new api.ODWorker("ot-migrate-v3:migrate-message",0,async (instance,params,source,cancel) => {
-            instance.addEmbed(await openticket.builders.embeds.getSafe("ot-migrate-v3:migrate-embed").build(source,{}))
-            instance.addComponent(await openticket.builders.buttons.getSafe("ot-migrate-v3:migrate-button").build(source,{}))
+            instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-migrate-v3:migrate-embed").build(source,{}))
+            instance.addComponent(await opendiscord.builders.buttons.getSafe("ot-migrate-v3:migrate-button").build(source,{}))
         })
     )
     messages.add(new api.ODMessage("ot-migrate-v3:success-message"))
     messages.get("ot-migrate-v3:success-message").workers.add(
         new api.ODWorker("ot-migrate-v3:success-message",0,async (instance,params,source,cancel) => {
-            instance.addEmbed(await openticket.builders.embeds.getSafe("ot-migrate-v3:success-embed").build(source,{}))
+            instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-migrate-v3:success-embed").build(source,{}))
 
             //add disabled transfer button
-            const migrateButton = await openticket.builders.buttons.getSafe("ot-migrate-v3:migrate-button").build(source,{})
+            const migrateButton = await opendiscord.builders.buttons.getSafe("ot-migrate-v3:migrate-button").build(source,{})
             if (migrateButton.component && typeof migrateButton.component != "string") migrateButton.component.setDisabled(true)
             instance.addComponent(migrateButton)
         })
@@ -85,10 +85,10 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
 })
 
 //DETECT TICKETS
-openticket.events.get("onReadyForUsage").listen(async () => {
-    const client = openticket.client.client
-    const mainServer = openticket.client.mainServer
-    if (!mainServer) return openticket.log("Unable to detect v3 tickets because server couldn't be found!","error")
+opendiscord.events.get("onReadyForUsage").listen(async () => {
+    const client = opendiscord.client.client
+    const mainServer = opendiscord.client.mainServer
+    if (!mainServer) return opendiscord.log("Unable to detect v3 tickets because server couldn't be found!","error")
 
     const channels = await mainServer.channels.fetch()
     channels.forEach(async (channel) => {
@@ -109,9 +109,9 @@ openticket.events.get("onReadyForUsage").listen(async () => {
         if (!isTicketMessage) return
 
         //channel is valid OTv3 ticket => send migrate button
-        await channel.send((await openticket.builders.messages.getSafe("ot-migrate-v3:migrate-message").build("other",{})).message)
+        await channel.send((await opendiscord.builders.messages.getSafe("ot-migrate-v3:migrate-message").build("other",{})).message)
         
-        openticket.log("Found valid Open Ticket v3 channel! Sending migration embed...","plugin",[
+        opendiscord.log("Found valid Open Ticket v3 channel! Sending migration embed...","plugin",[
             {key:"channel",value:"#"+channel.name},
             {key:"channelid",value:channel.id,hidden:true},
         ])
@@ -119,29 +119,29 @@ openticket.events.get("onReadyForUsage").listen(async () => {
 })
 
 //RESPOND TO MIGRATION
-openticket.events.get("onButtonResponderLoad").listen((buttons) => {
+opendiscord.events.get("onButtonResponderLoad").listen((buttons) => {
     buttons.add(new api.ODButtonResponder("ot-migrate-v3:migrate-button",/^od:migrate-v3-migrate$/))
     buttons.get("ot-migrate-v3:migrate-button").workers.add(
         new api.ODWorker("ot-migrate-v3:migrate-button",0,async (instance,params,source,cancel) => {
             const {user,channel,guild,message} = instance
-            const optionDatabase = openticket.databases.get("openticket:options")
-            const client = openticket.client.client
+            const optionDatabase = opendiscord.databases.get("opendiscord:options")
+            const client = opendiscord.client.client
 
             //check for guild & permissions
-            if (!openticket.permissions.hasPermissions("admin",await openticket.permissions.getPermissions(user,channel,guild))){
+            if (!opendiscord.permissions.hasPermissions("admin",await opendiscord.permissions.getPermissions(user,channel,guild))){
                 //no permissions
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-no-permissions").build("button",{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin"]}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error-no-permissions").build("button",{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin"]}))
                 return cancel()
             }
             if (channel.isDMBased() || channel.type != discord.ChannelType.GuildText || !guild){
                 //not in server
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-ticket-unknown").build("button",{guild,channel,user}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error-ticket-unknown").build("button",{guild,channel,user}))
                 return cancel()
             }
 
             await instance.defer("update",false)
 
-            openticket.log("Starting ticket migration!","plugin",[
+            opendiscord.log("Starting ticket migration!","plugin",[
                 {key:"channel",value:"#"+channel.name},
                 {key:"channelid",value:channel.id,hidden:true},
             ])
@@ -159,7 +159,7 @@ openticket.events.get("onButtonResponderLoad").listen((buttons) => {
                 })
             })
             if (!isTicketMessage){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build("button",{guild,channel,user,layout:"simple",error:"This channel isn't a valid OTv3 ticket!"}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error").build("button",{guild,channel,user,layout:"simple",error:"This channel isn't a valid OTv3 ticket!"}))
                 return cancel()
             }
             let initialEmbedName = "Transfered Ticket"
@@ -194,7 +194,7 @@ openticket.events.get("onButtonResponderLoad").listen((buttons) => {
             }]
 
             //add global admins
-            const globalAdmins = openticket.configs.get("openticket:general").data.globalAdmins
+            const globalAdmins = opendiscord.configs.get("opendiscord:general").data.globalAdmins
             globalAdmins.forEach((admin) => {
                 permissions.push({
                     type:discord.OverwriteType.Role,
@@ -227,33 +227,33 @@ openticket.events.get("onButtonResponderLoad").listen((buttons) => {
 
             //create temporary option
             const option = new api.ODTicketOption(crypto.randomBytes(16).toString("hex"),[
-                new api.ODOptionData("openticket:name",initialEmbedName),
-                new api.ODOptionData("openticket:description","This option is made for the transfer of this ticket from v3 to v4."),
+                new api.ODOptionData("opendiscord:name",initialEmbedName),
+                new api.ODOptionData("opendiscord:description","This option is made for the transfer of this ticket from v3 to v4."),
 
-                new api.ODOptionData("openticket:button-emoji","❌"),
-                new api.ODOptionData("openticket:button-label","Temporary"),
-                new api.ODOptionData("openticket:button-color","gray"),
+                new api.ODOptionData("opendiscord:button-emoji","❌"),
+                new api.ODOptionData("opendiscord:button-label","Temporary"),
+                new api.ODOptionData("opendiscord:button-color","gray"),
                 
-                new api.ODOptionData("openticket:admins",[]),
-                new api.ODOptionData("openticket:admins-readonly",[]),
-                new api.ODOptionData("openticket:allow-blacklisted-users",false),
-                new api.ODOptionData("openticket:questions",[]),
+                new api.ODOptionData("opendiscord:admins",[]),
+                new api.ODOptionData("opendiscord:admins-readonly",[]),
+                new api.ODOptionData("opendiscord:allow-blacklisted-users",false),
+                new api.ODOptionData("opendiscord:questions",[]),
 
-                new api.ODOptionData("openticket:channel-prefix",channelPrefix),
-                new api.ODOptionData("openticket:channel-suffix","user-name"),
-                new api.ODOptionData("openticket:channel-category",channelCategory),
-                new api.ODOptionData("openticket:channel-category-closed",""),
-                new api.ODOptionData("openticket:channel-category-backup",""),
-                new api.ODOptionData("openticket:channel-categories-claimed",[]),
-                new api.ODOptionData("openticket:channel-description",""),
+                new api.ODOptionData("opendiscord:channel-prefix",channelPrefix),
+                new api.ODOptionData("opendiscord:channel-suffix","user-name"),
+                new api.ODOptionData("opendiscord:channel-category",channelCategory),
+                new api.ODOptionData("opendiscord:channel-category-closed",""),
+                new api.ODOptionData("opendiscord:channel-category-backup",""),
+                new api.ODOptionData("opendiscord:channel-categories-claimed",[]),
+                new api.ODOptionData("opendiscord:channel-description",""),
                 
-                new api.ODOptionData("openticket:dm-message-enabled",false),
-                new api.ODOptionData("openticket:dm-message-text",""),
-                new api.ODOptionData("openticket:dm-message-embed",{}),
+                new api.ODOptionData("opendiscord:dm-message-enabled",false),
+                new api.ODOptionData("opendiscord:dm-message-text",""),
+                new api.ODOptionData("opendiscord:dm-message-embed",{}),
 
-                new api.ODOptionData("openticket:ticket-message-enabled",true),
-                new api.ODOptionData("openticket:ticket-message-text",""),
-                new api.ODOptionData("openticket:ticket-message-embed",{
+                new api.ODOptionData("opendiscord:ticket-message-enabled",true),
+                new api.ODOptionData("opendiscord:ticket-message-text",""),
+                new api.ODOptionData("opendiscord:ticket-message-embed",{
                     enabled:true,
                     title:initialEmbedName,
                     description:initialEmbedDescription,
@@ -264,76 +264,76 @@ openticket.events.get("onButtonResponderLoad").listen((buttons) => {
                     fields:initialEmbedFields,
                     timestamp:false
                 }),
-                new api.ODOptionData("openticket:ticket-message-ping",{
+                new api.ODOptionData("opendiscord:ticket-message-ping",{
                     "@here":true,
                     "@everyone":false,
                     custom:[]
                 }),
 
-                new api.ODOptionData("openticket:autoclose-enable-hours",false),
-                new api.ODOptionData("openticket:autoclose-enable-leave",false),
-                new api.ODOptionData("openticket:autoclose-disable-claim",false),
-                new api.ODOptionData("openticket:autoclose-hours",0),
+                new api.ODOptionData("opendiscord:autoclose-enable-hours",false),
+                new api.ODOptionData("opendiscord:autoclose-enable-leave",false),
+                new api.ODOptionData("opendiscord:autoclose-disable-claim",false),
+                new api.ODOptionData("opendiscord:autoclose-hours",0),
 
-                new api.ODOptionData("openticket:autodelete-enable-days",false),
-                new api.ODOptionData("openticket:autodelete-enable-leave",false),
-                new api.ODOptionData("openticket:autodelete-disable-claim",false),
-                new api.ODOptionData("openticket:autodelete-days",0),
+                new api.ODOptionData("opendiscord:autodelete-enable-days",false),
+                new api.ODOptionData("opendiscord:autodelete-enable-leave",false),
+                new api.ODOptionData("opendiscord:autodelete-disable-claim",false),
+                new api.ODOptionData("opendiscord:autodelete-days",0),
 
-                new api.ODOptionData("openticket:cooldown-enabled",false),
-                new api.ODOptionData("openticket:cooldown-minutes",0),
+                new api.ODOptionData("opendiscord:cooldown-enabled",false),
+                new api.ODOptionData("opendiscord:cooldown-minutes",0),
 
-                new api.ODOptionData("openticket:limits-enabled",false),
-                new api.ODOptionData("openticket:limits-maximum-global",0),
-                new api.ODOptionData("openticket:limits-maximum-user",0)
+                new api.ODOptionData("opendiscord:limits-enabled",false),
+                new api.ODOptionData("opendiscord:limits-maximum-global",0),
+                new api.ODOptionData("opendiscord:limits-maximum-user",0)
             ])
-            openticket.options.add(option)
+            opendiscord.options.add(option)
         
             //create ticket
             const ticket = new api.ODTicket(channel.id,option,[
-                new api.ODTicketData("openticket:busy",false),
-                new api.ODTicketData("openticket:ticket-message",null),
-                new api.ODTicketData("openticket:participants",participants),
-                new api.ODTicketData("openticket:channel-suffix",channelSuffix),
+                new api.ODTicketData("opendiscord:busy",false),
+                new api.ODTicketData("opendiscord:ticket-message",null),
+                new api.ODTicketData("opendiscord:participants",participants),
+                new api.ODTicketData("opendiscord:channel-suffix",channelSuffix),
                 
-                new api.ODTicketData("openticket:open",true),
-                new api.ODTicketData("openticket:opened-by",null),
-                new api.ODTicketData("openticket:opened-on",channel.createdAt.getTime()),
-                new api.ODTicketData("openticket:closed",false),
-                new api.ODTicketData("openticket:closed-by",null),
-                new api.ODTicketData("openticket:closed-on",null),
-                new api.ODTicketData("openticket:claimed",false),
-                new api.ODTicketData("openticket:claimed-by",null),
-                new api.ODTicketData("openticket:claimed-on",null),
-                new api.ODTicketData("openticket:pinned",false),
-                new api.ODTicketData("openticket:pinned-by",null),
-                new api.ODTicketData("openticket:pinned-on",null),
-                new api.ODTicketData("openticket:for-deletion",false),
+                new api.ODTicketData("opendiscord:open",true),
+                new api.ODTicketData("opendiscord:opened-by",null),
+                new api.ODTicketData("opendiscord:opened-on",channel.createdAt.getTime()),
+                new api.ODTicketData("opendiscord:closed",false),
+                new api.ODTicketData("opendiscord:closed-by",null),
+                new api.ODTicketData("opendiscord:closed-on",null),
+                new api.ODTicketData("opendiscord:claimed",false),
+                new api.ODTicketData("opendiscord:claimed-by",null),
+                new api.ODTicketData("opendiscord:claimed-on",null),
+                new api.ODTicketData("opendiscord:pinned",false),
+                new api.ODTicketData("opendiscord:pinned-by",null),
+                new api.ODTicketData("opendiscord:pinned-on",null),
+                new api.ODTicketData("opendiscord:for-deletion",false),
     
-                new api.ODTicketData("openticket:category",channelCategory),
-                new api.ODTicketData("openticket:category-mode",categoryMode),
+                new api.ODTicketData("opendiscord:category",channelCategory),
+                new api.ODTicketData("opendiscord:category-mode",categoryMode),
     
-                new api.ODTicketData("openticket:autoclose-enabled",option.get("openticket:autoclose-enable-hours").value),
-                new api.ODTicketData("openticket:autoclose-hours",(option.get("openticket:autoclose-enable-hours").value ? option.get("openticket:autoclose-hours").value : 0)),
-                new api.ODTicketData("openticket:autoclosed",false),
-                new api.ODTicketData("openticket:autodelete-enabled",option.get("openticket:autodelete-enable-days").value),
-                new api.ODTicketData("openticket:autodelete-days",(option.get("openticket:autodelete-enable-days").value ? option.get("openticket:autodelete-days").value : 0)),
+                new api.ODTicketData("opendiscord:autoclose-enabled",option.get("opendiscord:autoclose-enable-hours").value),
+                new api.ODTicketData("opendiscord:autoclose-hours",(option.get("opendiscord:autoclose-enable-hours").value ? option.get("opendiscord:autoclose-hours").value : 0)),
+                new api.ODTicketData("opendiscord:autoclosed",false),
+                new api.ODTicketData("opendiscord:autodelete-enabled",option.get("opendiscord:autodelete-enable-days").value),
+                new api.ODTicketData("opendiscord:autodelete-days",(option.get("opendiscord:autodelete-enable-days").value ? option.get("opendiscord:autodelete-days").value : 0)),
     
-                new api.ODTicketData("openticket:answers",[])
+                new api.ODTicketData("opendiscord:answers",[])
             ])
-            openticket.tickets.add(ticket)
+            opendiscord.tickets.add(ticket)
     
             //manage stats
-            await openticket.stats.get("openticket:global").setStat("openticket:tickets-created",1,"increase")
-            await openticket.stats.get("openticket:user").setStat("openticket:tickets-created",user.id,1,"increase")
+            await opendiscord.stats.get("opendiscord:global").setStat("opendiscord:tickets-created",1,"increase")
+            await opendiscord.stats.get("opendiscord:user").setStat("opendiscord:tickets-created",user.id,1,"increase")
 
             //edit ticket-message
-            await ticketMessage.edit((await openticket.builders.messages.getSafe("openticket:ticket-message").build("other",{guild,channel,user,ticket})).message)
-            ticket.get("openticket:ticket-message").value = ticketMessage.id
+            await ticketMessage.edit((await opendiscord.builders.messages.getSafe("opendiscord:ticket-message").build("other",{guild,channel,user,ticket})).message)
+            ticket.get("opendiscord:ticket-message").value = ticketMessage.id
 
-            await instance.update(await openticket.builders.messages.getSafe("ot-migrate-v3:success-message").build("other",{}))
+            await instance.update(await opendiscord.builders.messages.getSafe("ot-migrate-v3:success-message").build("other",{}))
 
-            openticket.log("Ticket migrated to v4 successfully!","plugin",[
+            opendiscord.log("Ticket migrated to v4 successfully!","plugin",[
                 {key:"channel",value:"#"+channel.name},
                 {key:"channelid",value:channel.id,hidden:true},
             ])

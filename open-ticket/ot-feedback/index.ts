@@ -1,5 +1,5 @@
 import * as discord from "discord.js"
-import { api, openticket, utilities } from "#opendiscord"
+import { api, opendiscord, utilities } from "#opendiscord"
 
 //DECLARATION
 export interface OTFeedbackConfigQuestion {
@@ -120,13 +120,13 @@ const transformToLetter = (mode:"alphabetical"|"numeric",index:number): string =
 }
 
 //REGISTER CONFIG
-openticket.events.get("onConfigLoad").listen((configs) => {
+opendiscord.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTFeedbackConfig("ot-feedback:config","config.json","./plugins/ot-feedback/"))
 })
 
 //REGISTER CONFIG CHECKER
-openticket.events.get("onCheckerLoad").listen((checkers) => {
-    const config = openticket.configs.get("ot-feedback:config")
+opendiscord.events.get("onCheckerLoad").listen((checkers) => {
+    const config = opendiscord.configs.get("ot-feedback:config")
     const structure = new api.ODCheckerObjectStructure("ot-feedback:config",{children:[
         {key:"webhookUrl",optional:false,priority:0,checker:new api.ODCheckerCustomStructure_UrlString("ot-feedback:webhook-url",false,{allowHttp:false,allowedHostnames:["discord.com"],allowedPaths:[/^\/api\/webhooks\/\d+\/[A-Za-z0-9_\.\-]+$/]})},
         {key:"questionsText",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-feedback:questions-text",{minLength:1,maxLength:2048})},
@@ -134,7 +134,7 @@ openticket.events.get("onCheckerLoad").listen((checkers) => {
         {key:"ignoredText",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-feedback:ignored-text",{minLength:1,maxLength:2048})},
         {key:"canceledText",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-feedback:canceled-text",{minLength:1,maxLength:2048})},
         
-        {key:"customColor",optional:false,priority:0,checker:new api.ODCheckerCustomStructure_HexColor("openticket:custom-color",true,true)},
+        {key:"customColor",optional:false,priority:0,checker:new api.ODCheckerCustomStructure_HexColor("opendiscord:custom-color",true,true)},
         {key:"footer",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-feedback:footer",{maxLength:512})},
 
         {key:"trigger",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-feedback:trigger",{choices:["close","delete","first-close-only"]})},
@@ -168,9 +168,9 @@ openticket.events.get("onCheckerLoad").listen((checkers) => {
 })
 
 //REGISTER EMBEDS
-openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
-    const config = openticket.configs.get("ot-feedback:config")
-    const generalConfig = openticket.configs.get("openticket:general")
+opendiscord.events.get("onEmbedBuilderLoad").listen((embeds) => {
+    const config = opendiscord.configs.get("ot-feedback:config")
+    const generalConfig = opendiscord.configs.get("opendiscord:general")
 
     embeds.add(new api.ODEmbed("ot-feedback:response"))
     embeds.get("ot-feedback:response").workers.add(new api.ODWorker("ot-feedback:response",0,(instance,params,source,cancel) => {
@@ -237,12 +237,12 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
 })
 
 //REGISTER MESSAGES
-openticket.events.get("onMessageBuilderLoad").listen((messages) => {
-    const config = openticket.configs.get("ot-feedback:config")
+opendiscord.events.get("onMessageBuilderLoad").listen((messages) => {
+    const config = opendiscord.configs.get("ot-feedback:config")
 
     messages.add(new api.ODMessage("ot-feedback:response"))
     messages.get("ot-feedback:response").workers.add(new api.ODWorker("ot-feedback:response",0,async (instance,params,source) => {
-        instance.addEmbed(await openticket.builders.embeds.getSafe("ot-feedback:response").build(source,params))
+        instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-feedback:response").build(source,params))
     }))
 
     messages.add(new api.ODMessage("ot-feedback:question"))
@@ -266,13 +266,13 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
 
     messages.add(new api.ODMessage("ot-feedback:overview"))
     messages.get("ot-feedback:overview").workers.add(new api.ODWorker("ot-feedback:overview",0,async (instance,params,source) => {
-        instance.addEmbed(await openticket.builders.embeds.getSafe("ot-feedback:overview").build(source,params))
+        instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-feedback:overview").build(source,params))
     }))
 })
 
 //WAIT UNTIL BOT READY
-openticket.events.get("onReadyForUsage").listen(() => {
-    const config = openticket.configs.get("ot-feedback:config")
+opendiscord.events.get("onReadyForUsage").listen(() => {
+    const config = opendiscord.configs.get("ot-feedback:config")
     const reviewWebhook = new discord.WebhookClient({url:config.data.webhookUrl})
 
     function feedbackHandler(ticket:api.ODTicket,user:discord.User,channel:discord.GuildTextBasedChannel){
@@ -282,7 +282,7 @@ openticket.events.get("onReadyForUsage").listen(() => {
             //add some delay so that the message arrives after the default close message
             await utilities.timer(2000)
 
-            const creator = await openticket.tickets.getTicketUser(ticket, "creator");
+            const creator = await opendiscord.tickets.getTicketUser(ticket, "creator");
             if (!creator) throw new api.ODPluginError("Couldn't find ticket creator on ticket close!")
         
             //send initial message
@@ -292,22 +292,22 @@ openticket.events.get("onReadyForUsage").listen(() => {
                 else if (value.type == "choice") return {label:value.label,type:value.type,choiceOrdering:value.choiceOrdering,choices:value.choices,answer:null}
                 else return {label:value.label,type:value.type,answer:null}
             })
-            const statusResult = await openticket.client.sendUserDm(creator,await openticket.builders.messages.getSafe("ot-feedback:response").build("other",{questions:statusQuestions}))
+            const statusResult = await opendiscord.client.sendUserDm(creator,await opendiscord.builders.messages.getSafe("ot-feedback:response").build("other",{questions:statusQuestions}))
             if (!statusResult.message) throw new api.ODPluginError("Unable to send OT Feedback status message!")
             
-            openticket.log(creator.displayName+" is now able to fill-in the feedback!","plugin",[
+            opendiscord.log(creator.displayName+" is now able to fill-in the feedback!","plugin",[
                 {key:"user",value:creator.username},
                 {key:"userid",value:creator.id,hidden:true},
                 {key:"questions",value:config.data.questions.length.toString()}
             ])
 
-            await openticket.events.get("ot-feedback:onFeedback").emit([config.data.questions])
+            await opendiscord.events.get("ot-feedback:onFeedback").emit([config.data.questions])
             
             //loop over each question and ask ticket creator
             const responses: OTFeedbackConfigAnsweredValidQuestion[] = []
             for (const question of config.data.questions) {
                 //send question
-                await openticket.client.sendUserDm(creator,await openticket.builders.messages.getSafe("ot-feedback:question").build("other",{question}))
+                await opendiscord.client.sendUserDm(creator,await opendiscord.builders.messages.getSafe("ot-feedback:question").build("other",{question}))
         
                 try{
                     const collector = await (await creator.createDM()).awaitMessages({
@@ -347,12 +347,12 @@ openticket.events.get("onReadyForUsage").listen(() => {
                     responses.forEach((res,index) => {
                         newStatusQuestions[index] = res
                     })
-                    await statusResult.message.edit((await openticket.builders.messages.getSafe("ot-feedback:response").build("other",{questions:newStatusQuestions})).message)
+                    await statusResult.message.edit((await opendiscord.builders.messages.getSafe("ot-feedback:response").build("other",{questions:newStatusQuestions})).message)
                 
                 }catch (err){
                     //send canceled
-                    await openticket.client.sendUserDm(creator,await openticket.builders.messages.getSafe("ot-feedback:canceled").build("other",{question}))    
-                    openticket.log(creator.displayName+" didn't respond in time for the feedback!","plugin",[
+                    await opendiscord.client.sendUserDm(creator,await opendiscord.builders.messages.getSafe("ot-feedback:canceled").build("other",{question}))    
+                    opendiscord.log(creator.displayName+" didn't respond in time for the feedback!","plugin",[
                         {key:"user",value:creator.username},
                         {key:"userid",value:creator.id,hidden:true},
                         {key:"question",value:question.label,hidden:true},
@@ -362,18 +362,18 @@ openticket.events.get("onReadyForUsage").listen(() => {
             }
             
             //send completed
-            await openticket.client.sendUserDm(creator,await openticket.builders.messages.getSafe("ot-feedback:completed").build("other",{responses}))
-            if (config.data.sendWebhookWhenEmpty || !responses.every((r) => r.answer === null)) await reviewWebhook.send((await openticket.builders.messages.getSafe("ot-feedback:overview").build("other",{questions:responses,ticket,user:creator,channelName})).message)
+            await opendiscord.client.sendUserDm(creator,await opendiscord.builders.messages.getSafe("ot-feedback:completed").build("other",{responses}))
+            if (config.data.sendWebhookWhenEmpty || !responses.every((r) => r.answer === null)) await reviewWebhook.send((await opendiscord.builders.messages.getSafe("ot-feedback:overview").build("other",{questions:responses,ticket,user:creator,channelName})).message)
 
             //update stats
-            if (!responses.every((r) => r.answer === null)) await openticket.stats.get("openticket:global").setStat("ot-feedback:feedback-created",1,"increase")
+            if (!responses.every((r) => r.answer === null)) await opendiscord.stats.get("opendiscord:global").setStat("ot-feedback:feedback-created",1,"increase")
             
-            await openticket.events.get("ot-feedback:afterFeedback").emit([responses])
+            await opendiscord.events.get("ot-feedback:afterFeedback").emit([responses])
         })
     }
 
     //ACTIVATE FEEDBACK SYSTEM (doesn't block process => utilities.runAsync())
-    openticket.events.get("onTicketClose").listen((ticket,closer,channel) => {
+    opendiscord.events.get("onTicketClose").listen((ticket,closer,channel) => {
         //handle close count
         if (!ticket.exists("ot-feedback:close-count")){
             ticket.add(new api.ODTicketData("ot-feedback:close-count",0))
@@ -387,24 +387,24 @@ openticket.events.get("onReadyForUsage").listen(() => {
         //increase close count
         closeCount.value = closeCount.value+1
     })
-    if (config.data.trigger == "delete") openticket.events.get("onTicketDelete").listen(feedbackHandler)
+    if (config.data.trigger == "delete") opendiscord.events.get("onTicketDelete").listen(feedbackHandler)
 })
 
 //REGISTER CLOSE COUNT
-openticket.events.get("afterCodeExecuted").listen(() => {
-    openticket.tickets.loopAll((ticket) => {
+opendiscord.events.get("afterCodeExecuted").listen(() => {
+    opendiscord.tickets.loopAll((ticket) => {
         if (!ticket.exists("ot-feedback:close-count")){
             ticket.add(new api.ODTicketData("ot-feedback:close-count",0))
         }
     })
 })
-openticket.events.get("afterTicketCreated").listen((ticket) => {
+opendiscord.events.get("afterTicketCreated").listen((ticket) => {
     if (!ticket.exists("ot-feedback:close-count")){
         ticket.add(new api.ODTicketData("ot-feedback:close-count",0))
     }
 })
 
 //REGISTER NEW STATISTIC
-openticket.events.get("onStatLoad").listen((stats) => {
-    stats.get("openticket:global").add(new api.ODBasicStat("ot-feedback:feedback-created",0,"Feedback Created",0))
+opendiscord.events.get("onStatLoad").listen((stats) => {
+    stats.get("opendiscord:global").add(new api.ODBasicStat("ot-feedback:feedback-created",0,"Feedback Created",0))
 })

@@ -1,4 +1,4 @@
-import { api, openticket } from "#opendiscord";
+import { api, opendiscord } from "#opendiscord";
 import * as discord from "discord.js";
 import { OTForms_Question } from "../types/configDefaults";
 
@@ -83,7 +83,7 @@ export class OTForms_AnswersManager {
     async sendMessage(channel: discord.GuildTextBasedChannel, pageNumber: number = this._currentPage): Promise<void> {
         if(this.pages.length === 0) return;
         this._currentPage = pageNumber;
-        this._message = await channel.send((await openticket.builders.messages.getSafe("ot-ticket-forms:answers-message").build(this.source, { formId: this.formId, sessionId: this.sessionId, type: this._type, currentPageNumber: pageNumber, totalPages: this.pages.length, currentPage: this.pages[pageNumber - 1] })).message);
+        this._message = await channel.send((await opendiscord.builders.messages.getSafe("ot-ticket-forms:answers-message").build(this.source, { formId: this.formId, sessionId: this.sessionId, type: this._type, currentPageNumber: pageNumber, totalPages: this.pages.length, currentPage: this.pages[pageNumber - 1] })).message);
         const message = this._message;
         if(!message) return;
         OTForms_AnswersManager._instances.set(message.id, this);
@@ -96,7 +96,7 @@ export class OTForms_AnswersManager {
     async editMessage(pageNumber: number = this._currentPage): Promise<void> {
         if(!this._message) return;
         this._currentPage = pageNumber;
-        await this._message.edit((await openticket.builders.messages.getSafe("ot-ticket-forms:answers-message").build(this.source, { formId: this.formId, sessionId: this.sessionId, type: this._type, currentPageNumber: pageNumber, totalPages: this.pages.length, currentPage: this.pages[pageNumber - 1] })).message);
+        await this._message.edit((await opendiscord.builders.messages.getSafe("ot-ticket-forms:answers-message").build(this.source, { formId: this.formId, sessionId: this.sessionId, type: this._type, currentPageNumber: pageNumber, totalPages: this.pages.length, currentPage: this.pages[pageNumber - 1] })).message);
         await this.save();
     }
 
@@ -125,7 +125,7 @@ export class OTForms_AnswersManager {
             fields.push({ name: fieldName, value: `\`\`\`${fieldValue}\`\`\``, inline: false });
 
             // Creates a new embed with the new field
-            currentEmbedStructure = await openticket.builders.embeds.getSafe("ot-ticket-forms:answers-embed").build(source, { type, user, formColor, fields, timestamp: this.timestamp });
+            currentEmbedStructure = await opendiscord.builders.embeds.getSafe("ot-ticket-forms:answers-embed").build(source, { type, user, formColor, fields, timestamp: this.timestamp });
             currentEmbed = currentEmbedStructure.embed;
             if(!currentEmbed) return embeds;
             // Checks the size of the new embed
@@ -136,7 +136,7 @@ export class OTForms_AnswersManager {
             // If the total size exceeds the 6000 characters limit or the fields are more than 25, creates a new embed
             if (newEmbedSize > MAX_EMBED_SIZE || embedFields.length >= MAX_EMBED_FIELDS) {
                 fields.pop();
-                currentEmbedStructure = await openticket.builders.embeds.getSafe("ot-ticket-forms:answers-embed").build(source, { type, user, formColor, fields, timestamp: this.timestamp });
+                currentEmbedStructure = await opendiscord.builders.embeds.getSafe("ot-ticket-forms:answers-embed").build(source, { type, user, formColor, fields, timestamp: this.timestamp });
                 embeds.push(currentEmbedStructure);
                 fields = [{ name: fieldName, value: `\`\`\`${fieldValue}\`\`\`` }];
             }
@@ -144,7 +144,7 @@ export class OTForms_AnswersManager {
   
         // Adds the last embed
         if (fields.length > 0) {
-            currentEmbedStructure = await openticket.builders.embeds.getSafe("ot-ticket-forms:answers-embed").build(source, { type, user, formColor, fields, timestamp: this.timestamp });
+            currentEmbedStructure = await opendiscord.builders.embeds.getSafe("ot-ticket-forms:answers-embed").build(source, { type, user, formColor, fields, timestamp: this.timestamp });
             embeds.push(currentEmbedStructure);
         }
     
@@ -183,14 +183,14 @@ export class OTForms_AnswersManager {
         const channelId = this._message ? this._message.channel.id : null;
         const messageId = this._message ? this._message.id : null;
 
-        openticket.databases.get("openticket:global").set("ot-ticket-forms:answers-manager", `${channelId}_${messageId}`, data);
+        opendiscord.databases.get("opendiscord:global").set("ot-ticket-forms:answers-manager", `${channelId}_${messageId}`, data);
     }
 
     /* restore
      * Restores the answers message from the database.
      */
     static async restore(): Promise<void> {
-        const globalDatabase = openticket.databases.get("openticket:global")
+        const globalDatabase = opendiscord.databases.get("opendiscord:global")
         const answersManagerCategory = await globalDatabase.getCategory("ot-ticket-forms:answers-manager") ?? [];
 
         for (const answersManagerData of answersManagerCategory) {
@@ -217,35 +217,35 @@ export class OTForms_AnswersManager {
             const answers = data.answers;
             const currentPage = data.currentPage;
 
-            const user = await openticket.client.client.users.fetch(userId);
+            const user = await opendiscord.client.client.users.fetch(userId);
 
             const channelId = answersManagerData.key.split("_")[0];
             let channel: discord.Channel | null;
             try {
-                channel = await openticket.client.client.channels.fetch(channelId);
+                channel = await opendiscord.client.client.channels.fetch(channelId);
             } catch (error) {
-                openticket.log("Channel not found for restoring answers manager. Form answers will not be restored.", "plugin", [
+                opendiscord.log("Channel not found for restoring answers manager. Form answers will not be restored.", "plugin", [
                     {key:"channel", value:channelId}
                 ]);
                 globalDatabase.delete("ot-ticket-forms:answers-manager", `${channelId}_${messageId}`);
                 return;
             }
             if(!channel || !channel.isTextBased()) {
-                openticket.log("Channel not found for restoring answers manager. Form answers will not be restored.", "plugin", [
+                opendiscord.log("Channel not found for restoring answers manager. Form answers will not be restored.", "plugin", [
                     {key:"channel", value:channelId}
                 ]);
                 return;
             }
             
             if(!messageId) {
-                openticket.log("Message ID not found for restoring answers manager. Form answers will not be restored.", "plugin");
+                opendiscord.log("Message ID not found for restoring answers manager. Form answers will not be restored.", "plugin");
                 return;
             }
             let message: discord.Message | null;
             try {
                 message = await channel.messages.fetch(messageId);
             } catch (error) {
-                openticket.log("Message not found for restoring answers manager. Form answers will not be restored.", "plugin", [
+                opendiscord.log("Message not found for restoring answers manager. Form answers will not be restored.", "plugin", [
                     {key:"message", value:messageId}
                 ]);
                 globalDatabase.delete("ot-ticket-forms:answers-manager", `${channelId}_${messageId}`);
@@ -253,7 +253,7 @@ export class OTForms_AnswersManager {
             }
 
             if (!message) {
-                openticket.log("Message not found for restoring answers manager. Form answers will not be restored.", "plugin", [
+                opendiscord.log("Message not found for restoring answers manager. Form answers will not be restored.", "plugin", [
                     {key:"message", value:messageId}
                 ]);
                 return;

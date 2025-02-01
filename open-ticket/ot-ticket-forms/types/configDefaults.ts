@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 
 /** ## OTForms_Form `interface`

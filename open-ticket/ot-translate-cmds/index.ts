@@ -1,4 +1,4 @@
-import { api, openticket, utilities } from "#opendiscord"
+import { api, opendiscord, utilities } from "#opendiscord"
 import { OTTranslateCmdsConfig } from "./configDefaults"
 import { translateCmdsConfigStructure } from "./checkerStructures"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
@@ -17,22 +17,22 @@ declare module "#opendiscord-types" {
 }
 
 //REGISTER CONFIG
-openticket.events.get("onConfigLoad").listen((configs) => {
+opendiscord.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTTranslateCmdsConfig("ot-translate-cmds:translations","translations.json","./plugins/ot-translate-cmds/"));
 })
 
 //REGISTER CONFIG CHECKER
-openticket.events.get("onCheckerLoad").listen((checkers) => {
-    const config = openticket.configs.get("ot-translate-cmds:translations")
+opendiscord.events.get("onCheckerLoad").listen((checkers) => {
+    const config = opendiscord.configs.get("ot-translate-cmds:translations")
     checkers.add(new api.ODChecker("ot-translate-cmds:translations",checkers.storage,0,config,translateCmdsConfigStructure))
 })
 
 //APPLY TRANSLATIONS
-openticket.events.get("afterSlashCommandsLoaded").listen(async (slash,client) => {
-    const cmdTranslations = openticket.configs.get("ot-translate-cmds:translations").data
+opendiscord.events.get("afterSlashCommandsLoaded").listen(async (slash,client) => {
+    const cmdTranslations = opendiscord.configs.get("ot-translate-cmds:translations").data
 
     for (const cmdTranslation of cmdTranslations) {
-        const cmd = openticket.client.slashCommands.get(`openticket:${cmdTranslation.name}`);
+        const cmd = opendiscord.client.slashCommands.get(`opendiscord:${cmdTranslation.name}`);
         if (!cmd) continue;
 
         // COMMAND TRANSLATION

@@ -1,5 +1,5 @@
 import * as discord from "discord.js"
-import { openticket } from "#opendiscord"
+import { opendiscord } from "#opendiscord"
 import { OTForms_Question } from "../types/configDefaults"
 import { OTForms_FormSession } from "./FormSession"
 
@@ -66,7 +66,7 @@ export class OTForms_Form {
      */
     public finalizeSession(sessionId: string, formName: string, user: discord.User): void {
         this.activeSessions.delete(sessionId);
-        openticket.log(`Form session removed.`, "plugin", [
+        opendiscord.log(`Form session removed.`, "plugin", [
             {key:"Form", value:formName},
             {key:"User", value:user.tag}
         ])

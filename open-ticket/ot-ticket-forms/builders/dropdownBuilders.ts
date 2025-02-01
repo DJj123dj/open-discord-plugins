@@ -1,8 +1,8 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 
 // DROPDOWNS
-openticket.events.get("onDropdownBuilderLoad").listen((dropdowns) => {
+opendiscord.events.get("onDropdownBuilderLoad").listen((dropdowns) => {
     dropdowns.add(new api.ODDropdown("ot-ticket-forms:question-dropdown"));
     dropdowns.get("ot-ticket-forms:question-dropdown").workers.add(
         new api.ODWorker("ot-ticket-forms:question-dropdown", 0, (instance, params, source, cancel) => {

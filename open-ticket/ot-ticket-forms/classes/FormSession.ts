@@ -1,4 +1,4 @@
-import { api, openticket } from "#opendiscord"
+import { api, opendiscord } from "#opendiscord"
 import * as discord from "discord.js"
 import { OTForms_Question, OTForms_ButtonQuestion, OTForms_DropdownQuestion, OTForms_ModalQuestion } from "../types/configDefaults"
 import { OTForms_Form } from "./Form"
@@ -140,12 +140,12 @@ export class OTForms_FormSession {
         let count = 0;
 
         if(!this.instance || this.instance.didReply) {
-            openticket.log("Error: Modal questions have not been sent. Instance not found or already replied.", "plugin");
+            opendiscord.log("Error: Modal questions have not been sent. Instance not found or already replied.", "plugin");
             return;
         }
 
         if(!(this.instance instanceof api.ODButtonResponderInstance)) {
-            openticket.log("Error: Modal questions have not been sent. Current instance is not valid for modals.", "plugin");
+            opendiscord.log("Error: Modal questions have not been sent. Current instance is not valid for modals.", "plugin");
             return;
         }
         
@@ -159,7 +159,7 @@ export class OTForms_FormSession {
 
         // Show modal
         await this.instance.modal(
-            await openticket.builders.modals.getSafe("ot-ticket-forms:questions-modal").build("other", {
+            await opendiscord.builders.modals.getSafe("ot-ticket-forms:questions-modal").build("other", {
                 formId: this.form.id,
                 sessionId: this.id,
                 formName: this.form.name,
@@ -175,11 +175,11 @@ export class OTForms_FormSession {
      */
     private async sendDropdownQuestion(question: OTForms_DropdownQuestion): Promise<void> {
         if(!this.instance) {
-            openticket.log("Error: Dropdown question has not been sent. Interaction not found.", "plugin");
+            opendiscord.log("Error: Dropdown question has not been sent. Interaction not found.", "plugin");
             return;
         }
 
-        const message = await openticket.builders.messages.getSafe("ot-ticket-forms:question-message").build("other", {
+        const message = await opendiscord.builders.messages.getSafe("ot-ticket-forms:question-message").build("other", {
             formId: this.form.id,
             sessionId: this.id,
             question: question,
@@ -191,7 +191,7 @@ export class OTForms_FormSession {
         if(!this.sessionMessage) {
             // Send dropdown question message
             if(this.instance.didReply) {
-                openticket.log("Error: Dropdown question has not been sent. Interaction already replied.", "plugin");
+                opendiscord.log("Error: Dropdown question has not been sent. Interaction already replied.", "plugin");
                 return;
             }
             this.sessionMessage = await this.instance.reply(message);
@@ -206,11 +206,11 @@ export class OTForms_FormSession {
      */
     private async sendButtonQuestion(question: OTForms_ButtonQuestion): Promise<void> {
         if(!this.instance) {
-            openticket.log("Error: Button question has not been sent. Interaction not found.", "plugin");
+            opendiscord.log("Error: Button question has not been sent. Interaction not found.", "plugin");
             return;
         }
 
-        const message = await openticket.builders.messages.getSafe("ot-ticket-forms:question-message").build("other", {
+        const message = await opendiscord.builders.messages.getSafe("ot-ticket-forms:question-message").build("other", {
             formId: this.form.id,
             sessionId: this.id,
             question: question,
@@ -222,7 +222,7 @@ export class OTForms_FormSession {
         if(!this.sessionMessage) {
             // Send button question message
             if(this.instance.didReply) {
-                openticket.log("Error: Button question has not been sent. Interaction already replied.", "plugin");
+                opendiscord.log("Error: Button question has not been sent. Interaction already replied.", "plugin");
                 return;
             }
             this.sessionMessage = await this.instance.reply(message);
@@ -237,11 +237,11 @@ export class OTForms_FormSession {
      */
     private async sendContinueMessage(): Promise<void> {
         if(!this.instance) {
-            openticket.log("Error: The continue message has not been sent. Interaction not found.", "plugin");
+            opendiscord.log("Error: The continue message has not been sent. Interaction not found.", "plugin");
             return;
         }
 
-        const message = await openticket.builders.messages.getSafe("ot-ticket-forms:continue-message").build("button", {
+        const message = await opendiscord.builders.messages.getSafe("ot-ticket-forms:continue-message").build("button", {
             formId:this.form.id,
             sessionId: this.id,
             currentSection: this.currentSection,
@@ -281,7 +281,7 @@ export class OTForms_FormSession {
      */
     private async finalize(): Promise<void> {
         if(this.instance) {
-            const message = await openticket.builders.messages.getSafe("ot-ticket-forms:continue-message").build("button", {
+            const message = await opendiscord.builders.messages.getSafe("ot-ticket-forms:continue-message").build("button", {
                 formId:this.form.id,
                 sessionId: this.id,
                 currentSection: this.currentSection,
@@ -297,7 +297,7 @@ export class OTForms_FormSession {
                 this.sessionMessage = await this.instance.reply(message);
             }
         }
-        openticket.log(`Form answered.`, "plugin", [
+        opendiscord.log(`Form answered.`, "plugin", [
             {key:"Form", value:this.form.name},
             {key:"User", value:this.user.tag}
         ])

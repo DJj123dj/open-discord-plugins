@@ -1,8 +1,8 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 
 // MODALS
-openticket.events.get("onModalBuilderLoad").listen((modals) => {
+opendiscord.events.get("onModalBuilderLoad").listen((modals) => {
     modals.add(new api.ODModal("ot-ticket-forms:questions-modal"))
     modals.get("ot-ticket-forms:questions-modal").workers.add(
         new api.ODWorker("ot-ticket-forms:questions-modal",0,async (instance,params,source) => {

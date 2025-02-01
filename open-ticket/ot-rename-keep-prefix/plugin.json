@@ -1,7 +1,7 @@
 {
     "name":"OT Rename Keep Prefix",
     "id":"ot-rename-keep-prefix",
-    "version":"1.0.0",
+    "version":"1.0.1",
     "startFile":"index.ts",
 
     "enabled":true,
