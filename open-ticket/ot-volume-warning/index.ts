@@ -1,0 +1,152 @@
+import {api, openticket, utilities} from "#opendiscord"
+import * as discord from "discord.js"
+if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
+
+//DECLARATION
+class OTVolumeWarningConfig extends api.ODJsonConfig {
+    declare data: {
+        openTicketsWarningLimit: number,
+        customMessage: {
+            enabled: boolean,
+            ping: boolean,
+            text: string,
+            embed: {
+                enabled: boolean,
+                title: string,
+                titleEmoji: string,
+                description: string,
+                customColor: discord.ColorResolvable,
+                image: string,
+                thumbnail: string,
+                fields: {
+                    name: string,
+                    value: string,
+                    inline: boolean
+                }[]
+                timestamp: boolean
+            }
+        }
+    }
+}
+
+declare module "#opendiscord-types" {
+    export interface ODPluginManagerIds_Default {
+        "ot-volume-warning":api.ODPlugin
+    }
+    export interface ODConfigManagerIds_Default {
+        "ot-volume-warning:config":OTVolumeWarningConfig
+    }
+    export interface ODCheckerManagerIds_Default {
+        "ot-volume-warning:config":api.ODChecker;
+    }
+    export interface ODMessageManagerIds_Default {
+        "ot-volume-warning:delay-warning-message":{source:"ticket"|"other",params:{userId:string},workers:"ot-volume-warning:delay-warning-message"},
+    }
+    export interface ODEmbedManagerIds_Default {
+        "ot-volume-warning:delay-warning-embed":{source:"ticket"|"other",params:{custom:boolean},workers:"ot-volume-warning:delay-warning-embed"},
+    }
+}
+
+// REGISTER CONFIG
+openticket.events.get("onConfigLoad").listen((configs) => {
+    configs.add(new OTVolumeWarningConfig("ot-volume-warning:config","config.json","./plugins/ot-volume-warning/"));
+})
+
+const delayWarningConfigStructure = new api.ODCheckerObjectStructure("ot-volume-warning:config",{children:[
+    {key:"openTicketsWarningLimit",optional:false,priority:0,checker:new api.ODCheckerNumberStructure("ot-volume-warning:warning-limit",{min:0})},
+
+    {key:"customMessage",optional:false,priority:0,checker:new api.ODCheckerEnabledObjectStructure("ot-volume-warning:customMessage",{property:"enabled",enabledValue:true,checker:new api.ODCheckerObjectStructure("ot-volume-warning:customMessage",{children:[
+        {key:"ping",optional:false,priority:0,checker:new api.ODCheckerBooleanStructure("ot-volume-warning:ping",{})},
+        {key:"text",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-volume-warning:text",{maxLength:4096})},
+
+        {key:"embed",optional:false,priority:0,checker:new api.ODCheckerEnabledObjectStructure("ot-volume-warning:embed",{property:"enabled",enabledValue:true,checker:new api.ODCheckerObjectStructure("ot-volume-warning:embed",{children:[
+            {key:"title",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-volume-warning:embed-text",{maxLength:256})},
+            {key:"titleEmoji",optional:false,priority:0,checker:new api.ODCheckerCustomStructure_EmojiString("ot-volume-warning:embed-title-emoji",0,1,true)},
+            {key:"description",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-volume-warning:embed-description",{maxLength:4096})},
+            {key:"customColor",optional:false,priority:0,checker:new api.ODCheckerCustomStructure_HexColor("ot-volume-warning:embed-color",true,true)},
+    
+            {key:"image",optional:false,priority:0,checker:new api.ODCheckerCustomStructure_UrlString("ot-volume-warning:embed-image",true,{allowHttp:false,allowedExtensions:[".png",".jpg",".jpeg",".webp",".gif"]})},
+            {key:"thumbnail",optional:false,priority:0,checker:new api.ODCheckerCustomStructure_UrlString("ot-volume-warning:embed-thumbnail",true,{allowHttp:false,allowedExtensions:[".png",".jpg",".jpeg",".webp",".gif"]})},
+            
+            {key:"fields",optional:false,priority:0,checker:new api.ODCheckerArrayStructure("ot-volume-warning:embed-fields",{allowedTypes:["object"],propertyChecker:new api.ODCheckerObjectStructure("openticket:panel-embed-fields",{children:[
+                {key:"name",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-volume-warning:embed-field-name",{minLength:1,maxLength:256})},
+                {key:"value",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-volume-warning:embed-field-value",{minLength:1,maxLength:1024})},
+                {key:"inline",optional:false,priority:0,checker:new api.ODCheckerBooleanStructure("ot-volume-warning:embed-field-inline",{})}
+            ]})})},
+            {key:"timestamp",optional:false,priority:0,checker:new api.ODCheckerBooleanStructure("ot-volume-warning:embed-timestamp",{})}
+        ]})})}
+    ]})})}
+]});
+
+// REGISTER CONFIG CHECKER
+openticket.events.get("onCheckerLoad").listen((checkers) => {
+    const config = openticket.configs.get("ot-volume-warning:config")
+    checkers.add(new api.ODChecker("ot-volume-warning:config",checkers.storage,0,config,delayWarningConfigStructure))
+})
+
+//REGISTER EMBED BUILDER
+openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
+    embeds.add(new api.ODEmbed("ot-volume-warning:delay-warning-embed"))
+    embeds.get("ot-volume-warning:delay-warning-embed").workers.add(
+        new api.ODWorker("ot-volume-warning:delay-warning-embed",0,(instance,params,source,cancel) => {
+            const { custom } = params;
+
+            if(!custom) {
+                const titleText = "Increased Response Times"
+                const embedColor = openticket.configs.get("openticket:general").data.mainColor
+                const description = "We are currently experiencing a high ticket demand. This may result in longer response times than usual.\nWe appreciate your patience and will assist you as soon as possible."
+            
+                instance.setTitle(titleText)
+                instance.setColor(embedColor)
+                instance.setDescription(description)
+            } else {
+                const config = openticket.configs.get("ot-volume-warning:config").data.customMessage.embed;
+                const { title, titleEmoji, description, customColor, image, thumbnail, fields, timestamp } = config;
+        
+                if(titleEmoji) instance.setTitle(utilities.emojiTitle(titleEmoji,title))
+                else instance.setTitle(title)
+
+                let color = customColor;
+                if(!customColor) color = openticket.configs.get("openticket:general").data.mainColor;
+                instance.setColor(color)
+
+                if(description) instance.setDescription(description)
+                if(image) instance.setImage(image)
+                if(thumbnail) instance.setThumbnail(thumbnail)
+                if(fields) instance.setFields(fields)
+                if(timestamp) instance.setTimestamp(new Date())
+            }
+        })
+    )
+})
+
+//REGISTER MESSAGE BUILDER
+openticket.events.get("onMessageBuilderLoad").listen((messages) => {
+    messages.add(new api.ODMessage("ot-volume-warning:delay-warning-message"))
+    messages.get("ot-volume-warning:delay-warning-message").workers.add(
+        new api.ODWorker("ot-volume-warning:delay-warning-message",0,async (instance,params,source,cancel) => {
+            const { userId } = params
+            const customMessage = openticket.configs.get("ot-volume-warning:config").data.customMessage;
+            if(customMessage.enabled) {
+                const content = `${customMessage.ping ? `${discord.userMention(userId)} ` : ""}${customMessage.text}`;
+                if(content) instance.setContent(content);
+                if(customMessage.embed.enabled) instance.addEmbed(await openticket.builders.embeds.getSafe("ot-volume-warning:delay-warning-embed").build(source,{custom:true}));
+            } else {
+                instance.addEmbed(await openticket.builders.embeds.getSafe("ot-volume-warning:delay-warning-embed").build(source,{custom:false}));
+            }
+        })
+    )
+})
+
+//REGISTER TICKET
+openticket.events.get("afterTicketCreated").listen(async (ticket, creator, channel) => {
+    const config = openticket.configs.get("ot-volume-warning:config").data;
+    const openTicketsWarningLimit = config.openTicketsWarningLimit;
+    const openTickets = openticket.tickets.getFiltered((ticket) => !ticket.get("openticket:closed").value).length;
+    const userId = creator.id;
+
+    if(openTickets >= openTicketsWarningLimit) {
+        const messageTemplate = await openticket.builders.messages.getSafe("ot-volume-warning:delay-warning-message").build("ticket",{userId});
+        await channel.send(messageTemplate.message);
+    }
+})
