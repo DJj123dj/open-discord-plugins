@@ -1,8 +1,8 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 
 // MESSAGE BUILDERS
-openticket.events.get("onMessageBuilderLoad").listen((messages) => {
+opendiscord.events.get("onMessageBuilderLoad").listen((messages) => {
     /* START FORM MESSAGE
      * The message that shows the initial form message with the Answer button.
      */
@@ -11,10 +11,10 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
         new api.ODWorker("ot-ticket-forms:start-form-message", 0, async (instance, params, source, cancel) => {
             const { formId, formName, formDescription, formColor, acceptAnswers } = params;
             instance.setEmbeds(
-                await openticket.builders.embeds.getSafe("ot-ticket-forms:start-form-embed").build(source, { formName, formDescription, formColor })
+                await opendiscord.builders.embeds.getSafe("ot-ticket-forms:start-form-embed").build(source, { formName, formDescription, formColor })
             );
             instance.addComponent(
-                await openticket.builders.buttons.getSafe("ot-ticket-forms:start-form-button").build(source, { formId, enabled: acceptAnswers })
+                await opendiscord.builders.buttons.getSafe("ot-ticket-forms:start-form-button").build(source, { formId, enabled: acceptAnswers })
             );
         })
     );
@@ -27,12 +27,12 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
         new api.ODWorker("ot-ticket-forms:continue-message", 0, async (instance, params, source, cancel) => {
             const { formId, sessionId, currentSection, totalSections, formColor } = params;
             instance.setEmbeds(
-                await openticket.builders.embeds.getSafe("ot-ticket-forms:continue-embed").build(source, { currentSection, totalSections, formColor })
+                await opendiscord.builders.embeds.getSafe("ot-ticket-forms:continue-embed").build(source, { currentSection, totalSections, formColor })
             );
             instance.setEphemeral(true);
             if(currentSection <= totalSections) {
                 instance.addComponent(
-                    await openticket.builders.buttons.getSafe("ot-ticket-forms:continue-button").build(source, { formId, sessionId })
+                    await opendiscord.builders.buttons.getSafe("ot-ticket-forms:continue-button").build(source, { formId, sessionId })
                 );
             }
         })
@@ -46,13 +46,13 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
         new api.ODWorker("ot-ticket-forms:question-message", 0, async (instance, params, source, cancel) => {
             const { formId, sessionId, question, currentSection, totalSections, formColor } = params;
             instance.setEmbeds(
-                await openticket.builders.embeds.getSafe("ot-ticket-forms:question-embed").build(source, { question, currentSection, totalSections, formColor })
+                await opendiscord.builders.embeds.getSafe("ot-ticket-forms:question-embed").build(source, { question, currentSection, totalSections, formColor })
             );
             if ( question.type === "dropdown" ) {
-                instance.addComponent(await openticket.builders.dropdowns.getSafe("ot-ticket-forms:question-dropdown").build(source, { formId, sessionId, choices: question.choices, minValues: question.minAnswerChoices, maxValues: question.maxAnswerChoices, placeholder: question.placeholder }));
+                instance.addComponent(await opendiscord.builders.dropdowns.getSafe("ot-ticket-forms:question-dropdown").build(source, { formId, sessionId, choices: question.choices, minValues: question.minAnswerChoices, maxValues: question.maxAnswerChoices, placeholder: question.placeholder }));
             } else {
                 for(const choice of question.choices) {
-                    instance.addComponent(await openticket.builders.buttons.getSafe("ot-ticket-forms:question-button").build(source, { formId, sessionId: sessionId, choice }));
+                    instance.addComponent(await opendiscord.builders.buttons.getSafe("ot-ticket-forms:question-button").build(source, { formId, sessionId: sessionId, choice }));
                 };
             }
             instance.setEphemeral(true);
@@ -70,14 +70,14 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
            
             if(totalPages > 1) {
                 // Adds pagination buttons
-                if(currentPageNumber > 1) instance.addComponent(await openticket.builders.buttons.getSafe("ot-ticket-forms:previous-page-button").build(source, { currentPageNumber }));
-                instance.addComponent(await openticket.builders.buttons.getSafe("ot-ticket-forms:page-number-button").build(source, { currentPageNumber, totalPages }));
-                if(currentPageNumber < totalPages) instance.addComponent(await openticket.builders.buttons.getSafe("ot-ticket-forms:next-page-button").build(source, { currentPageNumber }));
+                if(currentPageNumber > 1) instance.addComponent(await opendiscord.builders.buttons.getSafe("ot-ticket-forms:previous-page-button").build(source, { currentPageNumber }));
+                instance.addComponent(await opendiscord.builders.buttons.getSafe("ot-ticket-forms:page-number-button").build(source, { currentPageNumber, totalPages }));
+                if(currentPageNumber < totalPages) instance.addComponent(await opendiscord.builders.buttons.getSafe("ot-ticket-forms:next-page-button").build(source, { currentPageNumber }));
             }
             
             if ( type === "initial" || type === "partial" ) {
                 // Adds delete answers button
-                instance.addComponent(await openticket.builders.buttons.getSafe("ot-ticket-forms:delete-answers-button").build(source, { formId, sessionId }));
+                instance.addComponent(await opendiscord.builders.buttons.getSafe("ot-ticket-forms:delete-answers-button").build(source, { formId, sessionId }));
             } else {
                 instance.removeComponent("ot-ticket-forms:delete-answers-button");
             }

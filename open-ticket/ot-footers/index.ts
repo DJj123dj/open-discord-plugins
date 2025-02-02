@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
@@ -53,13 +53,13 @@ declare module "#opendiscord-types" {
 }
 
 //REGISTER CONFIG
-openticket.events.get("onConfigLoad").listen((configs) => {
+opendiscord.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTFootersConfig("ot-footers:config","config.json","./plugins/ot-footers/"))
 })
 
 //REGISTER CONFIG CHECKER
-openticket.events.get("onCheckerLoad").listen((checkers) => {
-    const config = openticket.configs.get("ot-footers:config")
+opendiscord.events.get("onCheckerLoad").listen((checkers) => {
+    const config = opendiscord.configs.get("ot-footers:config")
     
     //low priority => requires ids from panel & option config checkers
     checkers.add(new api.ODChecker("ot-footers:config",checkers.storage,-1,config,new api.ODCheckerObjectStructure("ot-footers:config",{children:[
@@ -101,7 +101,7 @@ openticket.events.get("onCheckerLoad").listen((checkers) => {
                     return true
                 }else{
                     //doesn't exist
-                    checker.createMessage("openticket:id-non-existent","error",`The id "${value}" doesn't exist!`,lt,null,[`"${value}"`],locationId,locationDocs)
+                    checker.createMessage("opendiscord:id-non-existent","error",`The id "${value}" doesn't exist!`,lt,null,[`"${value}"`],locationId,locationDocs)
                     return false
                 }
             }})},
@@ -122,7 +122,7 @@ openticket.events.get("onCheckerLoad").listen((checkers) => {
                     return true
                 }else{
                     //doesn't exist
-                    checker.createMessage("openticket:id-non-existent","error",`The id "${value}" doesn't exist!`,lt,null,[`"${value}"`],locationId,locationDocs)
+                    checker.createMessage("opendiscord:id-non-existent","error",`The id "${value}" doesn't exist!`,lt,null,[`"${value}"`],locationId,locationDocs)
                     return false
                 }
             }})},
@@ -135,63 +135,63 @@ openticket.events.get("onCheckerLoad").listen((checkers) => {
 })
 
 const errorEmbedIds: (keyof api.ODEmbedManagerIds_Default)[] = [
-    "openticket:error",
-    "openticket:error-option-missing",
-    "openticket:error-option-invalid",
-    "openticket:error-unknown-command",
-    "openticket:error-no-permissions",
-    "openticket:error-no-permissions-cooldown",
-    "openticket:error-no-permissions-blacklisted",
-    "openticket:error-no-permissions-limits",
-    "openticket:error-responder-timeout",
-    "openticket:error-ticket-unknown",
-    "openticket:error-ticket-deprecated",
-    "openticket:error-option-unknown",
-    "openticket:error-panel-unknown",
-    "openticket:error-not-in-guild",
-    "openticket:error-channel-rename",
-    "openticket:error-ticket-busy",
-    "openticket:stats-ticket-unknown",
-    "openticket:transcript-error",
+    "opendiscord:error",
+    "opendiscord:error-option-missing",
+    "opendiscord:error-option-invalid",
+    "opendiscord:error-unknown-command",
+    "opendiscord:error-no-permissions",
+    "opendiscord:error-no-permissions-cooldown",
+    "opendiscord:error-no-permissions-blacklisted",
+    "opendiscord:error-no-permissions-limits",
+    "opendiscord:error-responder-timeout",
+    "opendiscord:error-ticket-unknown",
+    "opendiscord:error-ticket-deprecated",
+    "opendiscord:error-option-unknown",
+    "opendiscord:error-panel-unknown",
+    "opendiscord:error-not-in-guild",
+    "opendiscord:error-channel-rename",
+    "opendiscord:error-ticket-busy",
+    "opendiscord:stats-ticket-unknown",
+    "opendiscord:transcript-error",
 ]
 
 const dmLogEmbedIds: (keyof api.ODEmbedManagerIds_Default)[] = [
-    "openticket:ticket-action-dm",
-    "openticket:blacklist-dm",
+    "opendiscord:ticket-action-dm",
+    "opendiscord:blacklist-dm",
 ]
 
 const logEmbedIds: (keyof api.ODEmbedManagerIds_Default)[] = [
-    "openticket:ticket-action-logs",
-    "openticket:clear-logs",
-    "openticket:blacklist-logs",
-    "openticket:ticket-created-logs"
+    "opendiscord:ticket-action-logs",
+    "opendiscord:clear-logs",
+    "opendiscord:blacklist-logs",
+    "opendiscord:ticket-created-logs"
 ]
 
 //ADD FOOTERS TO EMBEDS
-openticket.events.get("afterEmbedBuildersLoaded").listen((embeds) => {
-    const config = openticket.configs.get("ot-footers:config")
+opendiscord.events.get("afterEmbedBuildersLoaded").listen((embeds) => {
+    const config = opendiscord.configs.get("ot-footers:config")
     const filteredEmbeds = embeds.getAll()
 
     filteredEmbeds.forEach((embed) => {
         const id = embed.id.value as keyof api.ODEmbedManagerIds_Default
 
-        if (id == "openticket:panel"){
+        if (id == "opendiscord:panel"){
             //PANEL FOOTER (high priority => overwrite default footer)
-            embeds.get("openticket:panel").workers.add(new api.ODWorker("ot-footers:footer",10,(instance,params,source,cancel) => {
+            embeds.get("opendiscord:panel").workers.add(new api.ODWorker("ot-footers:footer",10,(instance,params,source,cancel) => {
                 const panelFooterData = config.data.panelFooterImages.find((p) => p.id == params.panel.id.value)
                 if (panelFooterData) instance.setFooter(panelFooterData.panelFooter,panelFooterData.panelFooterImage)
             }))
 
-        }else if (id == "openticket:ticket-message"){
+        }else if (id == "opendiscord:ticket-message"){
             //OPTION FOOTER (ticket message)
-            embeds.get("openticket:ticket-message").workers.add(new api.ODWorker("ot-footers:footer",-10,(instance,params,source,cancel) => {
+            embeds.get("opendiscord:ticket-message").workers.add(new api.ODWorker("ot-footers:footer",-10,(instance,params,source,cancel) => {
                 const optionFooterData = config.data.optionFooterImages.find((p) => p.id == params.ticket.option.id.value)
                 if (optionFooterData) instance.setFooter(optionFooterData.ticketFooter,optionFooterData.ticketFooterImage)
             }))
 
-        }else if (id == "openticket:ticket-created-dm"){
+        }else if (id == "opendiscord:ticket-created-dm"){
             //OPTION FOOTER (ticket dm)
-            embeds.get("openticket:ticket-created-dm").workers.add(new api.ODWorker("ot-footers:footer",-10,(instance,params,source,cancel) => {
+            embeds.get("opendiscord:ticket-created-dm").workers.add(new api.ODWorker("ot-footers:footer",-10,(instance,params,source,cancel) => {
                 const optionFooterData = config.data.optionFooterImages.find((p) => p.id == params.ticket.option.id.value)
                 if (optionFooterData) instance.setFooter(optionFooterData.dmFooter,optionFooterData.dmFooterImage)
             }))
@@ -214,7 +214,7 @@ openticket.events.get("afterEmbedBuildersLoaded").listen((embeds) => {
                 instance.setFooter(config.data.logsFooter.footer,config.data.logsFooter.footerImage)
             }))
 
-        }else if (config.data.generalFooter.enabled && id.startsWith("openticket:")){
+        }else if (config.data.generalFooter.enabled && id.startsWith("opendiscord:")){
             //GENERAL FOOTER (built-in)
             embed.workers.add(new api.ODWorker("ot-footers:footer",-10,(instance,params,source,cancel) => {
                 instance.setFooter(config.data.generalFooter.footer,config.data.generalFooter.footerImage)

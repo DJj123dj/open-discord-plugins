@@ -1,6 +1,7 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 import * as sqlite from "sqlite3"
+import * as fs from "fs"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
 //DECLARATION
@@ -26,13 +27,13 @@ declare module "#opendiscord-types" {
 }
 
 //REGISTER CONFIG
-openticket.events.get("onConfigLoad").listen((configs) => {
+opendiscord.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTSQLiteDatabaseConfig("ot-sqlite-database:config","config.json","./plugins/ot-sqlite-database/"))
 })
 
 //REGISTER CONFIG CHECKER
-openticket.events.get("onCheckerLoad").listen((checkers) => {
-    const config = openticket.configs.get("ot-sqlite-database:config")
+opendiscord.events.get("onCheckerLoad").listen((checkers) => {
+    const config = opendiscord.configs.get("ot-sqlite-database:config")
     const structure = new api.ODCheckerObjectStructure("ot-sqlite-database:config",{children:[
         {key:"migrateFromJson",optional:false,priority:0,checker:new api.ODCheckerBooleanStructure("ot-feedback:migrate-from-json",{})},
         {key:"migrateToJson",optional:false,priority:0,checker:new api.ODCheckerBooleanStructure("ot-feedback:migrate-to-json",{})},
@@ -179,6 +180,19 @@ export class ODSQLiteDatabase extends api.ODDatabase {
     /**Init the database. */
     async init(): Promise<void> {
         await this.sqlite.addTable(this.table)
+
+        //TEMPORARY!!! (also check database loader at row ~240)
+        if (api.TEMP_migrateDatabaseStructurePrefix){
+            const data = await this.getAll()
+            const newData = api.TEMP_migrateDatabaseStructurePrefix(data)
+        
+            for (const d of data){
+                await this.delete(d.category,d.key)
+            }
+            for (const d of newData){
+                await this.set(d.category,d.key,d.value)
+            }
+        }
     }
     /**Add/Overwrite a specific category & key in the database. Returns `true` when overwritten. */
     async set(category:string, key:string, value:api.ODValidJsonType): Promise<boolean> {
@@ -218,16 +232,23 @@ export class ODSQLiteDatabase extends api.ODDatabase {
 }
 
 //CREATE SQLITE DATABASE MANAGER
-openticket.events.get("onDatabaseLoad").listen(() => {
-    const devconfigFlag = openticket.flags.get("openticket:dev-database")
-    const isDevconfig = devconfigFlag ? devconfigFlag.value : false
-    openticket.plugins.classes.add(new ODSqliteManager("ot-sqlite-database:manager",isDevconfig ? "./devdatabase/openticket.sqlite" : "./database/openticket.sqlite"))
+opendiscord.events.get("onDatabaseLoad").listen(() => {
+    const devDatabaseFlag = opendiscord.flags.get("opendiscord:dev-database")
+    const isDevDatabase = devDatabaseFlag ? devDatabaseFlag.value : false
+
+    //TEMPORARY!!!
+    if (fs.existsSync(isDevDatabase ? "./devdatabase/openticket.sqlite" : "./database/openticket.sqlite")){
+        fs.copyFileSync(isDevDatabase ? "./devdatabase/openticket.sqlite" : "./database/openticket.sqlite",isDevDatabase ? "./devdatabase/opendiscord.sqlite" : "./database/opendiscord.sqlite")
+        fs.rmSync(isDevDatabase ? "./devdatabase/openticket.sqlite" : "./database/openticket.sqlite")
+    }
+
+    opendiscord.plugins.classes.add(new ODSqliteManager("ot-sqlite-database:manager",isDevDatabase ? "./devdatabase/opendiscord.sqlite" : "./database/opendiscord.sqlite"))
 })
 
 //REPLACE ALL DATABASES WITH SQLITE VARIANT
 const oldDatabases: api.ODDatabase[] = []
-openticket.events.get("afterDatabasesLoaded").listen(async (databases) => {
-    const sqlite = openticket.plugins.classes.get("ot-sqlite-database:manager")
+opendiscord.events.get("afterDatabasesLoaded").listen(async (databases) => {
+    const sqlite = opendiscord.plugins.classes.get("ot-sqlite-database:manager")
     
     oldDatabases.push(...databases.getAll())
 
@@ -238,8 +259,8 @@ openticket.events.get("afterDatabasesLoaded").listen(async (databases) => {
 })
 
 //MIGRATE FROM & TO JSON DATABASE
-openticket.events.get("afterDatabasesInitiated").listen(async (databases) => {
-    const config = openticket.configs.get("ot-sqlite-database:config")
+opendiscord.events.get("afterDatabasesInitiated").listen(async (databases) => {
+    const config = opendiscord.configs.get("ot-sqlite-database:config")
 
     if (config.data.migrateFromJson){
         //migrate to sqlite database

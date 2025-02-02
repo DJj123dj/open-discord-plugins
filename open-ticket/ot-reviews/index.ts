@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
@@ -71,13 +71,13 @@ declare module "#opendiscord-types" {
 }
 
 //REGISTER CONFIG
-openticket.events.get("onConfigLoad").listen((configs) => {
+opendiscord.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTReviewsConfig("ot-reviews:config","config.json","./plugins/ot-reviews/"))
 })
 
 //REGISTER CONFIG CHECKER
-openticket.events.get("onCheckerLoad").listen((checkers) => {
-    const config = openticket.configs.get("ot-reviews:config")
+opendiscord.events.get("onCheckerLoad").listen((checkers) => {
+    const config = opendiscord.configs.get("ot-reviews:config")
     const structure = new api.ODCheckerObjectStructure("ot-reviews:config",{children:[
         {key:"channel",optional:false,priority:0,checker:new api.ODCheckerCustomStructure_DiscordId("ot-reviews:channel","channel",false,[],{})},
         {key:"reviewMode",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-reviews:mode",{choices:["one-per-ticket","unlimited-per-ticket","unrestricted"]})},
@@ -103,8 +103,8 @@ openticket.events.get("onCheckerLoad").listen((checkers) => {
 })
 
 //REGISTER SLASH COMMAND
-openticket.events.get("onSlashCommandLoad").listen((slash) => {
-    const config = openticket.configs.get("ot-reviews:config")
+opendiscord.events.get("onSlashCommandLoad").listen((slash) => {
+    const config = opendiscord.configs.get("ot-reviews:config")
     const options: discord.ApplicationCommandOptionData[] = [{
         name:"text",
         type:discord.ApplicationCommandOptionType.String,
@@ -142,27 +142,27 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
 })
 
 //REGISTER HELP MENU
-openticket.events.get("onHelpMenuComponentLoad").listen((menu) => {
-    menu.get("openticket:extra").add(new api.ODHelpMenuCommandComponent("ot-reviews:review",0,{
+opendiscord.events.get("onHelpMenuComponentLoad").listen((menu) => {
+    menu.get("opendiscord:extra").add(new api.ODHelpMenuCommandComponent("ot-reviews:review",0,{
         slashName:"review",
         slashDescription:"Write a review!",
     }))
 })
 
 //REGISTER POST (reviews channel)
-openticket.events.get("onPostLoad").listen((posts) => {
-    const config = openticket.configs.get("ot-reviews:config")
+opendiscord.events.get("onPostLoad").listen((posts) => {
+    const config = opendiscord.configs.get("ot-reviews:config")
     posts.add(new api.ODPost("ot-reviews:reviews",config.data.channel))
 })
 
 //REGISTER EMBED BUILDER
-openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
-    const config = openticket.configs.get("ot-reviews:config")
+opendiscord.events.get("onEmbedBuilderLoad").listen((embeds) => {
+    const config = opendiscord.configs.get("ot-reviews:config")
 
     embeds.add(new api.ODEmbed("ot-reviews:review-embed"))
     embeds.get("ot-reviews:review-embed").workers.add(
         new api.ODWorker("ot-reviews:review-embed",0,(instance,params,source,cancel) => {
-            const generalConfig = openticket.configs.get("openticket:general")
+            const generalConfig = opendiscord.configs.get("opendiscord:general")
             instance.setTitle(utilities.emojiTitle("💬",config.data.customisation.title))
             instance.setColor(config.data.customisation.customColor ? config.data.customisation.customColor : generalConfig.data.mainColor)
             instance.setDescription(params.review)
@@ -181,7 +181,7 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
     embeds.add(new api.ODEmbed("ot-reviews:response-embed"))
     embeds.get("ot-reviews:response-embed").workers.add(
         new api.ODWorker("ot-reviews:response-embed",0,(instance,params,source,cancel) => {
-            const generalConfig = openticket.configs.get("openticket:general")
+            const generalConfig = opendiscord.configs.get("opendiscord:general")
             instance.setTitle(utilities.emojiTitle("💬","Review Created"))
             instance.setColor(config.data.customisation.customColor ? config.data.customisation.customColor : generalConfig.data.mainColor)
             instance.setDescription("Your review has been created successfully!")
@@ -195,12 +195,12 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
 })
 
 //REGISTER MESSAGE BUILDER
-openticket.events.get("onMessageBuilderLoad").listen((messages) => {
+opendiscord.events.get("onMessageBuilderLoad").listen((messages) => {
     messages.add(new api.ODMessage("ot-reviews:review-message"))
     messages.get("ot-reviews:review-message").workers.add(
         new api.ODWorker("ot-reviews:review-message",0,async (instance,params,source,cancel) => {
             const {user,channel,review,rating,image} = params
-            instance.addEmbed(await openticket.builders.embeds.getSafe("ot-reviews:review-embed").build(source,{user,channel,review,rating,image}))
+            instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-reviews:review-embed").build(source,{user,channel,review,rating,image}))
         })
     )
 
@@ -208,46 +208,46 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
     messages.get("ot-reviews:response-message").workers.add(
         new api.ODWorker("ot-reviews:response-message",0,async (instance,params,source,cancel) => {
             const {user,channel,review,rating,image} = params
-            instance.addEmbed(await openticket.builders.embeds.getSafe("ot-reviews:response-embed").build(source,{user,channel,review,rating,image}))
+            instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-reviews:response-embed").build(source,{user,channel,review,rating,image}))
             instance.setEphemeral(true)
         })
     )
 })
 
 //REGISTER COMMAND RESPONDER
-openticket.events.get("onCommandResponderLoad").listen((commands) => {
-    const generalConfig = openticket.configs.get("openticket:general")
-    const config = openticket.configs.get("ot-reviews:config")
+opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
+    const generalConfig = opendiscord.configs.get("opendiscord:general")
+    const config = opendiscord.configs.get("ot-reviews:config")
 
     commands.add(new api.ODCommandResponder("ot-reviews:review",generalConfig.data.prefix,"review"))
     commands.get("ot-reviews:review").workers.add([
         new api.ODWorker("ot-reviews:permissions",1,async (instance,params,source,cancel) => {
             const {guild,channel,user} = instance
-            const reviewsCreated = (await openticket.stats.get("openticket:user").getStat("ot-reviews:reviews-created",user.id)) as number|null ?? 0
-            const ticketsCreated = (await openticket.stats.get("openticket:user").getStat("openticket:tickets-created",user.id)) as number|null ?? 0
+            const reviewsCreated = (await opendiscord.stats.get("opendiscord:user").getStat("ot-reviews:reviews-created",user.id)) as number|null ?? 0
+            const ticketsCreated = (await opendiscord.stats.get("opendiscord:user").getStat("opendiscord:tickets-created",user.id)) as number|null ?? 0
             
-            if (!config.data.allowBlacklisted && openticket.blacklist.exists(user.id)){
-                openticket.log(user.displayName+" tried to create a review but is blacklisted!","info",[
+            if (!config.data.allowBlacklisted && opendiscord.blacklist.exists(user.id)){
+                opendiscord.log(user.displayName+" tried to create a review but is blacklisted!","info",[
                     {key:"user",value:user.username},
                     {key:"userid",value:user.id,hidden:true},
                     {key:"review",value:instance.options.getString("text",true)}
                 ])
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build(source,{guild,channel,user,error:"You're unable to create a review when you are blacklisted.",layout:"simple"}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error").build(source,{guild,channel,user,error:"You're unable to create a review when you are blacklisted.",layout:"simple"}))
                 return cancel()
             }
 
             if (config.data.reviewMode == "one-per-ticket" && reviewsCreated >= ticketsCreated){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build(source,{guild,channel,user,error:"You can only create a review when you've created a ticket.",layout:"simple"}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error").build(source,{guild,channel,user,error:"You can only create a review when you've created a ticket.",layout:"simple"}))
                 return cancel()
             }else if (config.data.reviewMode == "unlimited-per-ticket" && ticketsCreated < 1){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build(source,{guild,channel,user,error:"You can only create a review when you've created at least 1 ticket.",layout:"simple"}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error").build(source,{guild,channel,user,error:"You can only create a review when you've created at least 1 ticket.",layout:"simple"}))
                 return cancel()
             }else return
         }),
         new api.ODWorker("ot-reviews:review",0,async (instance,params,source,cancel) => {
             const {guild,channel,user} = instance
             if (!guild || channel.isDMBased()){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build(source,{channel,user}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error-not-in-guild").build(source,{channel,user}))
                 return cancel()
             }
             if (!(instance.interaction instanceof discord.ChatInputCommandInteraction)) return cancel()
@@ -261,21 +261,21 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
                 image = null
             }
 
-            await openticket.events.get("ot-reviews:onReview").emit([user,review,rating,image])
+            await opendiscord.events.get("ot-reviews:onReview").emit([user,review,rating,image])
 
             //update stats
-            await openticket.stats.get("openticket:global").setStat("ot-reviews:reviews-created",1,"increase")
-            await openticket.stats.get("openticket:user").setStat("ot-reviews:reviews-created",user.id,1,"increase")
+            await opendiscord.stats.get("opendiscord:global").setStat("ot-reviews:reviews-created",1,"increase")
+            await opendiscord.stats.get("opendiscord:user").setStat("ot-reviews:reviews-created",user.id,1,"increase")
 
             //reply to command
-            await instance.reply(await openticket.builders.messages.getSafe("ot-reviews:response-message").build(source,{user,channel,review,rating,image}))
+            await instance.reply(await opendiscord.builders.messages.getSafe("ot-reviews:response-message").build(source,{user,channel,review,rating,image}))
             
             //send review
-            await openticket.posts.get("ot-reviews:reviews").send(await openticket.builders.messages.getSafe("ot-reviews:review-message").build(source,{user,channel,review,rating,image}))
-            await openticket.events.get("ot-reviews:afterReview").emit([user,review,rating,image])
+            await opendiscord.posts.get("ot-reviews:reviews").send(await opendiscord.builders.messages.getSafe("ot-reviews:review-message").build(source,{user,channel,review,rating,image}))
+            await opendiscord.events.get("ot-reviews:afterReview").emit([user,review,rating,image])
         }),
         new api.ODWorker("ot-reviews:logs",-1,(instance,params,source,cancel) => {
-            openticket.log(instance.user.displayName+" used the 'review' command!","plugin",[
+            opendiscord.log(instance.user.displayName+" used the 'review' command!","plugin",[
                 {key:"user",value:instance.user.username},
                 {key:"userid",value:instance.user.id,hidden:true},
                 {key:"channelid",value:instance.channel.id,hidden:true},
@@ -287,7 +287,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
 })
 
 //REGISTER NEW STATISTICS
-openticket.events.get("onStatLoad").listen((stats) => {
-    stats.get("openticket:global").add(new api.ODBasicStat("ot-reviews:reviews-created",0,"Reviews Created",0))
-    stats.get("openticket:user").add(new api.ODBasicStat("ot-reviews:reviews-created",0,"Reviews Created",0))
+opendiscord.events.get("onStatLoad").listen((stats) => {
+    stats.get("opendiscord:global").add(new api.ODBasicStat("ot-reviews:reviews-created",0,"Reviews Created",0))
+    stats.get("opendiscord:user").add(new api.ODBasicStat("ot-reviews:reviews-created",0,"Reviews Created",0))
 })

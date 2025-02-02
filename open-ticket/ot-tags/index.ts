@@ -1,4 +1,4 @@
-import { api, openticket, utilities } from "#opendiscord"
+import { api, opendiscord, utilities } from "#opendiscord"
 import * as discord from "discord.js"
 import crypto from "crypto"
 import ansis from "ansis"
@@ -196,18 +196,18 @@ declare module "#opendiscord-types" {
 }
 
 //REGISTER MANAGER
-openticket.events.get("onPluginClassLoad").listen((classes) => {
-    classes.add(new OTTagManager(openticket.debug))
+opendiscord.events.get("onPluginClassLoad").listen((classes) => {
+    classes.add(new OTTagManager(opendiscord.debug))
 })
 
 //REGISTER CONFIG
-openticket.events.get("onConfigLoad").listen((configs) => {
+opendiscord.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTTagsConfig("ot-tags:config","config.json","./plugins/ot-tags/"))
 })
 
 //REGISTER CONFIG CHECKER
-openticket.events.get("onCheckerLoad").listen((checkers) => {
-    const config = openticket.configs.get("ot-tags:config")
+opendiscord.events.get("onCheckerLoad").listen((checkers) => {
+    const config = opendiscord.configs.get("ot-tags:config")
     checkers.add(new api.ODChecker("ot-tags:config",checkers.storage,0,config,new api.ODCheckerObjectStructure("ot-tags:config",{children:[
         {key:"layout",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-tags:layout",{choices:["text","bold-text","embed"]})},
         {key:"mentionUser",optional:false,priority:0,checker:new api.ODCheckerBooleanStructure("ot-tags:smart-mention",{})},
@@ -225,15 +225,15 @@ openticket.events.get("onCheckerLoad").listen((checkers) => {
 })
 
 //REGISTER TAGS DATABASE
-openticket.events.get("onDatabaseLoad").listen((databases) => {
-    const devdatabaseFlag = openticket.flags.get("openticket:dev-database")
+opendiscord.events.get("onDatabaseLoad").listen((databases) => {
+    const devdatabaseFlag = opendiscord.flags.get("opendiscord:dev-database")
     const isDevdatabase = devdatabaseFlag ? devdatabaseFlag.value : false
 
     databases.add(new api.ODJsonDatabase("ot-tags:tags","tags.json",(isDevdatabase) ? "./devdatabase/" : "./database/"))
 })
 
 //REGISTER SLASH COMMANDS
-openticket.events.get("onSlashCommandLoad").listen((slash) => {
+opendiscord.events.get("onSlashCommandLoad").listen((slash) => {
     slash.add(new api.ODSlashCommand("ot-tags:tag",{
         name:"tag",
         description:"Use a tag in this channel.",
@@ -351,21 +351,21 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
 })
 
 //REGISTER HELP MENU
-openticket.events.get("onHelpMenuComponentLoad").listen((menu) => {
-    menu.get("openticket:extra").add(new api.ODHelpMenuCommandComponent("ot-tags:tag",0,{
+opendiscord.events.get("onHelpMenuComponentLoad").listen((menu) => {
+    menu.get("opendiscord:extra").add(new api.ODHelpMenuCommandComponent("ot-tags:tag",0,{
         slashName:"tag",
         slashDescription:"Use a tag in a channel!",
     }))
-    menu.get("openticket:extra").add(new api.ODHelpMenuCommandComponent("ot-tags:tags",0,{
+    menu.get("opendiscord:extra").add(new api.ODHelpMenuCommandComponent("ot-tags:tags",0,{
         slashName:"tags",
         slashDescription:"Manage all tags in the server!",
     }))
 })
 
 //REGISTER EMBED BUILDERS
-openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
-    const generalConfig = openticket.configs.get("openticket:general")
-    const config = openticket.configs.get("ot-tags:config")
+opendiscord.events.get("onEmbedBuilderLoad").listen((embeds) => {
+    const generalConfig = opendiscord.configs.get("opendiscord:general")
+    const config = opendiscord.configs.get("ot-tags:config")
 
     embeds.add(new api.ODEmbed("ot-tags:tag-embed"))
     embeds.get("ot-tags:tag-embed").workers.add(
@@ -449,8 +449,8 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
 })
 
 //REGISTER MESSAGE BUILDERS
-openticket.events.get("onMessageBuilderLoad").listen((messages) => {
-    const config = openticket.configs.get("ot-tags:config")
+opendiscord.events.get("onMessageBuilderLoad").listen((messages) => {
+    const config = opendiscord.configs.get("ot-tags:config")
 
     messages.add(new api.ODMessage("ot-tags:tag-message"))
     messages.get("ot-tags:tag-message").workers.add(
@@ -460,7 +460,7 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
 
             if (config.data.layout == "text") instance.setContent(tag.value+keywordSuffix)
             else if (config.data.layout == "bold-text") instance.setContent("**"+tag.value+"**"+keywordSuffix)
-            else if (config.data.layout == "embed") instance.addEmbed(await openticket.builders.embeds.getSafe("ot-tags:tag-embed").build(source,{tag,user,channel,keyword}))
+            else if (config.data.layout == "embed") instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-tags:tag-embed").build(source,{tag,user,channel,keyword}))
         })
     )
 
@@ -470,7 +470,7 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
             const {tag,user,channel} = params
             
             instance.setEphemeral(true)
-            instance.addEmbed(await openticket.builders.embeds.getSafe("ot-tags:tag-created-embed").build(source,{tag,user,channel}))
+            instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-tags:tag-created-embed").build(source,{tag,user,channel}))
         })
     )
 
@@ -480,7 +480,7 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
             const {tag,user,channel} = params
             
             instance.setEphemeral(true)
-            instance.addEmbed(await openticket.builders.embeds.getSafe("ot-tags:tag-edited-embed").build(source,{tag,user,channel}))
+            instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-tags:tag-edited-embed").build(source,{tag,user,channel}))
         })
     )
 
@@ -490,7 +490,7 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
             const {tag,user,channel} = params
             
             instance.setEphemeral(true)
-            instance.addEmbed(await openticket.builders.embeds.getSafe("ot-tags:tag-removed-embed").build(source,{tag,user,channel}))
+            instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-tags:tag-removed-embed").build(source,{tag,user,channel}))
         })
     )
 
@@ -500,14 +500,14 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
             const {action,tag,user,channel} = params
             
             instance.setEphemeral(true)
-            instance.addEmbed(await openticket.builders.embeds.getSafe("ot-tags:log-embed").build(source,{action,tag,user,channel}))
+            instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-tags:log-embed").build(source,{action,tag,user,channel}))
         })
     )
 })
 
-openticket.events.get("onCommandResponderLoad").listen((commands) => {
-    const generalConfig = openticket.configs.get("openticket:general")
-    const tags = openticket.plugins.classes.get("ot-tags:manager")
+opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
+    const generalConfig = opendiscord.configs.get("opendiscord:general")
+    const tags = opendiscord.plugins.classes.get("ot-tags:manager")
     
     //TAG
     commands.add(new api.ODCommandResponder("ot-tags:tag",generalConfig.data.prefix,"tag"))
@@ -518,32 +518,32 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
 
             //check if in guild
             if (!guild || channel.isDMBased()){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build(source,{channel,user}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error-not-in-guild").build(source,{channel,user}))
                 return cancel()
             }
 
             const tag = tags.getAll().find((t) => t.name.toLowerCase() == nameOpt.toLowerCase())
             if (!tag){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error").build(source,{guild,channel,user,error:"Supplied an invalid tag name. Please try again!",layout:"simple"}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error").build(source,{guild,channel,user,error:"Supplied an invalid tag name. Please try again!",layout:"simple"}))
                 return cancel()
             }
 
             //check permissions (when admin only)
-            if (tag.adminOnly && !openticket.permissions.hasPermissions("support",await openticket.permissions.getPermissions(user,channel,guild))){
+            if (tag.adminOnly && !opendiscord.permissions.hasPermissions("support",await opendiscord.permissions.getPermissions(user,channel,guild))){
                 //no permissions
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-no-permissions").build(source,{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin","support"]}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error-no-permissions").build(source,{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin","support"]}))
                 return cancel()
             }
 
-            await openticket.events.get("ot-tags:onTagUsed").emit([tag,user,channel])
-            await instance.reply(await openticket.builders.messages.getSafe("ot-tags:tag-message").build(source,{channel,user,keyword:null,tag}))
+            await opendiscord.events.get("ot-tags:onTagUsed").emit([tag,user,channel])
+            await instance.reply(await opendiscord.builders.messages.getSafe("ot-tags:tag-message").build(source,{channel,user,keyword:null,tag}))
         }),
         new api.ODWorker("ot-tags:logs",-1,(instance,params,source,cancel) => {
             const nameOpt = instance.options.getString("name",true)
             const tag = tags.getAll().find((t) => t.name.toLowerCase() == nameOpt.toLowerCase())
             const tagName = tag ? tag.name : "/"
 
-            openticket.log(instance.user.displayName+" used the 'tag' command!","plugin",[
+            opendiscord.log(instance.user.displayName+" used the 'tag' command!","plugin",[
                 {key:"user",value:instance.user.username},
                 {key:"userid",value:instance.user.id,hidden:true},
                 {key:"channelid",value:instance.channel.id,hidden:true},
@@ -563,14 +563,14 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
 
             //check if in guild
             if (!guild || channel.isDMBased()){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build(source,{channel,user}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error-not-in-guild").build(source,{channel,user}))
                 return cancel()
             }
 
             //check permissions
-            if (!openticket.permissions.hasPermissions("support",await openticket.permissions.getPermissions(user,channel,guild))){
+            if (!opendiscord.permissions.hasPermissions("support",await opendiscord.permissions.getPermissions(user,channel,guild))){
                 //no permissions
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-no-permissions").build(source,{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin","support"]}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error-no-permissions").build(source,{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin","support"]}))
                 return cancel()
             }
 
@@ -583,15 +583,15 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
                 const keywords = keywordsOpt ? keywordsOpt.split(/ *, */g).filter((k) => k.length > 2) : []
 
                 if (tags.getAll().find((t) => t.name.toLowerCase() == nameOpt.toLowerCase())){
-                    instance.reply(await openticket.builders.messages.getSafe("openticket:error").build(source,{guild,channel,user,error:"This tag already exists! Please use another name.",layout:"simple"}))
+                    instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error").build(source,{guild,channel,user,error:"This tag already exists! Please use another name.",layout:"simple"}))
                     return cancel()
                 }
                 
                 const tag = new OTTag(randomHexId(tags.getIds().map((id) => id.value)),nameOpt,contentsOpt,adminOpt,autoOpt,keywords)
                 tags.add(tag)
-                await openticket.stats.get("openticket:global").setStat("ot-tags:tags-created",1,"increase")
-                await openticket.events.get("ot-tags:onTagCreated").emit([tag,user,channel])
-                await instance.reply(await openticket.builders.messages.getSafe("ot-tags:tag-created-message").build(source,{channel,user,tag}))
+                await opendiscord.stats.get("opendiscord:global").setStat("ot-tags:tags-created",1,"increase")
+                await opendiscord.events.get("ot-tags:onTagCreated").emit([tag,user,channel])
+                await instance.reply(await opendiscord.builders.messages.getSafe("ot-tags:tag-created-message").build(source,{channel,user,tag}))
             
             }else if (modeOpt == "edit"){
                 //edit an existing tag
@@ -603,7 +603,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
 
                 const tag = tags.getAll().find((t) => t.name.toLowerCase() == nameOpt.toLowerCase())
                 if (!tag){
-                    instance.reply(await openticket.builders.messages.getSafe("openticket:error").build(source,{guild,channel,user,error:"Supplied an invalid tag name. Please try again!",layout:"simple"}))
+                    instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error").build(source,{guild,channel,user,error:"Supplied an invalid tag name. Please try again!",layout:"simple"}))
                     return cancel()
                 }
                 
@@ -611,21 +611,21 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
                 tag.adminOnly = adminOpt
                 tag.auto = autoOpt
                 tag.keywords = keywords
-                await openticket.events.get("ot-tags:onTagEdited").emit([tag,user,channel])
-                await instance.reply(await openticket.builders.messages.getSafe("ot-tags:tag-edited-message").build(source,{channel,user,tag}))
+                await opendiscord.events.get("ot-tags:onTagEdited").emit([tag,user,channel])
+                await instance.reply(await opendiscord.builders.messages.getSafe("ot-tags:tag-edited-message").build(source,{channel,user,tag}))
             
             }else if (modeOpt == "remove"){
                 //remove an existing tag
                 const tag = tags.getAll().find((t) => t.name.toLowerCase() == nameOpt.toLowerCase())
                 if (!tag){
-                    instance.reply(await openticket.builders.messages.getSafe("openticket:error").build(source,{guild,channel,user,error:"Supplied an invalid tag name. Please try again!",layout:"simple"}))
+                    instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error").build(source,{guild,channel,user,error:"Supplied an invalid tag name. Please try again!",layout:"simple"}))
                     return cancel()
                 }
                 
                 tags.remove(tag.id)
-                await openticket.stats.get("openticket:global").setStat("ot-tags:tags-created",1,"decrease")
-                await openticket.events.get("ot-tags:onTagRemoved").emit([tag,user,channel])
-                await instance.reply(await openticket.builders.messages.getSafe("ot-tags:tag-removed-message").build(source,{channel,user,tag}))
+                await opendiscord.stats.get("opendiscord:global").setStat("ot-tags:tags-created",1,"decrease")
+                await opendiscord.events.get("ot-tags:onTagRemoved").emit([tag,user,channel])
+                await instance.reply(await opendiscord.builders.messages.getSafe("ot-tags:tag-removed-message").build(source,{channel,user,tag}))
             }
         }),
         new api.ODWorker("ot-tags:logs",-1,(instance,params,source,cancel) => {
@@ -634,7 +634,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
             const tag = tags.getAll().find((t) => t.name.toLowerCase() == nameOpt.toLowerCase())
             const tagName = tag ? tag.name : "/"
 
-            openticket.log(instance.user.displayName+" used the 'tags "+modeOpt+"' command!","plugin",[
+            opendiscord.log(instance.user.displayName+" used the 'tags "+modeOpt+"' command!","plugin",[
                 {key:"user",value:instance.user.username},
                 {key:"userid",value:instance.user.id,hidden:true},
                 {key:"channelid",value:instance.channel.id,hidden:true},
@@ -645,13 +645,13 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
     ])
 })
 
-openticket.events.get("onCodeLoad").listen((code) => {
-    const tags = openticket.plugins.classes.get("ot-tags:manager")
-    const tagDatabase = openticket.databases.get("ot-tags:tags")
-    const version = openticket.plugins.get("ot-tags").version
+opendiscord.events.get("onCodeLoad").listen((code) => {
+    const tags = opendiscord.plugins.classes.get("ot-tags:manager")
+    const tagDatabase = opendiscord.databases.get("ot-tags:tags")
+    const version = opendiscord.plugins.get("ot-tags").version
 
     //TAG LOADER
-    openticket.code.add(new api.ODCode("ot-tags:tag-loader",0,async () => {
+    opendiscord.code.add(new api.ODCode("ot-tags:tag-loader",0,async () => {
         const rawTags = await tagDatabase.getCategory("ot-tags:tag") ?? []
         rawTags.forEach((rawTag) => {
             tags.add(OTTag.fromJson(rawTag.value as OTTagJson))
@@ -659,7 +659,7 @@ openticket.events.get("onCodeLoad").listen((code) => {
     }))
 
     //TAG SAVER
-    openticket.code.add(new api.ODCode("ot-tags:tag-saver",-1,() => {
+    opendiscord.code.add(new api.ODCode("ot-tags:tag-saver",-1,() => {
         tags.onAdd(async (tag) => {
             await tagDatabase.set("ot-tags:tag",tag.id.value,tag.toJson(version))
         })
@@ -673,11 +673,11 @@ openticket.events.get("onCodeLoad").listen((code) => {
 })
 
 //OTHER CLIENT EVENTS
-openticket.events.get("onClientReady").listen((clientManager) => {
-    const tags = openticket.plugins.classes.get("ot-tags:manager")
+opendiscord.events.get("onClientReady").listen((clientManager) => {
+    const tags = opendiscord.plugins.classes.get("ot-tags:manager")
     const client = clientManager.client
-    const config = openticket.configs.get("ot-tags:config")
-    const generalConfig = openticket.configs.get("openticket:general")
+    const config = opendiscord.configs.get("ot-tags:config")
+    const generalConfig = opendiscord.configs.get("opendiscord:general")
 
     //AUTOCOMPLETE
     client.on("interactionCreate",(interaction) => {
@@ -696,13 +696,13 @@ openticket.events.get("onClientReady").listen((clientManager) => {
         if (msg.guildId != generalConfig.data.serverId || msg.author.id == client.user.id || msg.author.bot || msg.channel.isDMBased()) return
         const tag = tags.getAll().find((tag) => !tagCooldown.has(tag.id.value+"_"+msg.channel.id) && tag.matchKeywords(msg.content,config.data.enableSmartAutoTag))
         if (!tag) return
-        const replyMsg = (await openticket.builders.messages.getSafe("ot-tags:tag-message").build("keyword",{channel:msg.channel,user:msg.author,keyword:null,tag})).message
+        const replyMsg = (await opendiscord.builders.messages.getSafe("ot-tags:tag-message").build("keyword",{channel:msg.channel,user:msg.author,keyword:null,tag})).message
        
         if (config.data.mentionUser) msg.reply(replyMsg)
         else msg.channel.send(replyMsg)
-        await openticket.events.get("ot-tags:onAutoTagTriggered").emit([tag,msg.author,msg.channel])
+        await opendiscord.events.get("ot-tags:onAutoTagTriggered").emit([tag,msg.author,msg.channel])
 
-        openticket.log(msg.author.displayName+" auto-triggered a tag!","plugin",[
+        opendiscord.log(msg.author.displayName+" auto-triggered a tag!","plugin",[
             {key:"user",value:msg.author.username},
             {key:"userid",value:msg.author.id,hidden:true},
             {key:"channelid",value:msg.channel.id,hidden:true},
@@ -717,15 +717,15 @@ openticket.events.get("onClientReady").listen((clientManager) => {
 })
 
 //REGISTER NEW STATISTICS
-openticket.events.get("onStatLoad").listen((stats) => {
-    stats.get("openticket:global").add(new api.ODBasicStat("ot-tags:tags-created",0,"Tags Created",0))
+opendiscord.events.get("onStatLoad").listen((stats) => {
+    stats.get("opendiscord:global").add(new api.ODBasicStat("ot-tags:tags-created",0,"Tags Created",0))
 })
 
 
 //STARTUP SCREEN
-openticket.events.get("onStartScreenLoad").listen((startscreen) => {
-    const tags = openticket.plugins.classes.get("ot-tags:manager")
-    const stats = startscreen.get("openticket:stats")
+opendiscord.events.get("onStartScreenLoad").listen((startscreen) => {
+    const tags = opendiscord.plugins.classes.get("ot-tags:manager")
+    const stats = startscreen.get("opendiscord:stats")
     if (!stats) return
 
     //insert tags startup info before "help" stat.

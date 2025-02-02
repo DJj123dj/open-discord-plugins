@@ -1,10 +1,10 @@
 {
     "name":"OT Tags",
     "id":"ot-tags",
-    "version":"1.0.0",
+    "version":"1.0.1",
     "startFile":"index.ts",
 
-    "enabled":false,
+    "enabled":true,
     "priority":0,
     "events":["ot-tags:onTagCreated","ot-tags:onTagRemoved","ot-tags:onTagEdited","ot-tags:onTagUsed","ot-tags:onAutoTagTriggered"],
 

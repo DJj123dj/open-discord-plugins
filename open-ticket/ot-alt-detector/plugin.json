@@ -1,7 +1,7 @@
 {
     "name":"OT Alt Detector",
     "id":"ot-alt-detector",
-    "version":"1.0.2",
+    "version":"1.0.3",
     "startFile":"index.ts",
 
     "enabled":true,

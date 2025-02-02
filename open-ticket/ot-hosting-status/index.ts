@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
@@ -37,7 +37,7 @@ declare module "#opendiscord-types" {
 }
 
 //REGISTER SLASH COMMAND
-openticket.events.get("onSlashCommandLoad").listen((slash) => {
+opendiscord.events.get("onSlashCommandLoad").listen((slash) => {
     slash.add(new api.ODSlashCommand("ot-hosting-status:hosting",{
         name:"hosting",
         description:"Send a hosting status update to a channel.",
@@ -89,15 +89,15 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
 })
 
 //REGISTER HELP MENU
-openticket.events.get("onHelpMenuComponentLoad").listen((menu) => {
-    menu.get("openticket:extra").add(new api.ODHelpMenuCommandComponent("ot-hosting-status:hosting",0,{
+opendiscord.events.get("onHelpMenuComponentLoad").listen((menu) => {
+    menu.get("opendiscord:extra").add(new api.ODHelpMenuCommandComponent("ot-hosting-status:hosting",0,{
         slashName:"hosting",
         slashDescription:"Send a hosting status update to a channel!",
     }))
 })
 
 //REGISTER EMBED BUILDERS
-openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
+opendiscord.events.get("onEmbedBuilderLoad").listen((embeds) => {
     embeds.add(new api.ODEmbed("ot-hosting-status:hosting-embed"))
     embeds.get("ot-hosting-status:hosting-embed").workers.add(
         new api.ODWorker("ot-hosting-status:hosting-embed",0,(instance,params,source,cancel) => {
@@ -119,7 +119,7 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
     embeds.add(new api.ODEmbed("ot-hosting-status:reply-embed"))
     embeds.get("ot-hosting-status:reply-embed").workers.add(
         new api.ODWorker("ot-hosting-status:reply-embed",0,(instance,params,source,cancel) => {
-            const generalConfig = openticket.configs.get("openticket:general")
+            const generalConfig = opendiscord.configs.get("opendiscord:general")
             instance.setTitle(utilities.emojiTitle("✅","Hosting Status Sent"))
             instance.setColor(generalConfig.data.mainColor)
             instance.setDescription("The hosting status update has been sent to the channel successfully!")
@@ -128,13 +128,13 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
 })
 
 //REGISTER MESSAGE BUILDERS
-openticket.events.get("onMessageBuilderLoad").listen((messages) => {
+opendiscord.events.get("onMessageBuilderLoad").listen((messages) => {
     messages.add(new api.ODMessage("ot-hosting-status:hosting-message"))
     messages.get("ot-hosting-status:hosting-message").workers.add(
         new api.ODWorker("ot-hosting-status:hosting-message",0,async (instance,params,source,cancel) => {
             const {data} = params
             
-            instance.addEmbed(await openticket.builders.embeds.getSafe("ot-hosting-status:hosting-embed").build(source,{data}))
+            instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-hosting-status:hosting-embed").build(source,{data}))
 
             if (data.ping instanceof discord.Role) instance.setContent(discord.roleMention(data.ping.id))
             else if (data.ping instanceof discord.GuildMember || data.ping instanceof discord.User) instance.setContent(discord.userMention(data.ping.id))
@@ -144,15 +144,15 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
     messages.add(new api.ODMessage("ot-hosting-status:reply-message"))
     messages.get("ot-hosting-status:reply-message").workers.add(
         new api.ODWorker("ot-hosting-status:reply-message",0,async (instance,params,source,cancel) => {
-            instance.addEmbed(await openticket.builders.embeds.getSafe("ot-hosting-status:reply-embed").build(source,{}))
+            instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-hosting-status:reply-embed").build(source,{}))
             instance.setEphemeral(true)
         })
     )
 })
 
 //REGISTER COMMAND RESPONDER
-openticket.events.get("onCommandResponderLoad").listen((commands) => {
-    const generalConfig = openticket.configs.get("openticket:general")
+opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
+    const generalConfig = opendiscord.configs.get("opendiscord:general")
 
     commands.add(new api.ODCommandResponder("ot-hosting-status:hosting",generalConfig.data.prefix,"hosting"))
     commands.get("ot-hosting-status:hosting").workers.add([
@@ -160,14 +160,14 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
             const {guild,channel,user} = instance
 
             //check for guild & permissions
-            if (!openticket.permissions.hasPermissions("admin",await openticket.permissions.getPermissions(user,channel,guild))){
+            if (!opendiscord.permissions.hasPermissions("admin",await opendiscord.permissions.getPermissions(user,channel,guild))){
                 //no permissions
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-no-permissions").build(source,{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin"]}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error-no-permissions").build(source,{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin"]}))
                 return cancel()
             }
             //check if in guild
             if (!guild){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build(source,{channel,user}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error-not-in-guild").build(source,{channel,user}))
                 return cancel()
             }
 
@@ -177,7 +177,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
             const detailsOpt = instance.options.getString("details",true)
             const pingOpt = instance.options.getMentionable("ping",false)
 
-            await channelOpt.send((await openticket.builders.messages.getSafe("ot-hosting-status:hosting-message").build(source,{data:{
+            await channelOpt.send((await opendiscord.builders.messages.getSafe("ot-hosting-status:hosting-message").build(source,{data:{
                 title:titleOpt,
                 details:detailsOpt,
                 type:typeOpt,
@@ -185,10 +185,10 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
                 guild
             }})).message)
 
-            await instance.reply(await openticket.builders.messages.getSafe("ot-hosting-status:reply-message").build(source,{}))
+            await instance.reply(await opendiscord.builders.messages.getSafe("ot-hosting-status:reply-message").build(source,{}))
         }),
         new api.ODWorker("ot-hosting-status:logs",-1,(instance,params,source,cancel) => {
-            openticket.log(instance.user.displayName+" used the 'hosting' command!","plugin",[
+            opendiscord.log(instance.user.displayName+" used the 'hosting' command!","plugin",[
                 {key:"user",value:instance.user.username},
                 {key:"userid",value:instance.user.id,hidden:true},
                 {key:"channelid",value:instance.channel.id,hidden:true},

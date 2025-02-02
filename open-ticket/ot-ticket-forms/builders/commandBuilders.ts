@@ -1,11 +1,11 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 
 //REGISTER SLASH COMMAND
 const act = discord.ApplicationCommandType
 const acot = discord.ApplicationCommandOptionType
-openticket.events.get("onSlashCommandLoad").listen((slash) => {
-    const config = openticket.configs.get("ot-ticket-forms:config")
+opendiscord.events.get("onSlashCommandLoad").listen((slash) => {
+    const config = opendiscord.configs.get("ot-ticket-forms:config")
 
     //create form choices
     const formChoices : {name:string, value:string}[] = []

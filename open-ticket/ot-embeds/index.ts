@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 import ansis from "ansis"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
@@ -84,12 +84,12 @@ declare module "#opendiscord-types" {
 }
 
 //REGISTER PLUGIN CLASS
-openticket.events.get("onPluginClassLoad").listen((classes) => {
-    classes.add(new OTCustomEmbedManager(openticket.debug))
+opendiscord.events.get("onPluginClassLoad").listen((classes) => {
+    classes.add(new OTCustomEmbedManager(opendiscord.debug))
 })
 
 //REGISTER CONFIG FILE
-openticket.events.get("onConfigLoad").listen((configs) => {
+opendiscord.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTCustomEmbedsConfig("ot-embeds:config","config.json","./plugins/ot-embeds/"))
 })
 
@@ -124,16 +124,16 @@ export const embedsConfigStructure = new api.ODCheckerArrayStructure("ot-embeds:
 ]})})
 
 //REGISTER CONFIG CHECKER
-openticket.events.get("onCheckerLoad").listen((checkers) => {
-    const config = openticket.configs.get("ot-embeds:config")
+opendiscord.events.get("onCheckerLoad").listen((checkers) => {
+    const config = opendiscord.configs.get("ot-embeds:config")
     checkers.add(new api.ODChecker("ot-embeds:config",checkers.storage,0,config,embedsConfigStructure))
 })
 
 //REGISTER SLASH COMMAND
 const act = discord.ApplicationCommandType
 const acot = discord.ApplicationCommandOptionType
-openticket.events.get("onSlashCommandLoad").listen((slash) => {
-    const config = openticket.configs.get("ot-embeds:config")
+opendiscord.events.get("onSlashCommandLoad").listen((slash) => {
+    const config = opendiscord.configs.get("ot-embeds:config")
 
     //create embed choices
     const embedChoices : {name:string, value:string}[] = []
@@ -276,34 +276,34 @@ openticket.events.get("onSlashCommandLoad").listen((slash) => {
 })
 
 //REGISTER HELP MENU
-openticket.events.get("onHelpMenuComponentLoad").listen((menu) => {
-    menu.get("openticket:extra").add(new api.ODHelpMenuCommandComponent("ot-embeds:embed",0,{
+opendiscord.events.get("onHelpMenuComponentLoad").listen((menu) => {
+    menu.get("opendiscord:extra").add(new api.ODHelpMenuCommandComponent("ot-embeds:embed",0,{
         slashName:"embed",
         slashDescription:"Create a custom embed in the server.",
     }))
 })
 
 //LOAD EMBEDS
-openticket.events.get("afterBlacklistLoaded").listen(async () => {
-    const embedManager = openticket.plugins.classes.get("ot-embeds:manager")
-    const config = openticket.configs.get("ot-embeds:config")
+opendiscord.events.get("afterBlacklistLoaded").listen(async () => {
+    const embedManager = opendiscord.plugins.classes.get("ot-embeds:manager")
+    const config = opendiscord.configs.get("ot-embeds:config")
 
-    openticket.log("Loading custom embeds...","plugin")
+    opendiscord.log("Loading custom embeds...","plugin")
     if (embedManager.defaults.customEmbedsLoading){
         config.data.forEach((embed) => {
             embedManager.add(new OTCustomEmbed(embed.id,embed))
         })
     }
-    await openticket.events.get("ot-embeds:onEmbedLoad").emit([embedManager])
-    await openticket.events.get("ot-embeds:afterEmbedsLoaded").emit([embedManager])
+    await opendiscord.events.get("ot-embeds:onEmbedLoad").emit([embedManager])
+    await opendiscord.events.get("ot-embeds:afterEmbedsLoaded").emit([embedManager])
 })
 
 //REGISTER EMBED BUILDER
-openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
+opendiscord.events.get("onEmbedBuilderLoad").listen((embeds) => {
     embeds.add(new api.ODEmbed("ot-embeds:embed-embed"))
     embeds.get("ot-embeds:embed-embed").workers.add(
         new api.ODWorker("ot-embeds:embed-embed",0,(instance,params,source,cancel) => {
-            const generalConfig = openticket.configs.get("openticket:general")
+            const generalConfig = opendiscord.configs.get("opendiscord:general")
             const {embed} = params
 
             instance.setTitle(embed.title)
@@ -322,12 +322,12 @@ openticket.events.get("onEmbedBuilderLoad").listen((embeds) => {
 })
 
 //REGISTER MESSAGE BUILDER
-openticket.events.get("onMessageBuilderLoad").listen((messages) => {
+opendiscord.events.get("onMessageBuilderLoad").listen((messages) => {
     messages.add(new api.ODMessage("ot-embeds:embed-message"))
     messages.get("ot-embeds:embed-message").workers.add(
         new api.ODWorker("ot-embeds:embed-message",0,async (instance,params,source,cancel) => {
             const {embed} = params
-            instance.addEmbed(await openticket.builders.embeds.getSafe("ot-embeds:embed-embed").build(source,{embed}))
+            instance.addEmbed(await opendiscord.builders.embeds.getSafe("ot-embeds:embed-embed").build(source,{embed}))
 
             //create pings
             const pings: string[] = []
@@ -352,22 +352,22 @@ openticket.events.get("onMessageBuilderLoad").listen((messages) => {
 })
 
 //REGISTER COMMAND RESPONDER
-openticket.events.get("onCommandResponderLoad").listen((commands) => {
-    const generalConfig = openticket.configs.get("openticket:general")
-    const embedManager = openticket.plugins.classes.get("ot-embeds:manager")
+opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
+    const generalConfig = opendiscord.configs.get("opendiscord:general")
+    const embedManager = opendiscord.plugins.classes.get("ot-embeds:manager")
 
     commands.add(new api.ODCommandResponder("ot-embeds:embed",generalConfig.data.prefix,"embed"))
     commands.get("ot-embeds:embed").workers.add([
         new api.ODWorker("ot-embeds:embed",0,async (instance,params,source,cancel) => {
             const {guild,channel,user} = instance
             if (!guild){
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-not-in-guild").build(source,{channel,user}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error-not-in-guild").build(source,{channel,user}))
                 return cancel()
             }
 
-            if (!openticket.permissions.hasPermissions("admin",await openticket.permissions.getPermissions(instance.user,instance.channel,instance.guild))){
+            if (!opendiscord.permissions.hasPermissions("admin",await opendiscord.permissions.getPermissions(instance.user,instance.channel,instance.guild))){
                 //no permissions
-                instance.reply(await openticket.builders.messages.getSafe("openticket:error-no-permissions").build(source,{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin"]}))
+                instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error-no-permissions").build(source,{guild:instance.guild,channel:instance.channel,user:instance.user,permissions:["admin"]}))
                 return cancel()
             }
 
@@ -388,7 +388,7 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
                 const ping = instance.options.getMentionable("ping",false)
                 const pingCustom = ping ? [ping.id] : []
 
-                await embedChannel.send((await openticket.builders.messages.getSafe("ot-embeds:embed-message").build(source,{embed:{
+                await embedChannel.send((await opendiscord.builders.messages.getSafe("ot-embeds:embed-message").build(source,{embed:{
                     id:"_CUSTOM_",
                     content:"",
                     title,
@@ -417,11 +417,11 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
                 
                 const embed = embedManager.get(embedId)
                 if (!embed){
-                    instance.reply(await openticket.builders.messages.getSafe("openticket:error").build(source,{guild,channel,user,layout:"simple",error:"Invalid embed id. Please try again!"}))
+                    instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error").build(source,{guild,channel,user,layout:"simple",error:"Invalid embed id. Please try again!"}))
                     return cancel()
                 }
 
-                await embedChannel.send((await openticket.builders.messages.getSafe("ot-embeds:embed-message").build(source,{embed:{
+                await embedChannel.send((await opendiscord.builders.messages.getSafe("ot-embeds:embed-message").build(source,{embed:{
                     id:embed.id.value,
                     content:embed.data.content,
                     title:embed.data.title,
@@ -442,11 +442,11 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
             }
 
             //reply
-            await instance.reply(await openticket.builders.messages.getSafe("ot-embeds:success-message").build(source,{}))
+            await instance.reply(await opendiscord.builders.messages.getSafe("ot-embeds:success-message").build(source,{}))
         }),
         new api.ODWorker("ot-embeds:logs",-1,(instance,params,source,cancel) => {
             const scope = instance.options.getSubCommand() as "custom"|"preset"
-            openticket.log(instance.user.displayName+" used the 'embed "+scope+"' command!","plugin",[
+            opendiscord.log(instance.user.displayName+" used the 'embed "+scope+"' command!","plugin",[
                 {key:"user",value:instance.user.username},
                 {key:"userid",value:instance.user.id,hidden:true},
                 {key:"channelid",value:instance.channel.id,hidden:true},
@@ -457,9 +457,9 @@ openticket.events.get("onCommandResponderLoad").listen((commands) => {
 })
 
 //STARTUP SCREEN
-openticket.events.get("onStartScreenLoad").listen((startscreen) => {
-    const embedManager = openticket.plugins.classes.get("ot-embeds:manager")
-    const stats = startscreen.get("openticket:stats")
+opendiscord.events.get("onStartScreenLoad").listen((startscreen) => {
+    const embedManager = opendiscord.plugins.classes.get("ot-embeds:manager")
+    const stats = startscreen.get("opendiscord:stats")
     if (!stats) return
 
     //insert embeds startup info before "help" stat.

@@ -65,6 +65,7 @@ All plugins are checked for malicious code, bugs & errors before being listed he
 |[`ot-ticket-forms`](./open-ticket/ot-ticket-forms/)                  |guillee.3                   |💼 Management               |An advanced forms plugin for Open Ticket. |
 |[`ot-feedback`](./open-ticket/ot-feedback/)                          |an_developer                |💼 Management               |A plugin to gather feedback of your support service. |
 |[`ot-assign-role`](./open-ticket/ot-assign-role/)                    |rapid.fast                  |💼 Management               |This plugin assigns a predefined role to a user upon creating a ticket. |
+|[`ot-volume-warning`](./open-ticket/ot-volume-warning/)              |guillee.3                   |💼 Management               |Alerts ticket creators when too many tickets are open, indicating possible response delays. |
 |[`ot-translate-cmds`](./open-ticket/ot-translate-cmds/)              |guillee.3                   |🤖 Client                  |Translate all built-in command names, descriptions & options. |
 
 ### 📢 Categories

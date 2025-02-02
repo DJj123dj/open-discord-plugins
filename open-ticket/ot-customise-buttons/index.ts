@@ -1,4 +1,4 @@
-import {api, openticket, utilities} from "#opendiscord"
+import {api, opendiscord, utilities} from "#opendiscord"
 import * as discord from "discord.js"
 if (utilities.project != "openticket") throw new api.ODPluginError("This plugin only works in Open Ticket!")
 
@@ -37,12 +37,12 @@ declare module "#opendiscord-types" {
 }
 
 //REGISTER CONFIG
-openticket.events.get("onConfigLoad").listen((configs) => {
+opendiscord.events.get("onConfigLoad").listen((configs) => {
     configs.add(new OTCustomiseButtonsConfig("ot-customise-buttons:config","config.json","./plugins/ot-customise-buttons/"))
 })
 
 //REGISTER CONFIG CHECKER
-openticket.events.get("onCheckerLoad").listen((checkers) => {
+opendiscord.events.get("onCheckerLoad").listen((checkers) => {
     const createCustomButtonCheckerStructure = (id:api.ODValidId) => {
         return new api.ODCheckerEnabledObjectStructure(id,{property:"enableCustomisation",enabledValue:true,checker:new api.ODCheckerObjectStructure(id,{children:[
             {key:"customLabel",optional:false,priority:0,checker:new api.ODCheckerStringStructure("ot-customise-buttons:label",{maxLength:80})},
@@ -51,7 +51,7 @@ openticket.events.get("onCheckerLoad").listen((checkers) => {
         ]})}) 
     }
 
-    const config = openticket.configs.get("ot-customise-buttons:config")
+    const config = opendiscord.configs.get("ot-customise-buttons:config")
     const structure = new api.ODCheckerObjectStructure("ot-customise-buttons:config",{children:[
         {key:"close",optional:false,priority:0,checker:createCustomButtonCheckerStructure("ot-customise-buttons:close")},
         {key:"reopen",optional:false,priority:0,checker:createCustomButtonCheckerStructure("ot-customise-buttons:reopen")},
@@ -69,11 +69,11 @@ openticket.events.get("onCheckerLoad").listen((checkers) => {
 })
 
 //EDIT BUTTONS
-openticket.events.get("afterButtonBuildersLoaded").listen((buttons) => {
-    const config = openticket.configs.get("ot-customise-buttons:config")
+opendiscord.events.get("afterButtonBuildersLoaded").listen((buttons) => {
+    const config = opendiscord.configs.get("ot-customise-buttons:config")
 
     //close ticket
-    buttons.get("openticket:close-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
+    buttons.get("opendiscord:close-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
         const data = config.data.close
         if (!data.enableCustomisation) return
         instance.setColor(data.customColor)
@@ -81,7 +81,7 @@ openticket.events.get("afterButtonBuildersLoaded").listen((buttons) => {
         instance.setEmoji((data.customEmoji.length > 0) ? data.customEmoji : null)
     }))
     //reopen ticket
-    buttons.get("openticket:reopen-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
+    buttons.get("opendiscord:reopen-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
         const data = config.data.reopen
         if (!data.enableCustomisation) return
         instance.setColor(data.customColor)
@@ -89,7 +89,7 @@ openticket.events.get("afterButtonBuildersLoaded").listen((buttons) => {
         instance.setEmoji((data.customEmoji.length > 0) ? data.customEmoji : null)
     }))
     //delete ticket
-    buttons.get("openticket:delete-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
+    buttons.get("opendiscord:delete-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
         const data = config.data.delete
         if (!data.enableCustomisation) return
         instance.setColor(data.customColor)
@@ -97,7 +97,7 @@ openticket.events.get("afterButtonBuildersLoaded").listen((buttons) => {
         instance.setEmoji((data.customEmoji.length > 0) ? data.customEmoji : null)
     }))
     //claim ticket
-    buttons.get("openticket:claim-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
+    buttons.get("opendiscord:claim-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
         const data = config.data.claim
         if (!data.enableCustomisation) return
         instance.setColor(data.customColor)
@@ -105,7 +105,7 @@ openticket.events.get("afterButtonBuildersLoaded").listen((buttons) => {
         instance.setEmoji((data.customEmoji.length > 0) ? data.customEmoji : null)
     }))
     //unclaim ticket
-    buttons.get("openticket:unclaim-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
+    buttons.get("opendiscord:unclaim-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
         const data = config.data.unclaim
         if (!data.enableCustomisation) return
         instance.setColor(data.customColor)
@@ -113,7 +113,7 @@ openticket.events.get("afterButtonBuildersLoaded").listen((buttons) => {
         instance.setEmoji((data.customEmoji.length > 0) ? data.customEmoji : null)
     }))
     //pin ticket
-    buttons.get("openticket:pin-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
+    buttons.get("opendiscord:pin-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
         const data = config.data.pin
         if (!data.enableCustomisation) return
         instance.setColor(data.customColor)
@@ -121,7 +121,7 @@ openticket.events.get("afterButtonBuildersLoaded").listen((buttons) => {
         instance.setEmoji((data.customEmoji.length > 0) ? data.customEmoji : null)
     }))
     //unpin ticket
-    buttons.get("openticket:unpin-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
+    buttons.get("opendiscord:unpin-ticket").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
         const data = config.data.unpin
         if (!data.enableCustomisation) return
         instance.setColor(data.customColor)
@@ -130,7 +130,7 @@ openticket.events.get("afterButtonBuildersLoaded").listen((buttons) => {
     }))
 
     //verifybar success (including "... with reason" & "delete without transcript")
-    buttons.get("openticket:verifybar-success").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
+    buttons.get("opendiscord:verifybar-success").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
         const {customData,customColor,customEmoji,customLabel} = params
 
         if (customData == "reason"){
@@ -154,7 +154,7 @@ openticket.events.get("afterButtonBuildersLoaded").listen((buttons) => {
         }
     }))
     //verifybar failure
-    buttons.get("openticket:verifybar-failure").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
+    buttons.get("opendiscord:verifybar-failure").workers.add(new api.ODWorker("ot-customise-buttons:edit-button",1,(instance,params,source,cancel) => {
         const {customColor,customEmoji,customLabel} = params
         if (!customColor && !customEmoji && !customLabel){
             const data = config.data.verifybarFailure

@@ -1,7 +1,7 @@
 {
     "name":"OT Embeds",
     "id":"ot-embeds",
-    "version":"1.0.2",
+    "version":"1.0.3",
     "startFile":"index.ts",
 
     "enabled":true,
