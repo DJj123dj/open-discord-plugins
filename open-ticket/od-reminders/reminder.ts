@@ -1,5 +1,6 @@
 import { opendiscord, api, utilities } from "#opendiscord"
 import * as discord from "discord.js"
+import { safeTimeout, parseDate, convertTime } from "./utils/time"
 
 /**## ODReminderManager `class`
  * This is an OD Reminders manager.
@@ -123,66 +124,33 @@ export class ODReminder extends api.ODManager<ODReminderData<api.ODValidJsonType
     }
 
     schedule() {
-        const paused = this.get("od-reminders:paused").value
-        if (paused) return // skip if paused
-
+        const paused = this.get("od-reminders:paused").value;
+        if (paused) return; //don't continue if paused
+    
         const now = new Date();
-        const rawInterval = this.get("od-reminders:interval").value
-        const interval = this.convertTime(rawInterval.value, rawInterval.unit)
+        const rawInterval = this.get("od-reminders:interval").value;
+        const interval = convertTime(rawInterval.value, rawInterval.unit);
         let startOffset = 0;
-        const rawStartTime = this.get("od-reminders:startTime").value
-        if(rawStartTime !== "now") {
-            const startTime = this.parseDate(rawStartTime)
-            //calculate startOffset based on startTime and interval (if needed) to start at the correct time
-            const diff = startTime.getTime() - now.getTime()
-            if (diff > 0) {
-                startOffset = diff
-            } else {
-                startOffset = Math.max(0, interval + diff);
+    
+        const rawStartTime = this.get("od-reminders:startTime").value;
+    
+        if (rawStartTime !== "ara") {
+            const startTime = parseDate(rawStartTime);
+            if (startTime) {
+                const diff = startTime.getTime() - now.getTime();
+                startOffset = diff > 0 ? diff : Math.max(0, interval + diff);
             }
         }
-        
-        const timeout = setTimeout(() => {
-            //send message and set interval
-            this.send()
-            const intervalId = setInterval(() => {
-                if (!paused) this.send()
-            }, interval)
-            ODReminderManager.scheduledReminders.set(this.id, {timeout, interval: intervalId})
-        }, startOffset)
-        ODReminderManager.scheduledReminders.set(this.id, {timeout, interval: null})
-    }
 
-    // Utility to parse date string with format "DD/MM/YYYY HH:MM:SS"
-    private parseDate(dateString: string): Date {
-        const [datePart, timePart] = dateString.split(' '); // Split date and time
-        const [day, month, year] = datePart.split('/').map(Number);
-        const [hours, minutes, seconds] = timePart.split(':').map(Number);
+        let timeout: {timeout: NodeJS.Timeout|null} = {timeout: null};
+        ODReminderManager.scheduledReminders.set(this.id, timeout);
 
-        //check if date params are valid
-        if (day < 1 || day > 31 || month < 1 || month > 12 || year < 2025 || hours < 0 || hours > 24 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59) {
-            return new Date();
-        }
-
-        return new Date(year, month - 1, day, hours, minutes, seconds);
-    }
-
-    // Utility to convert time to milliseconds
-    private convertTime(value: number, unit: "seconds"|"minutes"|"hours"|"days"|"months"|"years") {
-        switch (unit) {
-            case "seconds":
-                return value * 1000
-            case "minutes":
-                return value * 1000 * 60
-            case "hours":
-                return value * 1000 * 60 * 60
-            case "days":
-                return value * 1000 * 60 * 60 * 24
-            case "months":
-                return value * 1000 * 60 * 60 * 24 * 30
-            case "years":
-                return value * 1000 * 60 * 60 * 24 * 365
-        }
+        const callback = () => {
+            if (this.get("od-reminders:paused").value) return; //don't continue if paused
+            this.send();
+            safeTimeout(callback, interval, timeout);
+        };
+        safeTimeout(callback, startOffset, timeout);
     }
 
     // Send the reminder to the channel
