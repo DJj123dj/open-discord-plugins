@@ -277,9 +277,15 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
 
                 const rawColor = instance.options.getString("color", false);
                 const color = rawColor ? rawColor.replace("%CONFIG_COLOR%", generalConfig.data.mainColor.toString()) as discord.ColorResolvable : null;
-                const text = instance.options.getString("text",false)
+                let text = instance.options.getString("text",false)
+                if(text) {
+                    text = text.replace(/\\n/g, '\n')
+                }
                 const title = instance.options.getString("title",false)
-                const description = instance.options.getString("description",false)
+                let description = instance.options.getString("description",false)
+                if(description) {
+                    description = description.replace(/\\n/g, '\n')
+                }
                 if (!text && !title && !description) {
                     await instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error").build(source,{guild,channel,user,error:"You must provide a text, title, or description.",layout:"simple"}))
                     return cancel()
