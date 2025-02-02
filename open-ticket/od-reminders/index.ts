@@ -28,6 +28,30 @@ opendiscord.events.get("onCodeLoad").listen(async (code) => {
     }))
 })
 
+//REGISTER HELP MENU
+opendiscord.events.get("onHelpMenuComponentLoad").listen((menu) => {
+    menu.get("opendiscord:extra").add(new api.ODHelpMenuCommandComponent("od-reminders:reminder-create",0,{
+        slashName:"reminder create",
+        slashDescription:"Create a custom reminder in the server.",
+    }))
+    menu.get("opendiscord:extra").add(new api.ODHelpMenuCommandComponent("od-reminders:reminder-delete",0,{
+        slashName:"reminder delete",
+        slashDescription:"Delete a reminder in the server.",
+    }))
+    menu.get("opendiscord:extra").add(new api.ODHelpMenuCommandComponent("od-reminders:reminder-list",0,{
+        slashName:"reminder list",
+        slashDescription:"List all reminders in the server.",
+    }))
+    menu.get("opendiscord:extra").add(new api.ODHelpMenuCommandComponent("od-reminders:reminder-pause",0,{
+        slashName:"reminder pause",
+        slashDescription:"Pause a reminder in the server.",
+    }))
+    menu.get("opendiscord:extra").add(new api.ODHelpMenuCommandComponent("od-reminders:reminder-resume",0,{
+        slashName:"reminder resume",
+        slashDescription:"Resume a reminder in the server.",
+    }))
+})
+
 //Load all reminders from the database
 const loadAllReminders = async () => {
     const globalDatabase = opendiscord.databases.get("opendiscord:global")
