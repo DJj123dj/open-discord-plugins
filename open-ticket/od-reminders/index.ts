@@ -5,17 +5,18 @@ import "./builders/messages";
 import "./builders/embeds";
 import "./builders/commands";
 
+//REGISTER PLUGIN CLASSES
 opendiscord.events.get("onPluginClassLoad").listen((classes) => {
     classes.add(new ODReminderManager(opendiscord.debug))
 })
 
 //Load database savers
 opendiscord.events.get("onCodeLoad").listen(async (code) => {
+    const reminderManager = opendiscord.plugins.classes.get("od-reminders:manager")
+    const mainVersion = opendiscord.versions.get("opendiscord:version")
+    const globalDatabase = opendiscord.databases.get("opendiscord:global")
+    
     opendiscord.code.add(new api.ODCode("od-reminders",6,() => {
-        const mainVersion = opendiscord.versions.get("opendiscord:version")
-        const globalDatabase = opendiscord.databases.get("opendiscord:global")
-        const reminderManager = opendiscord.plugins.classes.get("od-reminders:manager")
-
         reminderManager.onAdd(async (reminder) => {
             await globalDatabase.set("od-reminders:reminder",reminder.id.value,reminder.toJson(mainVersion))
         })
@@ -64,12 +65,13 @@ const loadAllReminders = async () => {
             opendiscord.plugins.classes.get("od-reminders:manager").add(ODReminder.fromJson(reminder.value))
         } catch (err){
             process.emit("uncaughtException",err)
-            process.emit("uncaughtException",new api.ODSystemError("Failed to load reminder from database! => id: "+reminder.key+"\n ===> "+err))
+            process.emit("uncaughtException",new api.ODPluginError("Failed to load reminder from database! (see error above) => id: "+reminder.key))
         }
     }
 }
 
-opendiscord.events.get("onReadyForUsage").listen(async () => {
+opendiscord.events.get("afterBlacklistLoaded").listen(async () => {
+    opendiscord.log("Loading reminders...","plugin")
     await loadAllReminders()
 
     //schedule reminders on reminderManager
@@ -78,7 +80,3 @@ opendiscord.events.get("onReadyForUsage").listen(async () => {
         reminder.schedule();
     })
 })
-
-
-
-

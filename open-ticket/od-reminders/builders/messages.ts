@@ -34,16 +34,3 @@ opendiscord.events.get("onMessageBuilderLoad").listen((messages,builders,actions
         })
     )
 })
-
-opendiscord.events.get("afterMessageBuildersLoaded").listen((messages) => {
-    //ticket rename message
-    messages.get("opendiscord:error").workers.add(new api.ODWorker("od-reminders:edit-message",1,(instance,params,source,cancel) => {
-        instance.setEphemeral(true)
-    }))
-    messages.get("opendiscord:error-no-permissions").workers.add(new api.ODWorker("od-reminders:edit-message",1,(instance,params,source,cancel) => {
-        instance.setEphemeral(true)
-    }))
-    messages.get("opendiscord:error-not-in-guild").workers.add(new api.ODWorker("od-reminders:edit-message",1,(instance,params,source,cancel) => {
-        instance.setEphemeral(true)
-    }))
-})

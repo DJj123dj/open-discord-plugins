@@ -29,6 +29,7 @@ export function safeTimeout(callback: () => void, delay: number, timeout: {timeo
  * @returns The parsed date or null if invalid dateString.
  */
 export function parseDate(dateString: string): Date|null {
+    if (dateString == "now") return new Date()
     const [datePart, timePart] = dateString.split(' '); // Split date and time
     const [day, month, year] = datePart.split('/').map(Number);
     const [hours, minutes, seconds] = timePart.split(':').map(Number);

@@ -40,7 +40,7 @@ opendiscord.events.get("onSlashCommandLoad").listen((slash) => {
                     {
                         type: acot.Number,
                         name: "interval-value",
-                        description: "The interval value.",
+                        description: "The interval value. The reminder will be sent again every time this timer has been triggered.",
                         required: true
                     },
                     {
@@ -81,7 +81,7 @@ opendiscord.events.get("onSlashCommandLoad").listen((slash) => {
                     {
                         type: acot.String,
                         name: "text",
-                        description: "The reminder text (no embed).",
+                        description: "The reminder text (outside embed).",
                         required: false,
                         maxLength: 2048
                     },
@@ -199,21 +199,6 @@ opendiscord.events.get("onSlashCommandLoad").listen((slash) => {
                 description: "List all reminders."
             }
         ]
-    }, (current) => {
-        //check if this slash command needs to be updated
-        if (!current.options) return true
-
-        const createSubcommand = current.options.find((opt) => opt.name == "create") as discord.ApplicationCommandSubCommandData|undefined
-        if (!createSubcommand || !createSubcommand.options) return true
-
-        const intervalUnitOption = createSubcommand.options.find((opt) => opt.name == "intervalUnit" && opt.type == acot.String) as discord.ApplicationCommandStringOptionData|undefined
-        if (!intervalUnitOption || !intervalUnitOption.choices || intervalUnitOption.choices.length != 6) return true
-        else if (!intervalUnitOption.choices.every((choice) => {
-            if (!intervalUnitOption.choices) return false
-            else if (!intervalUnitOption.choices.find((unit) => unit.value == choice.value && unit.name == choice.name)) return false
-            else return true
-        })) return true
-        else return false
     }))
 
     //handle autocomplete for reminder IDs
@@ -222,13 +207,10 @@ opendiscord.events.get("onSlashCommandLoad").listen((slash) => {
         if (interaction.commandName !== "reminder") return
     
         const focusedValue = interaction.options.getFocused().toLowerCase();
-
         const reminderManager = opendiscord.plugins.classes.get("od-reminders:manager")
-
         const reminderIds = reminderManager.getAll().map((reminder) => reminder.id.value)
 
-        const filtered = reminderIds
-            .filter((id) => id.toLowerCase().includes(focusedValue))
+        const filtered = reminderIds.filter((id) => id.toLowerCase().includes(focusedValue))
 
         await interaction.respond(filtered.map((id) => ({ name: id.split(":")[1], value: id })))
     })
@@ -276,20 +258,20 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
                 }
 
                 const rawColor = instance.options.getString("color", false);
-                const color = rawColor ? rawColor.replace("%CONFIG_COLOR%", generalConfig.data.mainColor.toString()) as discord.ColorResolvable : null;
+                const color = rawColor ? (rawColor.replace("%CONFIG_COLOR%", generalConfig.data.mainColor.toString()) as discord.ColorResolvable) : null;
+                
                 let text = instance.options.getString("text",false)
-                if(text) {
-                    text = text.replace(/\\n/g, '\n')
-                }
+                if(text) text = text.replace(/\\n/g, '\n')
+
                 const title = instance.options.getString("title",false)
                 let description = instance.options.getString("description",false)
-                if(description) {
-                    description = description.replace(/\\n/g, '\n')
-                }
+                if (description) description = description.replace(/\\n/g, '\n')
+                
                 if (!text && !title && !description) {
                     await instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error").build(source,{guild,channel,user,error:"You must provide a text, title, or description.",layout:"simple"}))
                     return cancel()
                 }
+
                 const footer = instance.options.getString("footer",false)
                 const author = instance.options.getString("author",false)
                 const timestamp = instance.options.getBoolean("timestamp",false)
@@ -297,22 +279,17 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
                 const thumbnail = instance.options.getString("thumbnail",false)
                 const authorImage = instance.options.getString("author-image",false)
                 const footerImage = instance.options.getString("footer-image",false)
+                
                 const ping = instance.options.getMentionable("ping",false)
-                let mentionable:string|null = null;
-                if(ping) {
-                    if(instance.guild && ping.id === instance.guild.id){
-                        mentionable = "@everyone"
-                    } else {
-                        mentionable = `<@${ping.id}>`
-                    }
-                }
+                let mentionable: string|null = null;
+                if(ping && ping instanceof discord.Role) mentionable = discord.roleMention(ping.id)
+                else if (ping) mentionable = discord.userMention(ping.id)
+                
                 const ch = instance.options.getChannel("channel",true)
                 const intervalValue = instance.options.getNumber("interval-value",true)
                 const intervalUnit = instance.options.getString("interval-unit",true)
                 const startTimeRaw = instance.options.getString("start-time",true)
-                const startTime = (startTimeRaw.toLowerCase() === "now")
-                    ? "now"
-                    : startTimeRaw
+                const startTime = (startTimeRaw.toLowerCase() === "now") ? "now" : startTimeRaw
 
                 //create and store new reminder
                 const reminder = new ODReminder(`od-reminders:${id}`, [
@@ -329,7 +306,7 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
                     new ODReminderData("od-reminders:author-image", authorImage),
                     new ODReminderData("od-reminders:footer-image", footerImage),
                     new ODReminderData("od-reminders:ping", mentionable),
-                    new ODReminderData("od-reminders:startTime", startTime),
+                    new ODReminderData("od-reminders:start-time", startTime),
                     new ODReminderData("od-reminders:interval", { value: intervalValue, unit: intervalUnit }),
                     new ODReminderData("od-reminders:paused", false)
                 ])
@@ -339,6 +316,7 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
             } else if (scope === "pause") { //pause a reminder
                 const id = instance.options.getString("id",true)
                 const reminder = reminderManager.get(id)
+                
                 if (!reminder) {
                     await instance.reply(await opendiscord.builders.messages.getSafe("opendiscord:error").build(source,{guild,channel,user,error:"Reminder not found.",layout:"simple"}))
                     return cancel()
@@ -350,9 +328,8 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
 
                 reminder.get("od-reminders:paused").value = true
                 const sReminder = ODReminderManager.scheduledReminders.get(reminder.id)
-                if (sReminder && sReminder.interval) {
+                if (sReminder && sReminder.timeout) {
                     clearTimeout(sReminder.timeout)
-                    clearInterval(sReminder.interval)
                     ODReminderManager.scheduledReminders.delete(reminder.id)
                 }
             } else if (scope === "resume") { //resume a reminder
@@ -378,9 +355,10 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
                     return cancel()
                 }
                 const sReminder = ODReminderManager.scheduledReminders.get(reminder.id)
-                if(!sReminder || !sReminder.interval) return;
-                clearTimeout(sReminder.timeout)
-                clearInterval(sReminder.interval)
+                if (sReminder && sReminder.timeout){
+                    clearTimeout(sReminder.timeout)
+                    ODReminderManager.scheduledReminders.delete(reminder.id)
+                }
                 
             } else if (scope === "list") { //list all reminders
                 const reminders = reminderManager.getAll()
@@ -391,13 +369,13 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
                 await instance.reply(await opendiscord.builders.messages.getSafe("od-reminders:list-message").build(source,{reminders:reminders}))
             } 
             
-            if(scope !== "list") {
+            if (scope !== "list") {
                 const scp = scope === "create" ? "created" : scope === "pause" ? "paused" : scope === "resume" ? "resumed" : "deleted"
                 await instance.reply(await opendiscord.builders.messages.getSafe("od-reminders:success-message").build(source,{ scope: scp }))
             }
         }),
         new api.ODWorker("od-reminders:logs",-1,(instance,params,source,cancel) => {
-            const scope = instance.options.getSubCommand() as "create"|"pause"|"resume"|"delete"|"list"
+            const scope = instance.options.getSubCommand()
             opendiscord.log(instance.user.displayName+" used the 'reminder "+scope+"' command!","plugin",[
                 {key:"user",value:instance.user.username},
                 {key:"userid",value:instance.user.id,hidden:true},

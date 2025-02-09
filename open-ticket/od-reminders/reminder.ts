@@ -12,7 +12,7 @@ import { safeTimeout, parseDate, convertTime } from "./utils/time"
 export class ODReminderManager extends api.ODManager<ODReminder> {
     id: api.ODId = new api.ODId("od-reminders:manager")
     // Track scheduled reminders timeouts/intervals
-    static scheduledReminders = new Map<api.ODValidId,{timeout: NodeJS.Timeout, interval: NodeJS.Timeout | null}>()
+    static scheduledReminders = new Map<api.ODValidId,{timeout: NodeJS.Timeout|null}>()
 
     constructor(debug: api.ODDebugger) {
         super(debug, "reminder")
@@ -46,6 +46,7 @@ export interface ODReminderJson {
  * It's used to generate typescript declarations for this class.
  */
 export interface ODReminderIds {
+    "od-reminders:name":ODReminderData<string>,
     "od-reminders:channel":ODReminderData<string>,
     "od-reminders:text":ODReminderData<string>,
     "od-reminders:embed-color":ODReminderData<discord.ColorResolvable>,
@@ -59,7 +60,7 @@ export interface ODReminderIds {
     "od-reminders:author-image":ODReminderData<string|null>,
     "od-reminders:footer-image":ODReminderData<string|null>,
     "od-reminders:ping":ODReminderData<string|null>,
-    "od-reminders:startTime":ODReminderData<string>,
+    "od-reminders:start-time":ODReminderData<string>,
     "od-reminders:interval":ODReminderData<{value:number,unit:"seconds"|"minutes"|"hours"|"days"|"months"|"years"}>,
     "od-reminders:paused":ODReminderData<boolean>
 }
@@ -132,9 +133,9 @@ export class ODReminder extends api.ODManager<ODReminderData<api.ODValidJsonType
         const interval = convertTime(rawInterval.value, rawInterval.unit);
         let startOffset = 0;
     
-        const rawStartTime = this.get("od-reminders:startTime").value;
+        const rawStartTime = this.get("od-reminders:start-time").value;
     
-        if (rawStartTime !== "ara") {
+        if (rawStartTime !== "now") {
             const startTime = parseDate(rawStartTime);
             if (startTime) {
                 const diff = startTime.getTime() - now.getTime();
@@ -142,8 +143,8 @@ export class ODReminder extends api.ODManager<ODReminderData<api.ODValidJsonType
             }
         }
 
-        let timeout: {timeout: NodeJS.Timeout|null} = {timeout: null};
-        ODReminderManager.scheduledReminders.set(this.id, timeout);
+        let timeout: {timeout: NodeJS.Timeout|null} = {timeout:null};
+        ODReminderManager.scheduledReminders.set(this.id,timeout);
 
         const callback = () => {
             if (this.get("od-reminders:paused").value) return; //don't continue if paused
@@ -161,9 +162,10 @@ export class ODReminder extends api.ODManager<ODReminderData<api.ODValidJsonType
             const channel = await opendiscord.client.fetchGuildTextChannel(guild, this.get("od-reminders:channel").value)
             if (!channel) return
             await channel.send((await opendiscord.builders.messages.get("od-reminders:reminder-message").build("other",{reminder:this})).message)
-            this.get("od-reminders:startTime").value = utilities.dateString(new Date())
+            this.get("od-reminders:start-time").value = utilities.dateString(new Date())
         } catch (err) {
-            opendiscord.log("Error sending reminder: " + (err as Error).message, "error")
+            process.emit("uncaughtException",err)
+            opendiscord.log("Error sending reminder! (See error above)","error")
         }
     }
 }

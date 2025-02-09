@@ -24,7 +24,7 @@ opendiscord.events.get("onEmbedBuilderLoad").listen((embeds,builders,actions) =>
         new api.ODWorker("od-reminders:list-embed",0,async (instance,params,source,cancel) => {
             const {reminders} = params
             const fields = reminders.map((reminder) => {
-                const content = `> Channel: ${discord.channelMention(reminder.get("od-reminders:channel").value)}\n> Last Reminder: \`${reminder.get("od-reminders:startTime").value}\`\n> Interval: \`${reminder.get("od-reminders:interval").value.value} ${reminder.get("od-reminders:interval").value.unit}\``
+                const content = `> Channel: ${discord.channelMention(reminder.get("od-reminders:channel").value)}\n> Last Reminder: \`${reminder.get("od-reminders:start-time").value}\`\n> Interval: \`${reminder.get("od-reminders:interval").value.value} ${reminder.get("od-reminders:interval").value.unit}\``
                 return {name: `${reminder.id.value.split(":")[1]}${reminder.get("od-reminders:paused").value ? " - ⏸️" : ""}`, value: content}
             })
             instance.setTitle("Reminders")
