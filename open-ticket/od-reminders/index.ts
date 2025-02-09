@@ -70,7 +70,7 @@ const loadAllReminders = async () => {
     }
 }
 
-opendiscord.events.get("afterBlacklistLoaded").listen(async () => {
+opendiscord.events.get("afterCodeLoaded").listen(async () => {
     opendiscord.log("Loading reminders...","plugin")
     await loadAllReminders()
 
