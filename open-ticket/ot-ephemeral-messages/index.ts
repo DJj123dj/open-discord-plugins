@@ -234,19 +234,19 @@ opendiscord.events.get("afterMessageBuildersLoaded").listen((messages) => {
     //PLUGIN INTEGRATIONS
     if (opendiscord.plugins.isPluginLoaded("ot-config-reload")){
         //OT Config Reload
-        messages.get("ot-config-reload:config-reload-result").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+        messages.get("ot-config-reload:config-reload-result")?.workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
             instance.setEphemeral(config.data.pluginIntegrations["OTConfigReload_reloadEphemeral"])
         }))
     }
     if (opendiscord.plugins.isPluginLoaded("ot-jump-to-top")){
         //OT Jump To Top
-        messages.get("ot-jump-to-top:top-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+        messages.get("ot-jump-to-top:top-message")?.workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
             instance.setEphemeral(config.data.pluginIntegrations["OTJumpToTop_topEphemeral"])
         }))
     }
     if (opendiscord.plugins.isPluginLoaded("ot-kill-switch")){
         //OT Kill Switch
-        messages.get("ot-kill-switch:kill-message").workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
+        messages.get("ot-kill-switch:kill-message")?.workers.add(new api.ODWorker("ot-ephemeral-messages:edit-message",1,(instance,params,source,cancel) => {
             instance.setEphemeral(config.data.pluginIntegrations["OTKillSwitch_killEphemeral"])
         }))
     }
