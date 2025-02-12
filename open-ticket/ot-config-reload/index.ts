@@ -296,24 +296,26 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
                 switch (config) {
                     case "general": {                      
                         const tempGeneral = new api.ODJsonConfig("ot-config-reload:general", "general.json", getConfigPath());
-
+                        await tempGeneral.init()
+                        
                         const generalChecker = opendiscord.checkers.get("opendiscord:general");
                         generalChecker.config = tempGeneral;
-
+                        
                         checkerResult = opendiscord.checkers.checkAll(true)
-
+                        
                         if (checkerResult.valid) {
                             opendiscord.configs.get("opendiscord:general").reload();
                             opendiscord.log('General configuration reloaded successfully.', "plugin");
                         }
-
+                        
                         // Reset the config properties checkers to their original state
                         generalChecker.config = opendiscord.configs.get("opendiscord:general");
-
+                        
                         break;
                     }
                     case "options": {
                         const tempOptions = new api.ODJsonConfig("ot-config-reload:options", "options.json", getConfigPath());
+                        await tempOptions.init()
 
                         const optionsChecker = opendiscord.checkers.get("opendiscord:options");
                         optionsChecker.config = tempOptions;
@@ -333,6 +335,7 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
                     }
                     case "panels": {
                         const tempPanels = new api.ODJsonConfig("ot-config-reload:panels", "panels.json", getConfigPath());
+                        await tempPanels.init()
 
                         const panelsChecker = opendiscord.checkers.get("opendiscord:panels");
                         panelsChecker.config = tempPanels;
@@ -352,6 +355,7 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
                     }
                     case "questions": {
                         const tempQuestions = new api.ODJsonConfig("ot-config-reload:questions", "questions.json", getConfigPath());
+                        await tempQuestions.init()
 
                         const questionsChecker = opendiscord.checkers.get("opendiscord:questions");
                         questionsChecker.config = tempQuestions;
@@ -370,6 +374,7 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
                     }
                     case "transcripts": {
                         const tempTranscripts = new api.ODJsonConfig("ot-config-reload:transcripts", "transcripts.json", getConfigPath());
+                        await tempTranscripts.init()
 
                         const transcriptsChecker = opendiscord.checkers.get("opendiscord:transcripts")
                         transcriptsChecker.config = tempTranscripts;
@@ -393,6 +398,12 @@ opendiscord.events.get("onCommandResponderLoad").listen((commands) => {
                         const tempQuestions = new api.ODJsonConfig("ot-config-reload:questions", "questions.json", getConfigPath());
                         const tempTranscripts = new api.ODJsonConfig("ot-config-reload:transcripts", "transcripts.json", getConfigPath());
                     
+                        await tempGeneral.init()
+                        await tempOptions.init()
+                        await tempPanels.init()
+                        await tempQuestions.init()
+                        await tempTranscripts.init()
+
                         const generalChecker = opendiscord.checkers.get("opendiscord:general");
                         generalChecker.config = tempGeneral;
 

@@ -1,7 +1,7 @@
 {
     "name":"OT Config Reload",
     "id":"ot-config-reload",
-    "version":"1.0.2",
+    "version":"1.0.3",
     "startFile":"index.ts",
 
     "enabled":true,
